@@ -1,6 +1,6 @@
 {
  "v": 1,
- "updatedAt": 1795018792315,
+ "updatedAt": 1795019623480,
  "owned": {
   "tt:lock:emperor": 1,
   "tt:main:might": 1,
@@ -20,10 +20,10 @@
   "tt:blade:wyvern-hover": 1,
   "tt:ratchet:8-80": 1,
   "tt:bit:b": 1,
-  "hb:lock:pegasus": 1,
-  "hb:main:blast": 1,
-  "hb:assist:a": 1,
-  "hb:rbit:tr": 1
+  "tt:lock:pegasus": 1,
+  "tt:main:blast": 1,
+  "tt:assist:a": 1,
+  "tt:rbit:tr": 1
  },
  "wish": {},
  "notes": {},
@@ -65,14 +65,14 @@
    "note": ""
   },
   {
-   "id": "ug2350",
-   "pid": "hb:p:g2350-blast-pegasus-a-tr-clip-rip-launcher-set",
+   "id": "ucx-07",
+   "pid": "tt:p:cx-07-starter-pegasus-blast-atr",
    "bey": "all",
    "parts": [
-    "hb:lock:pegasus",
-    "hb:main:blast",
-    "hb:assist:a",
-    "hb:rbit:tr"
+    "tt:lock:pegasus",
+    "tt:main:blast",
+    "tt:assist:a",
+    "tt:rbit:tr"
    ],
    "date": "2026-11-18",
    "note": ""
