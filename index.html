@@ -138,6 +138,16 @@
   .empty { text-align: center; color: var(--muted); padding: var(--s-6) var(--s-4); }
   .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: var(--r-pill);
     font-size: var(--fs-sm); font-weight: 600; z-index: 50; box-shadow: var(--shadow); }
+  .thumb { width: 40px; height: 40px; border-radius: var(--r-sm); object-fit: contain; background: var(--surface-2); flex: none; }
+  .noimg { display: inline-block; }
+  .pimg { width: 64px; height: 64px; border-radius: var(--r-md); object-fit: contain; background: var(--surface-2); flex: none; }
+  .bigimg { width: 72px; height: 72px; border-radius: var(--r-md); object-fit: contain; background: var(--surface-2); flex: none; }
+  .tier { font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: var(--r-pill); }
+  .tier-Sp { background: var(--accent); color: var(--on-accent); } .tier-S { background: var(--accent-soft); color: var(--accent); }
+  .tier-A { background: var(--pos-soft); color: var(--pos); } .tier-B { background: var(--surface-2); color: var(--muted); }
+  .stats { display: flex; flex-direction: column; gap: 6px; }
+  .stat { display: grid; grid-template-columns: 36px 1fr 28px; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
+  .stat b { color: var(--text); text-align: right; }
   footer { color: var(--subtle); font-size: var(--fs-xs); padding: var(--s-5) 0; border-top: 1px solid var(--border); }
   footer a { color: var(--muted); }
 </style>
@@ -176,13 +186,18 @@
 
 <footer class="container">
   Parts catalog from the official Takara Tomy lineup, byybladebuilder.com, the Beyblade Wiki and retailer set listings. Hasbro list is partial.
-  Takara Tomy and Hasbro parts are tracked separately because they are different moulds.
+  Takara Tomy and Hasbro parts are tracked separately because they are different moulds.<br>
+  Part photos: <a href="https://beybladehub.app" target="_blank" rel="noopener">BeybladeHub</a>. Meta: BEYWATCH.GG, BBX Weekly, Beyblade Kingdom, note.com tier lists. Official stats via byybladebuilder.com.
 </footer>
 
 <dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
 <div class="toast" id="toast" hidden></div>
 
+<script>
+  function imgFail(el) { const fb = (el.dataset.fb || '').split('|').filter(Boolean); if (fb.length) { el.src = fb.shift(); el.dataset.fb = fb.join('|'); } else el.style.visibility = 'hidden'; }
+</script>
 <script src="data.js"></script>
+<script src="extras.js"></script>
 <script>
 (() => {
   const C = window.CATALOG;
@@ -202,7 +217,7 @@
   const blank = () => ({ v: 1, updatedAt: 0, owned: {}, wish: {}, notes: {}, purchases: [], custom: [], decks: [] });
   let S = blank();
   let brand = 'tt', tab = 'collection';
-  const ui = { partsQ: '', partsKind: 'all', partsShow: 'all', prodQ: '', prodLine: 'all', deck: null };
+  const ui = { partsQ: '', partsKind: 'all', partsShow: 'all', partsSort: 'meta', prodQ: '', prodLine: 'all', deck: null };
   try { const raw = localStorage.getItem(KEY); if (raw) S = { ...blank(), ...JSON.parse(raw) }; } catch (e) {}
   try { brand = localStorage.getItem('beyvault-brand') || 'tt'; } catch (e) {}
 
@@ -211,7 +226,22 @@
   mergeCustom();
 
   const part = id => C.parts[id];
-  const qty = id => S.owned[id] || 0;
+  const vqty = id => S.owned[id] || 0;
+  const qty = id => (S.owned[id] || 0) + (C.partVariants[id] || []).reduce((n, v) => n + (S.owned[v.id] || 0), 0);
+  const TIER_SCORE = { 'S+': 5, S: 4, A: 3, B: 2 };
+  const tierScore = p => p.meta ? TIER_SCORE[p.meta.tier] || 1 : 0;
+  // Older saves stored plain part ids for purchases; move them onto the matching release variant.
+  function migrate() {
+    for (const x of S.purchases) {
+      if (!x.parts || x.parts.some(id => id.includes('@'))) continue;
+      const p = productById(x.pid); if (!p) continue;
+      const vids = [];
+      p.beys.forEach((b, i) => { if (x.bey === 'all' || x.bey === i) b.parts.forEach(pid => vids.push(`${pid}@${p.id}#${i}`)); });
+      if (x.bey === 'all') p.extra.forEach(pid => vids.push(`${pid}@${p.id}#x`));
+      for (const v of vids) { const pid = v.split('@')[0]; if (S.owned[pid]) { S.owned[pid]--; if (!S.owned[pid]) delete S.owned[pid]; } S.owned[v] = (S.owned[v] || 0) + 1; }
+      x.parts = vids;
+    }
+  }
   const brandParts = () => Object.values(C.parts).filter(p => p.brand === brand);
   const brandProducts = () => C.products.filter(p => p.brand === brand);
   const productById = id => C.products.find(p => p.id === id);
@@ -259,7 +289,7 @@
       if (ghToken()) { remote = JSON.parse(unb64((await gh('collection.json?ref=main')).content)); }
       else { const r = await fetch('collection.json?t=' + Date.now(), { cache: 'no-store' }); if (!r.ok) return; remote = await r.json(); }
       if (remote && (remote.updatedAt || 0) > (S.updatedAt || 0)) {
-        S = { ...blank(), ...remote }; mergeCustom();
+        S = { ...blank(), ...remote }; mergeCustom(); migrate();
         try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
         render();
       }
@@ -271,8 +301,8 @@
   function addPurchase(pid, beyIdx, note) {
     const p = productById(pid);
     let ids = [];
-    if (beyIdx === 'all' || beyIdx == null) { p.beys.forEach(b => ids.push(...b.parts)); ids.push(...p.extra); }
-    else ids = [...p.beys[beyIdx].parts];
+    if (beyIdx === 'all' || beyIdx == null) { p.beys.forEach((b, i) => b.parts.forEach(pid => ids.push(`${pid}@${p.id}#${i}`))); p.extra.forEach(pid => ids.push(`${pid}@${p.id}#x`)); }
+    else ids = p.beys[beyIdx].parts.map(pid => `${pid}@${p.id}#${beyIdx}`);
     ids.forEach(id => S.owned[id] = (S.owned[id] || 0) + 1);
     S.purchases.unshift({ id: 'u' + Date.now().toString(36), pid, bey: beyIdx ?? 'all', parts: ids, date: new Date().toISOString().slice(0, 10), note: note || '' });
     save(`Added ${p.code} ${p.name}`);
@@ -286,17 +316,21 @@
 
   // ---------- Rendering helpers ----------
   const typeTag = t => t ? `<span class="tag t-${esc(t)}">${esc(t)}</span>` : '';
+  const img = (src, fb, cls = 'thumb') => src ? `<img class="${cls}" src="${esc(src)}" data-fb="${esc(fb || '')}" loading="lazy" alt="" onerror="imgFail(this)">` : `<span class="${cls} noimg"></span>`;
+  const tierTag = p => p.meta ? `<span class="tier tier-${p.meta.tier.replace('+', 'p')}">${esc(p.meta.tier)}</span>` : '';
   function partRow(p, opts = {}) {
     const q = qty(p.id);
-    const sub = [ `<span class="tag">${esc(KIND[p.kind] || p.kind)}</span>`, typeTag(p.type),
+    const nv = (C.partVariants[p.id] || []).filter(v => S.owned[v.id]).length;
+    const sub = [ tierTag(p), `<span class="tag">${esc(KIND[p.kind] || p.kind)}</span>`, typeTag(p.type), nv ? `<span>${nv} colour${nv > 1 ? 's' : ''}</span>` : '',
       p.line ? `<span>${esc(p.line)}</span>` : '', p.spin === 'L' ? '<span>Left spin</span>' : '',
       p.weight ? `<span>${p.weight} g</span>` : '', p.alt ? `<span>${esc(p.alt)}</span>` : '' ].filter(Boolean).join('');
-    return `<div class="item ${q ? 'owned' : ''}">
+    return `<div class="item ${q ? 'owned' : ''}">${img(p.img)}
       <div class="main" data-open="${esc(p.id)}"><div class="name">${esc(label(p))}</div><div class="sub">${sub}</div></div>
       <button class="star" data-wish="${esc(p.id)}" aria-pressed="${!!S.wish[p.id]}" aria-label="Wishlist">★</button>
       <div class="stepper ${q ? '' : 'zero'}"><button data-dec="${esc(p.id)}" aria-label="Remove one">−</button><span>${q}</span><button data-inc="${esc(p.id)}" aria-label="Add one">+</button></div>
     </div>`;
   }
+  const sortMeta = list => list.sort((a, b) => tierScore(b) - tierScore(a) || (b.meta?.usage || 0) - (a.meta?.usage || 0) || (b.meta?.bbx || 0) - (a.meta?.bbx || 0) || a.name.localeCompare(b.name, undefined, { numeric: true }));
   const sortParts = list => list.sort((a, b) => KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind) || a.name.localeCompare(b.name, undefined, { numeric: true }));
 
   // ---------- Tab: collection ----------
@@ -339,16 +373,19 @@
     if (ui.partsShow === 'owned') list = list.filter(p => qty(p.id));
     if (ui.partsShow === 'missing') list = list.filter(p => !qty(p.id));
     if (ui.partsShow === 'wish') list = list.filter(p => S.wish[p.id]);
+    if (ui.partsShow === 'meta') list = list.filter(p => p.meta);
     if (q) list = list.filter(p => [p.name, p.code, p.alt, p.type, KIND[p.kind]].join(' ').toLowerCase().includes(q));
-    sortParts(list);
+    (ui.partsSort === 'meta' ? sortMeta : sortParts)(list);
     const total = brandParts().filter(p => ui.partsKind === 'all' || kindGroup(p.kind) === ui.partsKind);
     const have = total.filter(p => qty(p.id)).length;
     $('tab-parts').innerHTML = `<div class="stack">
       <input class="input" id="partsQ" placeholder="Search parts, e.g. Wizard Rod, 1-60, Hexa" value="${esc(ui.partsQ)}" autocomplete="off">
       <div class="chips">${KIND_FILTERS.map(([k, n]) => `<button class="chip" data-pkind="${k}" aria-pressed="${ui.partsKind === k}">${n}</button>`).join('')}</div>
-      <div class="chips">${[['all', 'Everything'], ['owned', 'Owned'], ['missing', 'Missing'], ['wish', 'Wishlist']].map(([k, n]) =>
+      <div class="chips">${[['all', 'Everything'], ['owned', 'Owned'], ['missing', 'Missing'], ['meta', 'Meta parts'], ['wish', 'Wishlist']].map(([k, n]) =>
         `<button class="chip" data-pshow="${k}" aria-pressed="${ui.partsShow === k}">${n}</button>`).join('')}
         <button class="chip" id="addCustom">+ Custom part</button></div>
+      <div class="chips"><span class="muted" style="font-size:12px;align-self:center">Sort:</span>${[['meta', 'Meta first'], ['name', 'By type & name']].map(([k, n]) =>
+        `<button class="chip" data-psort="${k}" aria-pressed="${ui.partsSort === k}">${n}</button>`).join('')}</div>
       <div class="muted" style="font-size:12px">You own ${have} of ${total.length} ${brand === 'tt' ? 'Takara Tomy' : 'Hasbro'} parts in this view.</div>
       ${list.length ? `<div class="list">${list.map(p => partRow(p)).join('')}</div>` : '<div class="card empty">No parts match.</div>'}
     </div>`;
@@ -374,7 +411,7 @@
         return `<div class="card prod">
           <div class="row" style="justify-content:space-between"><span class="code">${esc(p.code)}${p.random ? ' · RANDOM' : ''}</span>
             ${bought ? `<span class="tag" style="color:var(--pos)">Bought ×${bought}</span>` : ''}</div>
-          <div class="title">${esc(p.name)}</div>
+          <div class="row" style="align-items:flex-start">${img(p.img, '', 'pimg')}<div class="title">${esc(p.name)}</div></div>
           <ul>${p.beys.map(b => `<li>${esc(b.name)}</li>`).join('')}${p.extra.length ? `<li>+ ${p.extra.map(id => esc(part(id).name)).join(', ')}</li>` : ''}</ul>
           ${p.partial ? '<div class="note">Some contents not confirmed yet.</div>' : ''}
           <div class="bar"><i style="width:${ids.length ? Math.round(have / ids.length * 100) : 0}%"></i></div>
@@ -408,6 +445,39 @@
     if (!l && !m) return '';
     return `${l ? l.name.replace(' (Metal)', '') : ''}${m ? m.name : ''} ${o ? o.code : ''}${a ? a.code : ''}${r}${bc}`.trim();
   }
+  // Greedy: best owned blades first, then best unused ratchet and bit for each. Same part never used twice.
+  function suggestDeck() {
+    const d = newDeck(); d.name = 'Suggested deck';
+    const owned = brandParts().filter(p => qty(p.id));
+    const score = p => tierScore(p) * 100 + (p.meta?.usage || 0) + (p.meta?.bbx || 0) / 10 + (p.stats ? (p.stats.atk + p.stats.def + p.stats.sta) / 100 : 0);
+    const best = kinds => owned.filter(p => kinds.includes(p.kind) && !used.has(p.id)).sort((a, b) => score(b) - score(a))[0];
+    const used = new Set();
+    const take = p => { if (p) used.add(p.id); return p; };
+    const tops = [];
+    owned.filter(p => p.kind === 'blade' || p.kind === 'rblade').forEach(p => tops.push({ s: score(p), mode: 'bx', p }));
+    owned.filter(p => p.kind === 'main' || p.kind === 'metal').forEach(p => tops.push({ s: score(p), mode: 'cx', p }));
+    tops.sort((a, b) => b.s - a.s);
+    let i = 0;
+    for (const t of tops) {
+      if (i > 2) break;
+      const slot = d.slots[i];
+      if (t.mode === 'bx') {
+        slot.mode = 'bx'; slot.p.blade = take(t.p).id;
+        const bit = t.p.kind === 'rblade' ? take(best(['bit'])) : take(best(['bit', 'rbit']));
+        if (bit) slot.p.bit = bit.id;
+        if (t.p.kind !== 'rblade' && bit?.kind !== 'rbit') { const r = take(best(['ratchet'])); if (r) slot.p.ratchet = r.id; }
+      } else {
+        const lock = take(best(['lock'])), as = take(best(['assist']));
+        if (!lock || !as) { if (lock) used.delete(lock.id); if (as) used.delete(as.id); continue; }
+        slot.mode = 'cx'; slot.p.lock = lock.id; slot.p.main = take(t.p).id; slot.p.assist = as.id;
+        if (t.p.kind === 'metal') { const o = take(best(['over'])); if (o) slot.p.over = o.id; }
+        const bit = take(best(['bit', 'rbit'])); if (bit) slot.p.bit = bit.id;
+        if (bit?.kind !== 'rbit') { const r = take(best(['ratchet'])); if (r) slot.p.ratchet = r.id; }
+      }
+      i++;
+    }
+    return d;
+  }
   function renderDecks() {
     if (!ui.deck || ui.deck.brand !== brand) ui.deck = newDeck();
     const d = ui.deck;
@@ -430,7 +500,7 @@
         <input class="input" id="deckName" value="${esc(d.name)}" style="max-width:260px">
         <label class="muted" style="font-size:14px;display:flex;gap:6px;align-items:center"><input type="checkbox" id="onlyOwned" ${d.onlyOwned ? 'checked' : ''}> Only parts I own</label>
         <div class="spacer" style="flex:1"></div>
-        <button class="btn" id="deckNew">New</button><button class="btn btn-primary" id="deckSave">Save deck</button>
+        <button class="btn" id="deckSuggest">Suggest from my parts</button><button class="btn" id="deckNew">New</button><button class="btn btn-primary" id="deckSave">Save deck</button>
       </div>
       <div class="note">3on3 rule: no blade, ratchet, bit or CX piece can repeat across the three beys.</div>
       ${dupes.length ? `<div class="warnbox">Repeated part: ${esc([...new Set(dupes)].join(', '))}. Pick a different one.</div>` : ''}
@@ -467,6 +537,14 @@
         ${types.map(t => { const n = ownedBlades.filter(p => p.type === t).length;
           return `<div class="row" style="justify-content:space-between"><span class="t-${t}" style="font-weight:600">${t}</span><span>${n}</span></div>`; }).join('')}
       </div>
+      <div class="card stack"><h3>Meta right now · ${esc(C.metaUpdated)}</h3>
+        <div class="muted" style="font-size:13px">Most-played full builds (BEYWATCH, top cuts, last 30 days)</div>
+        ${C.topBuilds.map(([n, c]) => `<div class="row" style="justify-content:space-between"><span>${esc(n)}</span><span class="muted">${c} cuts</span></div>`).join('')}
+        <div class="muted" style="font-size:13px;margin-top:8px">Your meta parts</div>
+        <div class="row" style="flex-wrap:wrap;gap:6px">${sortMeta(all.filter(p => p.meta && qty(p.id))).map(p => `<span class="tag">${esc(p.meta.tier)} · ${esc(label(p))}</span>`).join('') || '<span class="muted">None yet</span>'}</div>
+        <div class="muted" style="font-size:13px;margin-top:8px">Top meta parts you're missing</div>
+        <div class="row" style="flex-wrap:wrap;gap:6px">${sortMeta(all.filter(p => p.meta && !qty(p.id))).slice(0, 10).map(p => `<span class="tag" data-open="${esc(p.id)}" style="cursor:pointer">${esc(p.meta.tier)} · ${esc(label(p))}</span>`).join('')}</div>
+      </div>
       <div class="card"><span class="muted">You also own ${otherBrand} ${brand === 'tt' ? 'Hasbro' : 'Takara Tomy'} parts. Switch brand at the top to see them.</span></div>
     </div>`;
   }
@@ -474,17 +552,35 @@
   // ---------- Dialogs ----------
   const dlg = $('dlg');
   function openDlg(html) { $('dlgBody').innerHTML = html; dlg.showModal(); }
+  function statBars(st) {
+    if (!st) return '';
+    return `<div class="stats">${[['atk', 'ATK', 'var(--atk)'], ['def', 'DEF', 'var(--def)'], ['sta', 'STA', 'var(--sta)']].map(([k, n, c]) =>
+      `<div class="stat"><span>${n}</span><div class="bar"><i style="width:${Math.min(100, st[k])}%;background:${c}"></i></div><b>${st[k]}</b></div>`).join('')}</div>`;
+  }
   function partDialog(id) {
     const p = part(id);
-    const prods = p.products.map(productById).filter(Boolean);
-    openDlg(`<div class="dlg-head"><h2>${esc(label(p))}</h2><button class="btn" data-close>Close</button></div>
-      <div class="row" style="flex-wrap:wrap;gap:6px"><span class="tag">${esc(KIND[p.kind])}</span>${typeTag(p.type)}
+    const vars = C.partVariants[id] || [];
+    const m = p.meta;
+    openDlg(`<div class="dlg-head"><div class="row">${img(p.img, '', 'bigimg')}<h2>${esc(label(p))}</h2></div><button class="btn" data-close>Close</button></div>
+      <div class="row" style="flex-wrap:wrap;gap:6px">${tierTag(p)}<span class="tag">${esc(KIND[p.kind])}</span>${typeTag(p.type)}
         ${p.weight ? `<span class="tag">${p.weight} g</span>` : ''}${p.alt ? `<span class="tag">${esc(p.alt)}</span>` : ''}<span class="tag">${p.brand === 'tt' ? 'Takara Tomy' : 'Hasbro'}</span></div>
-      <h3>Comes in</h3>
-      ${prods.length ? `<div class="list">${prods.map(x => `<div class="item"><div class="main"><div class="name">${esc(x.code)} ${esc(x.name)}</div>
-        <div class="sub">${x.beys.filter(b => b.parts.includes(id)).map(b => esc(b.name)).join(', ') || 'Included as a loose part'}</div></div></div>`).join('')}</div>` : '<div class="muted">No listed set includes it yet.</div>'}
-      <label class="muted" style="font-size:14px">Notes (condition, colour, where you bought it)
-        <textarea class="input" id="partNote" rows="3">${esc(S.notes[id] || '')}</textarea></label>
+      ${p.stats ? `<h3>Official stats</h3>${statBars(p.stats)}` : ''}
+      ${m ? `<h3>Meta · ${esc(C.metaUpdated)}</h3><div class="card" style="padding:12px;font-size:14px">
+        <div>Consensus tier <b>${esc(m.tier)}</b></div>
+        ${m.usage != null ? `<div>In <b>${m.usage}%</b> of top-cut decks (BEYWATCH, last 30 days)</div>` : ''}
+        ${m.bbx != null ? `<div>BBX Weekly score <b>${m.bbx}</b> / 100</div>` : ''}
+        ${m.notes ? `<div class="muted">${esc(m.notes)}</div>` : ''}</div>` : ''}
+      <h3>Your copies</h3>
+      <div class="list">
+        <div class="item"><div class="main"><div class="name">Colour not specified</div><div class="sub">Loose or unsure which release</div></div>
+          <div class="stepper ${vqty(id) ? '' : 'zero'}"><button data-vdec="${esc(id)}">−</button><span>${vqty(id)}</span><button data-vinc="${esc(id)}">+</button></div></div>
+        ${vars.map(v => { const prod = productById(v.product); const q = vqty(v.id);
+          return `<div class="item ${q ? 'owned' : ''}">${img(v.img, (prod?.img || '') + '|' + (p.img || ''))}
+            <div class="main"><div class="name">${esc(prod.code)} ${esc(prod.name)}</div><div class="sub">${esc(v.bey === 'x' ? 'Loose part in set' : prod.beys[v.bey].name)}${prod.random ? ' · random' : ''}</div></div>
+            <div class="stepper ${q ? '' : 'zero'}"><button data-vdec="${esc(v.id)}">−</button><span>${q}</span><button data-vinc="${esc(v.id)}">+</button></div></div>`; }).join('')}
+      </div>
+      <label class="muted" style="font-size:14px">Notes
+        <textarea class="input" id="partNote" rows="2">${esc(S.notes[id] || '')}</textarea></label>
       <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" data-savenote="${esc(id)}">Save note</button></div>`);
   }
   function buyDialog(pid) {
@@ -543,12 +639,15 @@
     const d = t.dataset;
     if (d.brand) { brand = d.brand; try { localStorage.setItem('beyvault-brand', brand); } catch (x) {} render(); }
     else if (d.tab) { tab = d.tab; render(); window.scrollTo(0, 0); }
-    else if (d.inc) setQty(d.inc, qty(d.inc) + 1);
-    else if (d.dec) setQty(d.dec, qty(d.dec) - 1);
+    else if (d.inc) setQty(d.inc, vqty(d.inc) + 1);
+    else if (d.dec) { if (vqty(d.dec)) setQty(d.dec, vqty(d.dec) - 1); else if (qty(d.dec)) { partDialog(d.dec); toast('Pick which colour to remove'); } }
+    else if (d.vinc) { S.owned[d.vinc] = vqty(d.vinc) + 1; save(); partDialog(C.variants[d.vinc]?.part || d.vinc.split('@')[0]); }
+    else if (d.vdec) { const n = vqty(d.vdec) - 1; if (n > 0) S.owned[d.vdec] = n; else delete S.owned[d.vdec]; save(); partDialog(C.variants[d.vdec]?.part || d.vdec.split('@')[0]); }
     else if (d.wish) { if (S.wish[d.wish]) delete S.wish[d.wish]; else S.wish[d.wish] = 1; save(); }
     else if (d.open) partDialog(d.open);
     else if (d.pkind) { ui.partsKind = d.pkind; renderParts(); }
     else if (d.pshow) { ui.partsShow = d.pshow; renderParts(); }
+    else if (d.psort) { ui.partsSort = d.psort; renderParts(); }
     else if (d.pline) { ui.prodLine = d.pline; renderProducts(); }
     else if (d.buy) buyDialog(d.buy);
     else if (d.confirmbuy) { const sel = $('buyBey'); addPurchase(d.confirmbuy, sel ? (sel.value === 'all' ? 'all' : +sel.value) : 'all', $('buyNote').value.trim()); dlg.close(); }
@@ -569,6 +668,7 @@
       if (!C.parts[id]) { const p = { id, brand, kind, name, type: $('cType').value, custom: true }; S.custom.push(p); mergeCustom(); }
       dlg.close(); save('Custom part added');
     }
+    else if (t.id === 'deckSuggest') { ui.deck = suggestDeck(); renderDecks(); toast('Built from your highest-rated parts'); }
     else if (t.id === 'deckNew') { ui.deck = newDeck(); renderDecks(); }
     else if (t.id === 'deckSave') {
       const dd = ui.deck; const i = S.decks.findIndex(y => y.id === dd.id);
@@ -593,11 +693,12 @@
     const t = e.target;
     if (t.dataset.slot) { const [i, f] = t.dataset.slot.split(':'); const s = ui.deck.slots[i]; if (t.value) s.p[f] = t.value; else delete s.p[f]; renderDecks(); }
     if (t.id === 'importFile' && t.files[0]) {
-      t.files[0].text().then(txt => { const j = JSON.parse(txt); if (!j.owned) throw new Error('bad file'); S = { ...blank(), ...j }; mergeCustom(); dlg.close(); save('Collection imported'); })
+      t.files[0].text().then(txt => { const j = JSON.parse(txt); if (!j.owned) throw new Error('bad file'); S = { ...blank(), ...j }; mergeCustom(); migrate(); dlg.close(); save('Collection imported'); })
         .catch(() => toast('That file is not a Bey Vault export'));
     }
   });
 
+  migrate();
   render();
   setSync(ghToken() ? 'Syncing…' : '');
   pullRemote();

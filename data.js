@@ -20,7 +20,7 @@ window.CATALOG = (() => {
     '2-60': 6.16, '2-70': 6.33, '2-80': 6.86, '3-60': 6.29, '3-70': 6.44, '3-80': 6.93, '3-85': 4.76,
     '4-50': 5.81, '4-55': 4.75, '4-60': 6.26, '4-70': 6.42, '4-80': 6.9, '5-50': null, '5-60': 6.59, '5-70': 6.73,
     '5-80': 7.22, 'M-85': 10.73, '6-60': 6.16, '6-70': 6.39, '6-80': 6.85, '7-55': 5.28, '7-60': 7.11,
-    '7-70': 7.24, '7-80': 7.83, '8-70': 7.72, '8-80': null, '9-60': 6.19, '9-65': 4.48, '9-70': 6.29, '9-80': 6.89,
+    '7-70': 7.24, '7-80': 7.83, '8-70': 7.72, '8-80': null, '9-60': 6.19, '9-65': 4.48, 'M-65': null, '9-70': 6.29, '9-80': 6.89,
   };
 
   // Bits: code -> [name, type, weight]
@@ -42,8 +42,7 @@ window.CATALOG = (() => {
     UF: ['Under Flat', 'Attack', 2.1], UN: ['Under Needle', 'Defense', 2.1], U: ['Unite', 'Balance', 2.1],
     V: ['Vortex', 'Attack', 2.1], WB: ['Wall Ball', 'Stamina', 2.1], WW: ['Wall Wedge', 'Defense', 2.4],
     W: ['Wedge', 'Defense', 2.1], Y: ['Yield', 'Stamina', 2.1], Z: ['Zap', 'Attack', 2.1],
-    // Name not confirmed by any source yet
-    MO: ['MO (name unconfirmed)', '', null], LP: ['LP (name unconfirmed)', '', null],
+    MO: ['Metal Orb', 'Stamina', null], LP: ['Low Point', 'Balance', null], MT: ['Metal Taper', '', null],
     // Ratchet-integrated bits (no separate ratchet)
     Tr: ['Turbo', 'Balance', 13.5, 'rib'], Op: ['Operate', 'Defense', 14.1, 'rib'],
   };
