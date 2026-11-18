@@ -1,0 +1,83 @@
+{
+ "v": 1,
+ "updatedAt": 1795018792315,
+ "owned": {
+  "tt:lock:emperor": 1,
+  "tt:main:might": 1,
+  "tt:assist:h": 1,
+  "tt:rbit:op": 1,
+  "tt:blade:golem-rock": 1,
+  "tt:ratchet:m-85": 1,
+  "tt:bit:hn": 1,
+  "tt:blade:shark-gill": 1,
+  "tt:ratchet:5-60": 1,
+  "tt:bit:fb": 1,
+  "tt:rblade:hells-nether": 1,
+  "tt:bit:z": 1,
+  "tt:blade:silver-wolf": 1,
+  "tt:ratchet:9-70": 1,
+  "tt:bit:r": 1,
+  "tt:blade:wyvern-hover": 1,
+  "tt:ratchet:8-80": 1,
+  "tt:bit:b": 1,
+  "hb:lock:pegasus": 1,
+  "hb:main:blast": 1,
+  "hb:assist:a": 1,
+  "hb:rbit:tr": 1
+ },
+ "wish": {},
+ "notes": {},
+ "purchases": [
+  {
+   "id": "ucx-11",
+   "pid": "tt:p:cx-11-emperor-might-deck-set",
+   "bey": "all",
+   "parts": [
+    "tt:lock:emperor",
+    "tt:main:might",
+    "tt:assist:h",
+    "tt:rbit:op",
+    "tt:blade:golem-rock",
+    "tt:ratchet:m-85",
+    "tt:bit:hn",
+    "tt:blade:shark-gill",
+    "tt:ratchet:5-60",
+    "tt:bit:fb"
+   ],
+   "date": "2026-11-18",
+   "note": ""
+  },
+  {
+   "id": "uux-21",
+   "pid": "tt:p:ux-21-hells-nether-deck-set",
+   "bey": "all",
+   "parts": [
+    "tt:rblade:hells-nether",
+    "tt:bit:z",
+    "tt:blade:silver-wolf",
+    "tt:ratchet:9-70",
+    "tt:bit:r",
+    "tt:blade:wyvern-hover",
+    "tt:ratchet:8-80",
+    "tt:bit:b"
+   ],
+   "date": "2026-11-18",
+   "note": ""
+  },
+  {
+   "id": "ug2350",
+   "pid": "hb:p:g2350-blast-pegasus-a-tr-clip-rip-launcher-set",
+   "bey": "all",
+   "parts": [
+    "hb:lock:pegasus",
+    "hb:main:blast",
+    "hb:assist:a",
+    "hb:rbit:tr"
+   ],
+   "date": "2026-11-18",
+   "note": ""
+  }
+ ],
+ "custom": [],
+ "decks": []
+}

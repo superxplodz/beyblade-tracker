@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Bey Vault · Beyblade X collection</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f0b429'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23111' stroke-width='2.6'/%3E%3Cpath d='M16 7v5M25 16h-5M16 25v-5M7 16h5' stroke='%23111' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+<script>try { const t = localStorage.getItem('beyvault-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<style>
+  :root {
+    --fs-xs: .75rem; --fs-sm: .875rem; --fs-md: 1rem; --fs-lg: 1.25rem; --fs-xl: 1.75rem;
+    --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px;
+    --r-sm: 6px; --r-md: 10px; --r-lg: 16px; --r-pill: 999px;
+    --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color-scheme: dark;
+    --bg: #0c0e12; --glow: rgba(240,180,41,.07); --surface: #14171d; --surface-2: #1b1f27; --border: #252a33;
+    --text: #edf0f4; --muted: #8b95a5; --subtle: #5f6876;
+    --accent: #f0b429; --accent-soft: rgba(240,180,41,.14); --on-accent: #1a1300;
+    --pos: #3ecf8e; --pos-soft: rgba(62,207,142,.12); --neg: #f26b6b; --neg-soft: rgba(242,107,107,.12);
+    --focus: #7cb7ff; --shadow: 0 8px 24px rgba(0,0,0,.25);
+    --atk: #f26b6b; --def: #66c0f4; --sta: #3ecf8e; --bal: #c792ea;
+  }
+  @media (prefers-color-scheme: light) { :root:not([data-theme]) {
+    color-scheme: light; --bg: #f6f7f9; --glow: rgba(183,121,31,.07); --surface: #fff; --surface-2: #f1f3f6; --border: #e3e6eb;
+    --text: #14171c; --muted: #5b6575; --subtle: #8a93a2; --accent: #b7791f; --accent-soft: rgba(183,121,31,.12); --on-accent: #fff;
+    --pos: #12936a; --pos-soft: rgba(18,147,106,.1); --neg: #d23f3f; --neg-soft: rgba(210,63,63,.1); --focus: #2563eb;
+    --shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.06);
+    --atk: #d23f3f; --def: #1a73e8; --sta: #12936a; --bal: #8e44ad;
+  } }
+  :root[data-theme="light"] {
+    color-scheme: light; --bg: #f6f7f9; --glow: rgba(183,121,31,.07); --surface: #fff; --surface-2: #f1f3f6; --border: #e3e6eb;
+    --text: #14171c; --muted: #5b6575; --subtle: #8a93a2; --accent: #b7791f; --accent-soft: rgba(183,121,31,.12); --on-accent: #fff;
+    --pos: #12936a; --pos-soft: rgba(18,147,106,.1); --neg: #d23f3f; --neg-soft: rgba(210,63,63,.1); --focus: #2563eb;
+    --shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.06);
+    --atk: #d23f3f; --def: #1a73e8; --sta: #12936a; --bal: #8e44ad;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font); font-size: var(--fs-md); line-height: 1.5; color: var(--text);
+    background: radial-gradient(1100px 480px at 15% -10%, var(--glow), transparent 60%), var(--bg); background-attachment: fixed; min-height: 100vh; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: var(--r-sm); }
+  [hidden] { display: none !important; }
+  .muted { color: var(--muted); } .pos { color: var(--pos); } .neg { color: var(--neg); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 var(--s-4); }
+  @media (min-width: 768px) { .container { padding: 0 var(--s-6); } }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); border: 1px solid var(--border); background: var(--surface);
+    color: var(--muted); border-radius: var(--r-pill); padding: 7px var(--s-3); font-size: var(--fs-sm); cursor: pointer; transition: color .15s, border-color .15s; }
+  .btn:hover { color: var(--text); border-color: var(--subtle); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+  .btn-primary:hover { color: var(--on-accent); border-color: var(--accent); filter: brightness(1.06); }
+  .btn-danger:hover { color: var(--neg); border-color: var(--neg); }
+  .chip { border: 1px solid var(--border); background: transparent; color: var(--muted); border-radius: var(--r-pill); padding: 6px var(--s-3);
+    font-size: var(--fs-xs); cursor: pointer; white-space: nowrap; }
+  .chip:hover { color: var(--text); }
+  .chip[aria-pressed="true"] { color: var(--text); background: var(--accent-soft); border-color: var(--accent); }
+  .chips { display: flex; gap: var(--s-2); overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+  .input, select.input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-md); padding: 10px var(--s-3); }
+  .input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+  .logo { display: grid; place-items: center; background: var(--accent); border-radius: var(--r-sm); width: 30px; height: 30px; flex: none; }
+
+  /* Header */
+  header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+  .top { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) 0; }
+  .top h1 { font-size: var(--fs-md); margin: 0; font-weight: 700; letter-spacing: -.01em; }
+  .top .spacer { flex: 1; }
+  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: var(--r-pill); padding: 2px; background: var(--surface); }
+  .seg button { border: 0; background: transparent; color: var(--muted); border-radius: var(--r-pill); padding: 5px 12px; font-size: var(--fs-xs); cursor: pointer; font-weight: 600; }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+  nav.tabs { display: flex; gap: var(--s-1); overflow-x: auto; scrollbar-width: none; }
+  nav.tabs button { border: 0; background: transparent; color: var(--muted); padding: var(--s-2) var(--s-3); font-size: var(--fs-sm); font-weight: 600; cursor: pointer;
+    border-bottom: 2px solid transparent; white-space: nowrap; }
+  nav.tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
+  .sync { font-size: var(--fs-xs); color: var(--subtle); white-space: nowrap; }
+  .short { display: none; }
+  @media (max-width: 560px) { .top .sync { display: none; } .long { display: none; } .short { display: inline; } .top { gap: var(--s-2); } }
+
+  main { padding: var(--s-4) 0 var(--s-6); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-4); }
+  .stack { display: flex; flex-direction: column; gap: var(--s-3); }
+  .row { display: flex; align-items: center; gap: var(--s-3); }
+  .grid { display: grid; gap: var(--s-3); }
+  @media (min-width: 720px) { .grid-2 { grid-template-columns: 1fr 1fr; } .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+  h2 { font-size: var(--fs-lg); margin: 0; }
+  h3 { font-size: var(--fs-sm); margin: 0; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); margin: var(--s-5) 0 var(--s-2); }
+  .section-head:first-child { margin-top: 0; }
+
+  /* Stats tiles */
+  .tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-3); }
+  @media (min-width: 720px) { .tiles { grid-template-columns: repeat(4, 1fr); } }
+  .tile { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-3) var(--s-4); }
+  .tile .k { font-size: var(--fs-xs); color: var(--muted); }
+  .tile .v { font-size: var(--fs-xl); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; }
+
+  /* Part rows */
+  .list { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
+  .item { display: flex; align-items: center; gap: var(--s-3); padding: 10px var(--s-3); border-top: 1px solid var(--border); }
+  .item:first-child { border-top: 0; }
+  .item .main { flex: 1; min-width: 0; cursor: pointer; }
+  .item .name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item .sub { font-size: var(--fs-xs); color: var(--muted); display: flex; gap: var(--s-2); flex-wrap: wrap; align-items: center; }
+  .item.owned .name::after { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--pos); margin-left: 8px; vertical-align: middle; }
+  .tag { font-size: 11px; padding: 1px 7px; border-radius: var(--r-pill); background: var(--surface-2); color: var(--muted); font-weight: 600; }
+  .t-Attack { color: var(--atk); } .t-Defense { color: var(--def); } .t-Stamina { color: var(--sta); } .t-Balance { color: var(--bal); }
+  .stepper { display: inline-flex; align-items: center; border: 1px solid var(--border); border-radius: var(--r-pill); overflow: hidden; flex: none; }
+  .stepper button { width: 32px; height: 32px; border: 0; background: transparent; cursor: pointer; color: var(--muted); font-size: 18px; line-height: 1; }
+  .stepper button:hover { color: var(--text); background: var(--surface-2); }
+  .stepper span { min-width: 26px; text-align: center; font-variant-numeric: tabular-nums; font-weight: 700; font-size: var(--fs-sm); }
+  .stepper.zero span { color: var(--subtle); font-weight: 500; }
+  .star { border: 0; background: transparent; cursor: pointer; font-size: 18px; color: var(--subtle); width: 32px; height: 32px; flex: none; }
+  .star[aria-pressed="true"] { color: var(--accent); }
+
+  /* Products */
+  .prod { display: flex; flex-direction: column; gap: var(--s-2); }
+  .prod .code { font-size: var(--fs-xs); font-weight: 700; color: var(--accent); letter-spacing: .04em; }
+  .prod .title { font-weight: 700; }
+  .prod ul { margin: 0; padding-left: 18px; font-size: var(--fs-sm); color: var(--muted); }
+  .bar { height: 6px; border-radius: var(--r-pill); background: var(--surface-2); overflow: hidden; }
+  .bar > i { display: block; height: 100%; background: var(--pos); border-radius: var(--r-pill); }
+  .note { font-size: var(--fs-xs); color: var(--subtle); }
+
+  /* Deck builder */
+  .slot { display: flex; flex-direction: column; gap: var(--s-2); }
+  .slot label { font-size: var(--fs-xs); color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+  .slot .bey { font-weight: 700; min-height: 1.5em; }
+  .warnbox { border: 1px solid var(--neg); background: var(--neg-soft); color: var(--neg); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); font-size: var(--fs-sm); }
+  .okbox { border: 1px solid var(--pos); background: var(--pos-soft); color: var(--pos); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); font-size: var(--fs-sm); }
+
+  /* Dialog */
+  dialog { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: var(--r-lg); padding: 0; width: min(560px, calc(100vw - 24px));
+    max-height: calc(100vh - 48px); box-shadow: var(--shadow); }
+  dialog::backdrop { background: rgba(0,0,0,.55); }
+  .dlg { padding: var(--s-5); display: flex; flex-direction: column; gap: var(--s-3); }
+  .dlg-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
+  .empty { text-align: center; color: var(--muted); padding: var(--s-6) var(--s-4); }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: var(--r-pill);
+    font-size: var(--fs-sm); font-weight: 600; z-index: 50; box-shadow: var(--shadow); }
+  footer { color: var(--subtle); font-size: var(--fs-xs); padding: var(--s-5) 0; border-top: 1px solid var(--border); }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="top">
+      <span class="logo"><svg width="18" height="18" viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="none" stroke="currentColor" stroke-width="3" style="color:var(--on-accent)"/><path d="M16 5v6M27 16h-6M16 27v-6M5 16h6" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="color:var(--on-accent)"/></svg></span>
+      <h1>Bey Vault</h1>
+      <div class="spacer"></div>
+      <span class="sync" id="syncStatus"></span>
+      <div class="seg" role="group" aria-label="Brand">
+        <button data-brand="tt" aria-pressed="true"><span class="long">Takara Tomy</span><span class="short">Takara</span></button>
+        <button data-brand="hb" aria-pressed="false">Hasbro</button>
+      </div>
+      <button class="btn" id="settingsBtn" aria-label="Settings" style="width:36px;height:36px;padding:0">⚙</button>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="collection" aria-selected="true">My collection</button>
+      <button role="tab" data-tab="parts" aria-selected="false">Parts</button>
+      <button role="tab" data-tab="products" aria-selected="false">Products</button>
+      <button role="tab" data-tab="decks" aria-selected="false">Deck builder</button>
+      <button role="tab" data-tab="stats" aria-selected="false">Stats</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section id="tab-collection"></section>
+  <section id="tab-parts" hidden></section>
+  <section id="tab-products" hidden></section>
+  <section id="tab-decks" hidden></section>
+  <section id="tab-stats" hidden></section>
+</main>
+
+<footer class="container">
+  Parts catalog from the official Takara Tomy lineup, byybladebuilder.com, the Beyblade Wiki and retailer set listings. Hasbro list is partial.
+  Takara Tomy and Hasbro parts are tracked separately because they are different moulds.
+</footer>
+
+<dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
+<div class="toast" id="toast" hidden></div>
+
+<script src="data.js"></script>
+<script>
+(() => {
+  const C = window.CATALOG;
+  const REPO = 'superxplodz/beyblade-tracker';
+  const KEY = 'beyvault-state-v1';
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const KIND = {
+    blade: 'Blade', rblade: 'Blade (ratchet built in)', ratchet: 'Ratchet', bit: 'Bit', rbit: 'Bit (ratchet built in)',
+    lock: 'Lock chip', main: 'Main blade', metal: 'Metal blade', over: 'Over blade', assist: 'Assist blade',
+  };
+  const KIND_ORDER = ['blade', 'rblade', 'lock', 'main', 'metal', 'over', 'assist', 'ratchet', 'rbit', 'bit'];
+  const KIND_FILTERS = [['all', 'All'], ['blade', 'Blades'], ['cx', 'CX parts'], ['ratchet', 'Ratchets'], ['bit', 'Bits']];
+  const kindGroup = k => (k === 'blade' || k === 'rblade') ? 'blade' : (k === 'ratchet') ? 'ratchet' : (k === 'bit' || k === 'rbit') ? 'bit' : 'cx';
+
+  // ---------- State ----------
+  const blank = () => ({ v: 1, updatedAt: 0, owned: {}, wish: {}, notes: {}, purchases: [], custom: [], decks: [] });
+  let S = blank();
+  let brand = 'tt', tab = 'collection';
+  const ui = { partsQ: '', partsKind: 'all', partsShow: 'all', prodQ: '', prodLine: 'all', deck: null };
+  try { const raw = localStorage.getItem(KEY); if (raw) S = { ...blank(), ...JSON.parse(raw) }; } catch (e) {}
+  try { brand = localStorage.getItem('beyvault-brand') || 'tt'; } catch (e) {}
+
+  // Custom parts join the catalog
+  function mergeCustom() { for (const p of S.custom) if (!C.parts[p.id]) C.parts[p.id] = { products: [], weight: null, ...p }; }
+  mergeCustom();
+
+  const part = id => C.parts[id];
+  const qty = id => S.owned[id] || 0;
+  const brandParts = () => Object.values(C.parts).filter(p => p.brand === brand);
+  const brandProducts = () => C.products.filter(p => p.brand === brand);
+  const productById = id => C.products.find(p => p.id === id);
+  const label = p => p.code && (p.kind === 'bit' || p.kind === 'rbit' || p.kind === 'assist' || p.kind === 'over') ? `${p.name} (${p.code})` : p.name;
+
+  function save(msg) {
+    S.updatedAt = Date.now();
+    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
+    if (msg) toast(msg);
+    scheduleSync();
+    render();
+  }
+  function setQty(id, n) { n = Math.max(0, n); if (n) S.owned[id] = n; else delete S.owned[id]; save(); }
+
+  let toastT;
+  function toast(m) { const t = $('toast'); t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2200); }
+
+  // ---------- GitHub sync (optional) ----------
+  const ghToken = () => { try { return localStorage.getItem('beyvault-gh') || ''; } catch (e) { return ''; } };
+  async function gh(path, opts = {}, token = ghToken()) {
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, { ...opts, cache: 'no-store',
+      headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', ...(opts.headers || {}) } });
+    if (!r.ok) { const e = new Error(r.status + ' ' + r.statusText); e.status = r.status; throw e; }
+    return r.json();
+  }
+  const b64 = s => btoa(unescape(encodeURIComponent(s)));
+  const unb64 = s => decodeURIComponent(escape(atob(s.replace(/\n/g, ''))));
+  let syncT, syncing = false;
+  function setSync(t) { $('syncStatus').textContent = t; }
+  function scheduleSync() { if (!ghToken()) { setSync('Saved on this device'); return; } setSync('Saving…'); clearTimeout(syncT); syncT = setTimeout(pushSync, 1500); }
+  async function pushSync() {
+    if (syncing) { scheduleSync(); return; }
+    syncing = true;
+    try {
+      let sha;
+      try { sha = (await gh('collection.json?ref=main')).sha; } catch (e) { if (e.status !== 404) throw e; }
+      await gh('collection.json', { method: 'PUT', body: JSON.stringify({ message: 'Update collection', content: b64(JSON.stringify(S, null, 1)), sha, branch: 'main' }) });
+      setSync('Synced to GitHub');
+    } catch (e) { setSync(e.status === 401 ? 'GitHub token rejected' : 'Sync failed, saved locally'); }
+    syncing = false;
+  }
+  async function pullRemote() {
+    try {
+      let remote;
+      if (ghToken()) { remote = JSON.parse(unb64((await gh('collection.json?ref=main')).content)); }
+      else { const r = await fetch('collection.json?t=' + Date.now(), { cache: 'no-store' }); if (!r.ok) return; remote = await r.json(); }
+      if (remote && (remote.updatedAt || 0) > (S.updatedAt || 0)) {
+        S = { ...blank(), ...remote }; mergeCustom();
+        try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
+        render();
+      }
+      setSync(ghToken() ? 'Synced to GitHub' : 'Saved on this device');
+    } catch (e) { setSync(ghToken() ? 'Offline, saved locally' : 'Saved on this device'); }
+  }
+
+  // ---------- Purchases ----------
+  function addPurchase(pid, beyIdx, note) {
+    const p = productById(pid);
+    let ids = [];
+    if (beyIdx === 'all' || beyIdx == null) { p.beys.forEach(b => ids.push(...b.parts)); ids.push(...p.extra); }
+    else ids = [...p.beys[beyIdx].parts];
+    ids.forEach(id => S.owned[id] = (S.owned[id] || 0) + 1);
+    S.purchases.unshift({ id: 'u' + Date.now().toString(36), pid, bey: beyIdx ?? 'all', parts: ids, date: new Date().toISOString().slice(0, 10), note: note || '' });
+    save(`Added ${p.code} ${p.name}`);
+  }
+  function removePurchase(uid) {
+    const i = S.purchases.findIndex(x => x.id === uid); if (i < 0) return;
+    S.purchases[i].parts.forEach(id => { if (S.owned[id]) { S.owned[id]--; if (!S.owned[id]) delete S.owned[id]; } });
+    S.purchases.splice(i, 1);
+    save('Purchase removed');
+  }
+
+  // ---------- Rendering helpers ----------
+  const typeTag = t => t ? `<span class="tag t-${esc(t)}">${esc(t)}</span>` : '';
+  function partRow(p, opts = {}) {
+    const q = qty(p.id);
+    const sub = [ `<span class="tag">${esc(KIND[p.kind] || p.kind)}</span>`, typeTag(p.type),
+      p.line ? `<span>${esc(p.line)}</span>` : '', p.spin === 'L' ? '<span>Left spin</span>' : '',
+      p.weight ? `<span>${p.weight} g</span>` : '', p.alt ? `<span>${esc(p.alt)}</span>` : '' ].filter(Boolean).join('');
+    return `<div class="item ${q ? 'owned' : ''}">
+      <div class="main" data-open="${esc(p.id)}"><div class="name">${esc(label(p))}</div><div class="sub">${sub}</div></div>
+      <button class="star" data-wish="${esc(p.id)}" aria-pressed="${!!S.wish[p.id]}" aria-label="Wishlist">★</button>
+      <div class="stepper ${q ? '' : 'zero'}"><button data-dec="${esc(p.id)}" aria-label="Remove one">−</button><span>${q}</span><button data-inc="${esc(p.id)}" aria-label="Add one">+</button></div>
+    </div>`;
+  }
+  const sortParts = list => list.sort((a, b) => KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind) || a.name.localeCompare(b.name, undefined, { numeric: true }));
+
+  // ---------- Tab: collection ----------
+  function renderCollection() {
+    const owned = sortParts(brandParts().filter(p => qty(p.id)));
+    const pieces = owned.reduce((s, p) => s + qty(p.id), 0);
+    const purchases = S.purchases.filter(x => productById(x.pid)?.brand === brand);
+    const wish = sortParts(brandParts().filter(p => S.wish[p.id]));
+    const groups = {};
+    for (const p of owned) (groups[kindGroup(p.kind)] = groups[kindGroup(p.kind)] || []).push(p);
+    const gName = { blade: 'Blades', cx: 'CX parts', ratchet: 'Ratchets', bit: 'Bits' };
+    let h = `<div class="tiles">
+      <div class="tile"><div class="k">Unique parts</div><div class="v">${owned.length}</div></div>
+      <div class="tile"><div class="k">Total pieces</div><div class="v">${pieces}</div></div>
+      <div class="tile"><div class="k">Purchases</div><div class="v">${purchases.length}</div></div>
+      <div class="tile"><div class="k">Wishlist</div><div class="v">${wish.length}</div></div>
+    </div>`;
+    if (!owned.length) h += `<div class="card empty" style="margin-top:16px">No ${brand === 'tt' ? 'Takara Tomy' : 'Hasbro'} parts yet.<br>
+      Add a set from <b>Products</b>, or single parts from <b>Parts</b>.</div>`;
+    for (const g of ['blade', 'cx', 'ratchet', 'bit']) if (groups[g]) {
+      h += `<div class="section-head"><h3>${gName[g]}</h3><span class="muted" style="font-size:12px">${groups[g].length}</span></div>
+        <div class="list">${groups[g].map(p => partRow(p)).join('')}</div>`;
+    }
+    if (purchases.length) {
+      h += `<div class="section-head"><h3>Purchases</h3></div><div class="list">` + purchases.map(x => {
+        const p = productById(x.pid); const bey = x.bey === 'all' ? '' : ' · ' + p.beys[x.bey].name;
+        return `<div class="item"><div class="main"><div class="name">${esc(p.code)} ${esc(p.name)}</div>
+          <div class="sub"><span>${esc(x.date)}${esc(bey)}</span><span>${x.parts.length} parts</span>${x.note ? `<span>${esc(x.note)}</span>` : ''}</div></div>
+          <button class="btn btn-danger" data-unbuy="${esc(x.id)}">Undo</button></div>`;
+      }).join('') + `</div>`;
+    }
+    if (wish.length) h += `<div class="section-head"><h3>Wishlist</h3></div><div class="list">${wish.map(p => partRow(p)).join('')}</div>`;
+    $('tab-collection').innerHTML = h;
+  }
+
+  // ---------- Tab: parts ----------
+  function renderParts() {
+    const q = ui.partsQ.trim().toLowerCase();
+    let list = brandParts().filter(p => ui.partsKind === 'all' || kindGroup(p.kind) === ui.partsKind);
+    if (ui.partsShow === 'owned') list = list.filter(p => qty(p.id));
+    if (ui.partsShow === 'missing') list = list.filter(p => !qty(p.id));
+    if (ui.partsShow === 'wish') list = list.filter(p => S.wish[p.id]);
+    if (q) list = list.filter(p => [p.name, p.code, p.alt, p.type, KIND[p.kind]].join(' ').toLowerCase().includes(q));
+    sortParts(list);
+    const total = brandParts().filter(p => ui.partsKind === 'all' || kindGroup(p.kind) === ui.partsKind);
+    const have = total.filter(p => qty(p.id)).length;
+    $('tab-parts').innerHTML = `<div class="stack">
+      <input class="input" id="partsQ" placeholder="Search parts, e.g. Wizard Rod, 1-60, Hexa" value="${esc(ui.partsQ)}" autocomplete="off">
+      <div class="chips">${KIND_FILTERS.map(([k, n]) => `<button class="chip" data-pkind="${k}" aria-pressed="${ui.partsKind === k}">${n}</button>`).join('')}</div>
+      <div class="chips">${[['all', 'Everything'], ['owned', 'Owned'], ['missing', 'Missing'], ['wish', 'Wishlist']].map(([k, n]) =>
+        `<button class="chip" data-pshow="${k}" aria-pressed="${ui.partsShow === k}">${n}</button>`).join('')}
+        <button class="chip" id="addCustom">+ Custom part</button></div>
+      <div class="muted" style="font-size:12px">You own ${have} of ${total.length} ${brand === 'tt' ? 'Takara Tomy' : 'Hasbro'} parts in this view.</div>
+      ${list.length ? `<div class="list">${list.map(p => partRow(p)).join('')}</div>` : '<div class="card empty">No parts match.</div>'}
+    </div>`;
+    const inp = $('partsQ'); inp.oninput = () => { ui.partsQ = inp.value; const pos = inp.selectionStart; renderParts(); const n = $('partsQ'); n.focus(); n.setSelectionRange(pos, pos); };
+  }
+
+  // ---------- Tab: products ----------
+  function productLine(p) { const c = p.code.slice(0, 2); return p.random ? 'random' : ['BX', 'UX', 'CX'].includes(c) ? c : 'other'; }
+  function renderProducts() {
+    const q = ui.prodQ.trim().toLowerCase();
+    let list = brandProducts();
+    if (ui.prodLine !== 'all') list = list.filter(p => productLine(p) === ui.prodLine || (ui.prodLine === 'random' && p.random));
+    if (q) list = list.filter(p => [p.code, p.name, ...p.beys.map(b => b.name)].join(' ').toLowerCase().includes(q));
+    const lines = brand === 'tt' ? [['all', 'All'], ['BX', 'BX'], ['UX', 'UX'], ['CX', 'CX'], ['random', 'Random boosters']] : [['all', 'All']];
+    $('tab-products').innerHTML = `<div class="stack">
+      <input class="input" id="prodQ" placeholder="Search sets, e.g. CX-11, Shark Scale" value="${esc(ui.prodQ)}" autocomplete="off">
+      <div class="chips">${lines.map(([k, n]) => `<button class="chip" data-pline="${k}" aria-pressed="${ui.prodLine === k}">${n}</button>`).join('')}</div>
+      ${brand === 'hb' ? '<div class="note">Hasbro list covers the main releases only. Use “+ Custom part” on the Parts tab for anything missing.</div>' : ''}
+      <div class="grid grid-2">${list.map(p => {
+        const ids = [...new Set([...p.beys.flatMap(b => b.parts), ...p.extra])];
+        const have = ids.filter(id => qty(id)).length;
+        const bought = S.purchases.filter(x => x.pid === p.id).length;
+        return `<div class="card prod">
+          <div class="row" style="justify-content:space-between"><span class="code">${esc(p.code)}${p.random ? ' · RANDOM' : ''}</span>
+            ${bought ? `<span class="tag" style="color:var(--pos)">Bought ×${bought}</span>` : ''}</div>
+          <div class="title">${esc(p.name)}</div>
+          <ul>${p.beys.map(b => `<li>${esc(b.name)}</li>`).join('')}${p.extra.length ? `<li>+ ${p.extra.map(id => esc(part(id).name)).join(', ')}</li>` : ''}</ul>
+          ${p.partial ? '<div class="note">Some contents not confirmed yet.</div>' : ''}
+          <div class="bar"><i style="width:${ids.length ? Math.round(have / ids.length * 100) : 0}%"></i></div>
+          <div class="row" style="justify-content:space-between"><span class="muted" style="font-size:12px">You own ${have}/${ids.length} parts</span>
+            <button class="btn btn-primary" data-buy="${esc(p.id)}">I bought this</button></div>
+        </div>`;
+      }).join('') || '<div class="card empty">No sets match.</div>'}</div>
+    </div>`;
+    const inp = $('prodQ'); inp.oninput = () => { ui.prodQ = inp.value; const pos = inp.selectionStart; renderProducts(); const n = $('prodQ'); n.focus(); n.setSelectionRange(pos, pos); };
+  }
+
+  // ---------- Tab: deck builder ----------
+  const SLOT_FIELDS = {
+    bx: [['blade', ['blade', 'rblade']], ['ratchet', ['ratchet']], ['bit', ['bit', 'rbit']]],
+    cx: [['lock', ['lock']], ['main', ['main', 'metal']], ['over', ['over']], ['assist', ['assist']], ['ratchet', ['ratchet']], ['bit', ['bit', 'rbit']]],
+  };
+  const FIELD_NAME = { blade: 'Blade', ratchet: 'Ratchet', bit: 'Bit', lock: 'Lock chip', main: 'Main / metal blade', over: 'Over blade (Expand only)', assist: 'Assist blade' };
+  const newDeck = () => ({ id: 'd' + Date.now().toString(36), name: 'My deck', brand, onlyOwned: true, slots: [0, 1, 2].map(() => ({ mode: 'bx', p: {} })) });
+  function slotHidden(slot, f) {
+    const p = slot.p;
+    if (f === 'ratchet' && ((p.blade && part(p.blade)?.kind === 'rblade') || (p.bit && part(p.bit)?.kind === 'rbit'))) return true;
+    if (f === 'over' && !(p.main && part(p.main)?.kind === 'metal')) return true;
+    return false;
+  }
+  function slotIds(slot) { return SLOT_FIELDS[slot.mode].filter(([f]) => !slotHidden(slot, f)).map(([f]) => slot.p[f]).filter(Boolean); }
+  function slotName(slot) {
+    const g = f => slot.p[f] && !slotHidden(slot, f) ? part(slot.p[f]) : null;
+    const r = g('ratchet')?.name || '', b = g('bit'), bc = b ? (b.code || b.name) : '';
+    if (slot.mode === 'bx') return g('blade') ? `${g('blade').name} ${r}${bc}`.trim() : '';
+    const l = g('lock'), m = g('main'), o = g('over'), a = g('assist');
+    if (!l && !m) return '';
+    return `${l ? l.name.replace(' (Metal)', '') : ''}${m ? m.name : ''} ${o ? o.code : ''}${a ? a.code : ''}${r}${bc}`.trim();
+  }
+  function renderDecks() {
+    if (!ui.deck || ui.deck.brand !== brand) ui.deck = newDeck();
+    const d = ui.deck;
+    const used = {}; d.slots.forEach((s, i) => slotIds(s).forEach(id => (used[id] = used[id] || []).push(i)));
+    const dupes = Object.entries(used).filter(([, v]) => v.length > 1).map(([id]) => part(id).name);
+    const notOwned = Object.keys(used).filter(id => !qty(id)).map(id => part(id).name);
+    const allParts = brandParts();
+    const options = (kinds, cur, i) => {
+      const list = sortParts(allParts.filter(p => kinds.includes(p.kind) && (!d.onlyOwned || qty(p.id) || p.id === cur)));
+      return `<option value="">—</option>` + list.map(p => {
+        const elsewhere = (used[p.id] || []).some(j => j !== i);
+        return `<option value="${esc(p.id)}" ${p.id === cur ? 'selected' : ''}>${esc(label(p))}${elsewhere ? ' (in use)' : ''}${!qty(p.id) ? ' · not owned' : ''}</option>`;
+      }).join('');
+    };
+    const weight = s => { const ids = slotIds(s); if (!ids.length) return ''; const w = ids.map(id => part(id).weight);
+      return w.every(x => x != null) ? w.reduce((a, b) => a + b, 0).toFixed(1) + ' g' : 'weight: some parts unknown'; };
+    const saved = S.decks.filter(x => x.brand === brand);
+    $('tab-decks').innerHTML = `<div class="stack">
+      <div class="row" style="flex-wrap:wrap">
+        <input class="input" id="deckName" value="${esc(d.name)}" style="max-width:260px">
+        <label class="muted" style="font-size:14px;display:flex;gap:6px;align-items:center"><input type="checkbox" id="onlyOwned" ${d.onlyOwned ? 'checked' : ''}> Only parts I own</label>
+        <div class="spacer" style="flex:1"></div>
+        <button class="btn" id="deckNew">New</button><button class="btn btn-primary" id="deckSave">Save deck</button>
+      </div>
+      <div class="note">3on3 rule: no blade, ratchet, bit or CX piece can repeat across the three beys.</div>
+      ${dupes.length ? `<div class="warnbox">Repeated part: ${esc([...new Set(dupes)].join(', '))}. Pick a different one.</div>` : ''}
+      ${!dupes.length && Object.keys(used).length ? `<div class="okbox">No repeated parts.${notOwned.length ? ' Still need: ' + esc(notOwned.join(', ')) : ''}</div>` : ''}
+      <div class="grid grid-3">${d.slots.map((s, i) => `<div class="card slot">
+        <div class="row" style="justify-content:space-between"><h3>Bey ${i + 1}</h3>
+          <div class="seg"><button data-mode="${i}:bx" aria-pressed="${s.mode === 'bx'}">BX / UX</button><button data-mode="${i}:cx" aria-pressed="${s.mode === 'cx'}">CX</button></div></div>
+        <div class="bey">${esc(slotName(s)) || '<span class="muted">Pick parts</span>'}</div>
+        <div class="muted" style="font-size:12px">${esc(weight(s))}</div>
+        ${SLOT_FIELDS[s.mode].filter(([f]) => !slotHidden(s, f)).map(([f, kinds]) =>
+          `<label>${FIELD_NAME[f]}<select class="input" data-slot="${i}:${f}">${options(kinds, s.p[f], i)}</select></label>`).join('')}
+      </div>`).join('')}</div>
+      ${saved.length ? `<div class="section-head"><h3>Saved decks</h3></div><div class="list">${saved.map(x => `<div class="item">
+        <div class="main" data-loaddeck="${esc(x.id)}"><div class="name">${esc(x.name)}</div><div class="sub">${x.slots.map(s => esc(slotName(s) || '—')).join(' · ')}</div></div>
+        <button class="btn btn-danger" data-deldeck="${esc(x.id)}">Delete</button></div>`).join('')}</div>` : ''}
+    </div>`;
+    $('deckName').oninput = e => d.name = e.target.value;
+    $('onlyOwned').onchange = e => { d.onlyOwned = e.target.checked; renderDecks(); };
+  }
+
+  // ---------- Tab: stats ----------
+  function renderStats() {
+    const all = brandParts();
+    const groups = [['blade', 'Blades'], ['cx', 'CX parts'], ['ratchet', 'Ratchets'], ['bit', 'Bits']];
+    const types = ['Attack', 'Defense', 'Stamina', 'Balance'];
+    const ownedBlades = all.filter(p => (p.kind === 'blade' || p.kind === 'rblade') && qty(p.id));
+    const otherBrand = Object.values(C.parts).filter(p => p.brand !== brand && qty(p.id)).length;
+    $('tab-stats').innerHTML = `<div class="stack">
+      <div class="card stack"><h3>Completion · ${brand === 'tt' ? 'Takara Tomy' : 'Hasbro'}</h3>
+        ${groups.map(([g, n]) => { const t = all.filter(p => kindGroup(p.kind) === g); const h = t.filter(p => qty(p.id)).length; const pct = t.length ? Math.round(h / t.length * 100) : 0;
+          return `<div><div class="row" style="justify-content:space-between;font-size:14px"><span>${n}</span><span class="muted">${h} / ${t.length} · ${pct}%</span></div><div class="bar"><i style="width:${pct}%"></i></div></div>`; }).join('')}
+      </div>
+      <div class="card stack"><h3>Owned blades by type</h3>
+        ${types.map(t => { const n = ownedBlades.filter(p => p.type === t).length;
+          return `<div class="row" style="justify-content:space-between"><span class="t-${t}" style="font-weight:600">${t}</span><span>${n}</span></div>`; }).join('')}
+      </div>
+      <div class="card"><span class="muted">You also own ${otherBrand} ${brand === 'tt' ? 'Hasbro' : 'Takara Tomy'} parts. Switch brand at the top to see them.</span></div>
+    </div>`;
+  }
+
+  // ---------- Dialogs ----------
+  const dlg = $('dlg');
+  function openDlg(html) { $('dlgBody').innerHTML = html; dlg.showModal(); }
+  function partDialog(id) {
+    const p = part(id);
+    const prods = p.products.map(productById).filter(Boolean);
+    openDlg(`<div class="dlg-head"><h2>${esc(label(p))}</h2><button class="btn" data-close>Close</button></div>
+      <div class="row" style="flex-wrap:wrap;gap:6px"><span class="tag">${esc(KIND[p.kind])}</span>${typeTag(p.type)}
+        ${p.weight ? `<span class="tag">${p.weight} g</span>` : ''}${p.alt ? `<span class="tag">${esc(p.alt)}</span>` : ''}<span class="tag">${p.brand === 'tt' ? 'Takara Tomy' : 'Hasbro'}</span></div>
+      <h3>Comes in</h3>
+      ${prods.length ? `<div class="list">${prods.map(x => `<div class="item"><div class="main"><div class="name">${esc(x.code)} ${esc(x.name)}</div>
+        <div class="sub">${x.beys.filter(b => b.parts.includes(id)).map(b => esc(b.name)).join(', ') || 'Included as a loose part'}</div></div></div>`).join('')}</div>` : '<div class="muted">No listed set includes it yet.</div>'}
+      <label class="muted" style="font-size:14px">Notes (condition, colour, where you bought it)
+        <textarea class="input" id="partNote" rows="3">${esc(S.notes[id] || '')}</textarea></label>
+      <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" data-savenote="${esc(id)}">Save note</button></div>`);
+  }
+  function buyDialog(pid) {
+    const p = productById(pid);
+    openDlg(`<div class="dlg-head"><h2>${esc(p.code)} ${esc(p.name)}</h2><button class="btn" data-close>Close</button></div>
+      ${p.random ? `<p class="muted" style="margin:0">Random booster. Which bey did you get?</p>
+        <select class="input" id="buyBey">${p.beys.map((b, i) => `<option value="${i}">${esc(b.name)}</option>`).join('')}<option value="all">Full set (all of them)</option></select>`
+        : `<p class="muted" style="margin:0">Adds every part in this set to your collection.</p>`}
+      <label class="muted" style="font-size:14px">Note (price, shop) — optional<input class="input" id="buyNote" placeholder="e.g. Rp450k Tokopedia"></label>
+      <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" data-confirmbuy="${esc(pid)}">Add to collection</button></div>`);
+  }
+  function customDialog() {
+    openDlg(`<div class="dlg-head"><h2>Add a custom part</h2><button class="btn" data-close>Close</button></div>
+      <p class="muted" style="margin:0">For parts not in the catalog yet. It is added to ${brand === 'tt' ? 'Takara Tomy' : 'Hasbro'}.</p>
+      <label class="muted" style="font-size:14px">Name<input class="input" id="cName" placeholder="e.g. Tiga Rage"></label>
+      <label class="muted" style="font-size:14px">Part type<select class="input" id="cKind">${KIND_ORDER.map(k => `<option value="${k}">${KIND[k]}</option>`).join('')}</select></label>
+      <label class="muted" style="font-size:14px">Battle type<select class="input" id="cType"><option value="">—</option><option>Attack</option><option>Defense</option><option>Stamina</option><option>Balance</option></select></label>
+      <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" id="cSave">Add part</button></div>`);
+  }
+  function settingsDialog() {
+    const tok = ghToken();
+    const theme = document.documentElement.dataset.theme || 'auto';
+    openDlg(`<div class="dlg-head"><h2>Settings</h2><button class="btn" data-close>Close</button></div>
+      <h3>Sync across devices</h3>
+      <p class="muted" style="margin:0;font-size:14px">${tok ? 'Connected. Changes save to <b>collection.json</b> in your repo.' :
+        'Changes are saved on this device. To sync them, connect a GitHub token that can only edit <b>beyblade-tracker</b>.'}</p>
+      ${tok ? `<div class="row"><button class="btn" id="ghPush">Sync now</button><button class="btn btn-danger" id="ghOff">Disconnect</button></div>` : `
+      <ol class="muted" style="font-size:14px;margin:0;padding-left:20px">
+        <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="color:var(--accent)">GitHub → New fine-grained token</a></li>
+        <li>Repository access: <b>Only select repositories</b> → beyblade-tracker</li>
+        <li>Permissions → Contents: <b>Read and write</b></li>
+        <li>Generate, copy and paste it below</li></ol>
+      <input class="input" id="ghTok" placeholder="github_pat_…" autocomplete="off">
+      <div class="row"><button class="btn btn-primary" id="ghSave">Connect</button><span class="muted" id="ghMsg" style="font-size:13px"></span></div>`}
+      <h3>Backup</h3>
+      <div class="row" style="flex-wrap:wrap"><button class="btn" id="exportBtn">Export JSON</button>
+        <label class="btn">Import JSON<input type="file" id="importFile" accept=".json,application/json" hidden></label></div>
+      <h3>Theme</h3>
+      <div class="seg">${['auto', 'dark', 'light'].map(t => `<button data-theme="${t}" aria-pressed="${theme === t}">${t[0].toUpperCase() + t.slice(1)}</button>`).join('')}</div>
+      <h3>Reset</h3>
+      <div><button class="btn btn-danger" id="resetBtn">Clear everything on this device</button></div>`);
+  }
+
+  // ---------- Render ----------
+  function render() {
+    document.querySelectorAll('.seg [data-brand]').forEach(b => b.setAttribute('aria-pressed', b.dataset.brand === brand));
+    document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
+    for (const t of ['collection', 'parts', 'products', 'decks', 'stats']) $('tab-' + t).hidden = t !== tab;
+    ({ collection: renderCollection, parts: renderParts, products: renderProducts, decks: renderDecks, stats: renderStats })[tab]();
+  }
+
+  // ---------- Events ----------
+  document.addEventListener('click', async e => {
+    const t = e.target.closest('button, [data-open], [data-loaddeck]');
+    if (!t) return;
+    const d = t.dataset;
+    if (d.brand) { brand = d.brand; try { localStorage.setItem('beyvault-brand', brand); } catch (x) {} render(); }
+    else if (d.tab) { tab = d.tab; render(); window.scrollTo(0, 0); }
+    else if (d.inc) setQty(d.inc, qty(d.inc) + 1);
+    else if (d.dec) setQty(d.dec, qty(d.dec) - 1);
+    else if (d.wish) { if (S.wish[d.wish]) delete S.wish[d.wish]; else S.wish[d.wish] = 1; save(); }
+    else if (d.open) partDialog(d.open);
+    else if (d.pkind) { ui.partsKind = d.pkind; renderParts(); }
+    else if (d.pshow) { ui.partsShow = d.pshow; renderParts(); }
+    else if (d.pline) { ui.prodLine = d.pline; renderProducts(); }
+    else if (d.buy) buyDialog(d.buy);
+    else if (d.confirmbuy) { const sel = $('buyBey'); addPurchase(d.confirmbuy, sel ? (sel.value === 'all' ? 'all' : +sel.value) : 'all', $('buyNote').value.trim()); dlg.close(); }
+    else if (d.unbuy) { if (confirm('Remove this purchase and its parts from your collection?')) removePurchase(d.unbuy); }
+    else if (d.close !== undefined) dlg.close();
+    else if (d.savenote) { const v = $('partNote').value.trim(); if (v) S.notes[d.savenote] = v; else delete S.notes[d.savenote]; dlg.close(); save('Note saved'); }
+    else if (d.mode) { const [i, m] = d.mode.split(':'); ui.deck.slots[i] = { mode: m, p: {} }; renderDecks(); }
+    else if (d.loaddeck) { const x = S.decks.find(y => y.id === d.loaddeck); ui.deck = JSON.parse(JSON.stringify(x)); renderDecks(); }
+    else if (d.deldeck) { if (confirm('Delete this deck?')) { S.decks = S.decks.filter(y => y.id !== d.deldeck); save('Deck deleted'); } }
+    else if (d.theme) { if (d.theme === 'auto') delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = d.theme;
+      try { d.theme === 'auto' ? localStorage.removeItem('beyvault-theme') : localStorage.setItem('beyvault-theme', d.theme); } catch (x) {} settingsDialog(); }
+    else if (t.id === 'settingsBtn') settingsDialog();
+    else if (t.id === 'addCustom') customDialog();
+    else if (t.id === 'cSave') {
+      const name = $('cName').value.trim(); if (!name) return;
+      const kind = $('cKind').value;
+      const id = `${brand}:${kind}:custom-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+      if (!C.parts[id]) { const p = { id, brand, kind, name, type: $('cType').value, custom: true }; S.custom.push(p); mergeCustom(); }
+      dlg.close(); save('Custom part added');
+    }
+    else if (t.id === 'deckNew') { ui.deck = newDeck(); renderDecks(); }
+    else if (t.id === 'deckSave') {
+      const dd = ui.deck; const i = S.decks.findIndex(y => y.id === dd.id);
+      const copy = JSON.parse(JSON.stringify(dd)); if (i >= 0) S.decks[i] = copy; else S.decks.push(copy);
+      save('Deck saved');
+    }
+    else if (t.id === 'ghSave') {
+      const tok = $('ghTok').value.trim(); if (!tok) return;
+      $('ghMsg').textContent = 'Checking…';
+      try { await gh('README.md?ref=main', {}, tok); localStorage.setItem('beyvault-gh', tok); toast('GitHub connected'); dlg.close(); await pushSync(); }
+      catch (x) { $('ghMsg').textContent = x.status === 401 ? 'GitHub rejected this token.' : x.status === 404 ? 'This token can’t see beyblade-tracker.' : 'Could not connect: ' + x.message; }
+    }
+    else if (t.id === 'ghOff') { localStorage.removeItem('beyvault-gh'); dlg.close(); setSync('Saved on this device'); }
+    else if (t.id === 'ghPush') { dlg.close(); setSync('Saving…'); pushSync(); }
+    else if (t.id === 'exportBtn') {
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S, null, 1)], { type: 'application/json' }));
+      a.download = `bey-vault-${new Date().toISOString().slice(0, 10)}.json`; a.click();
+    }
+    else if (t.id === 'resetBtn') { if (confirm('Clear your collection on this device? A synced copy on GitHub is not deleted.')) { S = blank(); try { localStorage.removeItem(KEY); } catch (x) {} dlg.close(); render(); } }
+  });
+  document.addEventListener('change', e => {
+    const t = e.target;
+    if (t.dataset.slot) { const [i, f] = t.dataset.slot.split(':'); const s = ui.deck.slots[i]; if (t.value) s.p[f] = t.value; else delete s.p[f]; renderDecks(); }
+    if (t.id === 'importFile' && t.files[0]) {
+      t.files[0].text().then(txt => { const j = JSON.parse(txt); if (!j.owned) throw new Error('bad file'); S = { ...blank(), ...j }; mergeCustom(); dlg.close(); save('Collection imported'); })
+        .catch(() => toast('That file is not a Bey Vault export'));
+    }
+  });
+
+  render();
+  setSync(ghToken() ? 'Syncing…' : '');
+  pullRemote();
+})();
+</script>
+</body>
+</html>
