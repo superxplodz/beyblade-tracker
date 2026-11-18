@@ -1,6 +1,6 @@
 # Bey Vault — Beyblade X collection tracker
 
-Static site at **https://superxplodz.biz.id**, served by GitHub Pages from this repo.
+Static site at **https://beyvault.superxplodz.biz.id**, served by GitHub Pages from this repo.
 
 | File | What it is |
 |---|---|
