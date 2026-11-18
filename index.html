@@ -316,7 +316,7 @@
 
   // ---------- Rendering helpers ----------
   const typeTag = t => t ? `<span class="tag t-${esc(t)}">${esc(t)}</span>` : '';
-  const img = (src, fb, cls = 'thumb') => src ? `<img class="${cls}" src="${esc(src)}" data-fb="${esc(fb || '')}" loading="lazy" alt="" onerror="imgFail(this)">` : `<span class="${cls} noimg"></span>`;
+  const img = (src, fb, cls = 'thumb') => src ? `<img class="${cls}" src="${esc(src)}" data-fb="${esc(fb || '')}" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="imgFail(this)">` : `<span class="${cls} noimg"></span>`;
   const tierTag = p => p.meta ? `<span class="tier tier-${p.meta.tier.replace('+', 'p')}">${esc(p.meta.tier)}</span>` : '';
   function partRow(p, opts = {}) {
     const q = qty(p.id);
