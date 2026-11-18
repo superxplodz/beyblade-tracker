@@ -7,7 +7,7 @@ Static site at **https://beyvault.superxplodz.biz.id**, served by GitHub Pages f
 | `index.html` | The whole app: collection, parts library, products, deck builder, stats. |
 | `data.js` | Parts and product catalog. Takara Tomy and Hasbro are tracked separately. |
 | `extras.js` | Part photos (BeybladeHub), official ATK/DEF/STA stats, meta ratings, and release/colour variants. |
-| `collection.json` | Your collection. The site reads it on load; the site writes it when GitHub sync is on. |
+| `collection.enc` | Your collection, AES-256-GCM encrypted with a key derived from your username + password (PBKDF2, 310k rounds). Written by the site when GitHub sync is on. |
 | `CNAME` | Custom domain for GitHub Pages. |
 
 ## Features
@@ -29,3 +29,8 @@ Without a token, edits stay in that browser.
 
 ## Adding new releases
 Add a line to `TT_PRODUCTS` or `H_PRODUCTS` in `data.js`. Notation is documented at the top of the file.
+
+## Sign-in
+The site asks for a username and password. They never leave the browser: they derive the key that decrypts `collection.enc`.
+There is no reset. If you forget them, restore from an exported JSON backup and set new ones.
+"Stay signed in" keeps the derived key on that device until you choose Settings → Sign out.

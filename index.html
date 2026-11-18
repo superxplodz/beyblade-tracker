@@ -149,11 +149,29 @@
   .stats { display: flex; flex-direction: column; gap: 6px; }
   .stat { display: grid; grid-template-columns: 36px 1fr 28px; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
   .stat b { color: var(--text); text-align: right; }
+  .lock { min-height: 100vh; display: grid; place-items: center; padding: var(--s-4); }
+  .lock-card { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-6);
+    box-shadow: var(--shadow); display: flex; flex-direction: column; gap: var(--s-3); }
+  .lock-card h1 { margin: 0; font-size: var(--fs-xl); } .lock-card p { margin: 0; }
   footer { color: var(--subtle); font-size: var(--fs-xs); padding: var(--s-5) 0; border-top: 1px solid var(--border); }
   footer a { color: var(--muted); }
 </style>
 </head>
 <body>
+<div class="lock" id="lock" hidden>
+  <form class="lock-card" id="lockForm" autocomplete="on">
+    <span class="logo" style="width:44px;height:44px;border-radius:10px"><svg width="24" height="24" viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="none" stroke="currentColor" stroke-width="3" style="color:var(--on-accent)"/><path d="M16 5v6M27 16h-6M16 27v-6M5 16h6" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="color:var(--on-accent)"/></svg></span>
+    <h1 id="lockTitle">Bey Vault</h1>
+    <p class="muted" id="lockText">Sign in to open your collection.</p>
+    <input class="input" id="lockUser" name="username" autocomplete="username" placeholder="Username" required>
+    <input class="input" id="lockPass" name="password" type="password" autocomplete="current-password" placeholder="Password" required>
+    <input class="input" id="lockPass2" type="password" autocomplete="new-password" placeholder="Repeat password" hidden>
+    <label class="muted" style="font-size:14px;display:flex;gap:8px;align-items:center"><input type="checkbox" id="lockRemember" checked> Stay signed in on this device</label>
+    <button class="btn btn-primary" id="lockBtn" type="submit" style="padding:12px">Sign in</button>
+    <p class="muted" id="lockMsg" style="font-size:13px;min-height:1.2em"></p>
+  </form>
+</div>
+<div id="app" hidden>
 <header>
   <div class="container">
     <div class="top">
@@ -191,6 +209,7 @@
   Part photos: <a href="https://beybladehub.app" target="_blank" rel="noopener">BeybladeHub</a>. Meta: BEYWATCH.GG, BBX Weekly, Beyblade Kingdom, note.com tier lists. Official stats via byybladebuilder.com.
 </footer>
 
+</div>
 <dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
 <div class="toast" id="toast" hidden></div>
 
@@ -219,7 +238,6 @@
   let S = blank();
   let brand = 'tt', tab = 'collection';
   const ui = { partsQ: '', partsKind: 'all', partsShow: 'all', partsSort: 'meta', prodQ: '', prodLine: 'all', deck: null };
-  try { const raw = localStorage.getItem(KEY); if (raw) S = { ...blank(), ...JSON.parse(raw) }; } catch (e) {}
   try { brand = localStorage.getItem('beyvault-brand') || 'tt'; } catch (e) {}
 
   // Custom parts join the catalog
@@ -248,9 +266,47 @@
   const productById = id => C.products.find(p => p.id === id);
   const label = p => p.code && (p.kind === 'bit' || p.kind === 'rbit' || p.kind === 'assist' || p.kind === 'over') ? `${p.name} (${p.code})` : p.name;
 
+  // ---------- Encryption (username + password -> AES-256-GCM key via PBKDF2) ----------
+  const ENC_KEY = 'beyvault-enc-v1', KEY_STORE = 'beyvault-key-v1', ITER = 310000;
+  const te = new TextEncoder(), td = new TextDecoder();
+  const toB64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+  const fromB64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  let cryptoKey = null, envSalt = null;
+  async function deriveKey(user, pass, salt) {
+    const base = await crypto.subtle.importKey('raw', te.encode(pass), 'PBKDF2', false, ['deriveKey']);
+    const fullSalt = new Uint8Array([...te.encode(user.trim().toLowerCase() + '|'), ...salt]);
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: fullSalt, iterations: ITER, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']);
+  }
+  async function seal(data) {
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, cryptoKey, te.encode(JSON.stringify(data)));
+    return { v: 1, kdf: 'PBKDF2-SHA256', iter: ITER, salt: toB64(envSalt), iv: toB64(iv), ct: toB64(ct), updatedAt: data.updatedAt || 0 };
+  }
+  async function open(env, key) {
+    const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: fromB64(env.iv) }, key, fromB64(env.ct));
+    return JSON.parse(td.decode(pt));
+  }
+  const localEnv = () => { try { return JSON.parse(localStorage.getItem(ENC_KEY) || 'null'); } catch (e) { return null; } };
+  async function rememberKey(remember) {
+    const raw = toB64(await crypto.subtle.exportKey('raw', cryptoKey));
+    const rec = JSON.stringify({ salt: toB64(envSalt), key: raw });
+    try { sessionStorage.setItem(KEY_STORE, rec); if (remember) localStorage.setItem(KEY_STORE, rec); else localStorage.removeItem(KEY_STORE); } catch (e) {}
+  }
+  async function storedKey(env) {
+    let rec = null;
+    try { rec = JSON.parse(sessionStorage.getItem(KEY_STORE) || localStorage.getItem(KEY_STORE) || 'null'); } catch (e) {}
+    if (!rec || rec.salt !== env.salt) return null;
+    return crypto.subtle.importKey('raw', fromB64(rec.key), 'AES-GCM', true, ['encrypt', 'decrypt']);
+  }
+  let pendingEnc = Promise.resolve();
+  function persistLocal() {
+    pendingEnc = pendingEnc.then(async () => { const env = await seal(S); try { localStorage.setItem(ENC_KEY, JSON.stringify(env)); } catch (e) {} return env; });
+    return pendingEnc;
+  }
+
   function save(msg) {
     S.updatedAt = Date.now();
-    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
+    persistLocal();
     if (msg) toast(msg);
     scheduleSync();
     render();
@@ -277,26 +333,29 @@
     if (syncing) { scheduleSync(); return; }
     syncing = true;
     try {
+      const env = await persistLocal();
       let sha;
-      try { sha = (await gh('collection.json?ref=main')).sha; } catch (e) { if (e.status !== 404) throw e; }
-      await gh('collection.json', { method: 'PUT', body: JSON.stringify({ message: 'Update collection', content: b64(JSON.stringify(S, null, 1)), sha, branch: 'main' }) });
+      try { sha = (await gh('collection.enc?ref=main')).sha; } catch (e) { if (e.status !== 404) throw e; }
+      await gh('collection.enc', { method: 'PUT', body: JSON.stringify({ message: 'Update collection (encrypted)', content: b64(JSON.stringify(env)), sha, branch: 'main' }) });
+      // Remove the old public plaintext copy once the encrypted one is up
+      try { const old = await gh('collection.json?ref=main'); await gh('collection.json', { method: 'DELETE', body: JSON.stringify({ message: 'Remove plaintext collection', sha: old.sha, branch: 'main' }) }); } catch (e) {}
       setSync('Synced to GitHub');
     } catch (e) { setSync(e.status === 401 ? 'GitHub token rejected' : 'Sync failed, saved locally'); }
     syncing = false;
   }
-  async function pullRemote() {
+  async function fetchRemoteEnv() {
     try {
-      let remote;
-      if (ghToken()) { remote = JSON.parse(unb64((await gh('collection.json?ref=main')).content)); }
-      else { const r = await fetch('collection.json?t=' + Date.now(), { cache: 'no-store' }); if (!r.ok) return; remote = await r.json(); }
-      if (remote && (remote.updatedAt || 0) > (S.updatedAt || 0)) {
-        S = { ...blank(), ...remote }; mergeCustom(); migrate();
-        try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
-        render();
-      }
-      setSync(ghToken() ? 'Synced to GitHub' : 'Saved on this device');
-    } catch (e) { setSync(ghToken() ? 'Offline, saved locally' : 'Saved on this device'); }
+      if (ghToken()) return JSON.parse(unb64((await gh('collection.enc?ref=main')).content));
+      const r = await fetch('collection.enc?t=' + Date.now(), { cache: 'no-store' }); return r.ok ? await r.json() : null;
+    } catch (e) { return null; }
   }
+  async function fetchLegacyPlain() {
+    try {
+      if (ghToken()) return JSON.parse(unb64((await gh('collection.json?ref=main')).content));
+      const r = await fetch('collection.json?t=' + Date.now(), { cache: 'no-store' }); return r.ok ? await r.json() : null;
+    } catch (e) { return null; }
+  }
+
 
   // ---------- Purchases ----------
   function addPurchase(pid, beyIdx, note) {
@@ -616,6 +675,8 @@
         <li>Generate, copy and paste it below</li></ol>
       <input class="input" id="ghTok" placeholder="github_pat_…" autocomplete="off">
       <div class="row"><button class="btn btn-primary" id="ghSave">Connect</button><span class="muted" id="ghMsg" style="font-size:13px"></span></div>`}
+      <h3>Account</h3>
+      <div class="row" style="flex-wrap:wrap"><button class="btn" id="lockNow">Sign out on this device</button><button class="btn" id="changePass">Change username / password</button></div>
       <h3>Backup</h3>
       <div class="row" style="flex-wrap:wrap"><button class="btn" id="exportBtn">Export JSON</button>
         <label class="btn">Import JSON<input type="file" id="importFile" accept=".json,application/json" hidden></label></div>
@@ -688,7 +749,9 @@
       const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S, null, 1)], { type: 'application/json' }));
       a.download = `bey-vault-${new Date().toISOString().slice(0, 10)}.json`; a.click();
     }
-    else if (t.id === 'resetBtn') { if (confirm('Clear your collection on this device? A synced copy on GitHub is not deleted.')) { S = blank(); try { localStorage.removeItem(KEY); } catch (x) {} dlg.close(); render(); } }
+    else if (t.id === 'resetBtn') { if (confirm('Clear your collection on this device? A synced copy on GitHub is not deleted.')) { S = blank(); try { localStorage.removeItem(ENC_KEY); localStorage.removeItem(KEY); } catch (x) {} dlg.close(); persistLocal(); render(); } }
+    else if (t.id === 'lockNow') { try { localStorage.removeItem(KEY_STORE); sessionStorage.removeItem(KEY_STORE); } catch (x) {} location.reload(); }
+    else if (t.id === 'changePass') { dlg.close(); showLock('change'); }
   });
   document.addEventListener('change', e => {
     const t = e.target;
@@ -699,10 +762,75 @@
     }
   });
 
-  migrate();
-  render();
-  setSync(ghToken() ? 'Syncing…' : '');
-  pullRemote();
+  // ---------- Sign-in flow ----------
+  let lockMode = 'login', lockEnv = null;
+  function showLock(mode, msg) {
+    lockMode = mode;
+    $('app').hidden = true; $('lock').hidden = false;
+    const setup = mode !== 'login';
+    $('lockTitle').textContent = mode === 'setup' ? 'Protect Bey Vault' : mode === 'change' ? 'New username & password' : 'Bey Vault';
+    $('lockText').textContent = setup ? 'Pick a username and password. Your collection is encrypted with them. There is no reset, so keep them in your password manager.' : 'Sign in to open your collection.';
+    $('lockPass2').hidden = !setup; $('lockPass2').required = setup;
+    $('lockPass').autocomplete = setup ? 'new-password' : 'current-password';
+    $('lockBtn').textContent = setup ? 'Save and lock' : 'Sign in';
+    $('lockMsg').textContent = msg || '';
+    $('lockUser').focus();
+  }
+  function enterApp() {
+    $('lock').hidden = true; $('app').hidden = false;
+    mergeCustom(); migrate(); render();
+    setSync(ghToken() ? 'Synced to GitHub' : 'Saved on this device');
+  }
+  $('lockForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const user = $('lockUser').value.trim(), pass = $('lockPass').value;
+    if (!user || !pass) return;
+    $('lockBtn').disabled = true; $('lockMsg').textContent = 'Working…';
+    try {
+      if (lockMode === 'login') {
+        const key = await deriveKey(user, pass, fromB64(lockEnv.salt));
+        try { S = { ...blank(), ...(await open(lockEnv, key)) }; } catch (x) { $('lockMsg').textContent = 'Wrong username or password.'; return; }
+        cryptoKey = key; envSalt = fromB64(lockEnv.salt);
+        try { localStorage.setItem(ENC_KEY, JSON.stringify(lockEnv)); } catch (x) {}
+      } else {
+        if (pass.length < 8) { $('lockMsg').textContent = 'Use at least 8 characters.'; return; }
+        if (pass !== $('lockPass2').value) { $('lockMsg').textContent = 'The passwords do not match.'; return; }
+        envSalt = crypto.getRandomValues(new Uint8Array(16));
+        cryptoKey = await deriveKey(user, pass, envSalt);
+        S.updatedAt = Date.now();
+        await persistLocal();
+        try { localStorage.removeItem(KEY); } catch (x) {}
+        if (ghToken()) await pushSync();
+        toast(lockMode === 'change' ? 'Password changed' : 'Collection locked');
+      }
+      await rememberKey($('lockRemember').checked);
+      $('lockPass').value = $('lockPass2').value = '';
+      enterApp();
+    } finally { $('lockBtn').disabled = false; if ($('lockMsg').textContent === 'Working…') $('lockMsg').textContent = ''; }
+  });
+
+  async function boot() {
+    const remote = await fetchRemoteEnv(), local = localEnv();
+    const env = [remote, local].filter(Boolean).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))[0];
+    if (env) {
+      lockEnv = env;
+      const key = await storedKey(env);
+      if (key) {
+        try { S = { ...blank(), ...(await open(env, key)) }; cryptoKey = key; envSalt = fromB64(env.salt);
+          try { localStorage.setItem(ENC_KEY, JSON.stringify(env)); } catch (x) {}
+          enterApp(); return; } catch (x) {}
+      }
+      showLock('login'); return;
+    }
+    // First run: bring over any older unencrypted data, then ask for a username and password
+    let legacy = null;
+    try { legacy = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (x) {}
+    const remotePlain = await fetchLegacyPlain();
+    if (remotePlain && (!legacy || (remotePlain.updatedAt || 0) > (legacy.updatedAt || 0))) legacy = remotePlain;
+    if (legacy) S = { ...blank(), ...legacy };
+    showLock('setup');
+  }
+  boot();
 })();
 </script>
 </body>
