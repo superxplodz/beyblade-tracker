@@ -166,12 +166,12 @@
       bey.img = img || prodImg;
       for (const pid of bey.parts) {
         const vid = `${pid}@${prod.id}#${i}`;
-        C.variants[vid] = { id: vid, part: pid, product: prod.id, bey: i, label: `${prod.code} · ${bey.name}`, img: bey.img };
+        C.variants[vid] = { id: vid, part: pid, product: prod.id, bey: i, label: `${prod.code} · ${bey.name}`, img: bey.img || C.parts[pid].img };
       }
     });
     prod.extra.forEach(pid => {
       const vid = `${pid}@${prod.id}#x`;
-      C.variants[vid] = { id: vid, part: pid, product: prod.id, bey: 'x', label: `${prod.code} · loose part`, img: prodImg };
+      C.variants[vid] = { id: vid, part: pid, product: prod.id, bey: 'x', label: `${prod.code} · loose part`, img: prodImg || C.parts[pid].img };
     });
   }
   C.partVariants = {};
