@@ -60,6 +60,29 @@ function parseCombos(html) {
     return { ...combo, name, pct, cuts: ints.length ? Math.max(...ints) : null };
   }).filter(Boolean);
 }
+// Card/list layout (blade pages): group everything between links to the same /combos/<slug>
+function parseComboBlocks(html) {
+  const hits = [...html.matchAll(/href="\/combos\/([a-z0-9-]+)"/g)];
+  const out = [];
+  for (let i = 0; i < hits.length; i++) {
+    const slug = hits[i][1];
+    if (i > 0 && hits[i - 1][1] === slug) continue;
+    let j = i; while (j + 1 < hits.length && hits[j + 1][1] === slug) j++;
+    const end = j + 1 < hits.length ? hits[j + 1].index : hits[j].index + 4000;
+    const start = Math.max(hits[i].index - 1500, i > 0 ? hits[i - 1].index + 10 : 0);
+    const block = html.slice(hits[i].index, Math.min(end, hits[i].index + 6000));
+    const pre = html.slice(start, hits[i].index);
+    const parts = [...new Set([...(pre.match(/href="\/(?:parts|blades)\/[a-z0-9-]+"/g) || []).slice(-6), ...(block.match(/href="\/(?:parts|blades)\/[a-z0-9-]+"/g) || [])]
+      .map(h => h.slice(7, -1).split('/').pop()))];
+    const names = [...block.matchAll(new RegExp('href="/combos/' + slug + '"[^>]*>([\\s\\S]*?)</a>', 'g'))].map(m => strip(m[1])).filter(t => /[A-Za-z]/.test(t));
+    const text = strip(block.slice(0, Math.min(block.length, 3000)));
+    const pct = (text.match(/([\d.]+)%/) || [])[1];
+    const after = pct ? text.slice(text.indexOf(pct + '%') + pct.length + 1) : text;
+    const cuts = (after.match(/^\s*([\d,]+)/) || [])[1];
+    out.push({ slug, parts: parts.filter(p => slug.includes(p.replace(/^(ratchet|bit|lockchip|assist|overblade)-/, ''))), name: names[0] || '', pct: pct ? [null, +pct] : [], cuts: cuts ? num(cuts) : null });
+  }
+  return out;
+}
 // Parts page: cards linking /parts/<cat>-<name> with tier / % / cuts text nearby
 function parseParts(html) {
   const out = {};
@@ -91,7 +114,7 @@ for (const w of WINDOWS) {
   try { merge(parseCombos(await get(PAGES.combos, w))); } catch (e) { console.warn(e.message); }
   const topBlades = [...entry.blades].sort((a, b) => b.cuts - a.cuts).slice(0, 30);
   for (const b of topBlades) {
-    try { merge(parseCombos(await get('/blades/' + b.blade, w))); } catch (e) { console.warn(e.message); }
+    try { const h = await get('/blades/' + b.blade, w); const rs = parseCombos(h); merge(rs.length ? rs : parseComboBlocks(h)); if (b === topBlades[0]) console.log('sample', JSON.stringify((rs.length ? rs : parseComboBlocks(h)).slice(0, 3))); } catch (e) { console.warn(e.message); }
     await new Promise(r => setTimeout(r, 250));
   }
   entry.combos = [...combos.values()].sort((a, b) => b.cuts - a.cuts).slice(0, MAX_COMBOS);

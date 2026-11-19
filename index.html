@@ -443,7 +443,7 @@
     return (metaCache[key] = out);
   }
   const statScore = st => st ? (TIERV[st.tier] || 0) * 100000 + (st.cuts || st.comboCuts || 0) : 0;
-  const comboScore = c => (c.cuts || 0) * ((c.first ?? 30) / 100 + .5);
+  const comboScore = c => Math.max(c.cuts || 0, 1) * ((c.first ?? 30) / 100 + .5);
   const pStat = (p, win) => metaFor(win).stat[p.id];
   function partScore(p) {
     const st = pStat(p);
@@ -853,7 +853,7 @@
   function bestMetaDeck(fromOwned) {
     const d = newDeck(); d.name = fromOwned ? 'Meta deck (my parts)' : 'Meta deck (shopping)';
     const M = metaFor();
-    const cands = M.combos.filter(c => c.known && c.cuts && (!fromOwned || !comboMissing(c).length));
+    const cands = M.combos.filter(c => c.known && (!fromOwned || !comboMissing(c).length));
     const three = pickThree(cands);
     const used = new Set();
     three.forEach((c, i) => { d.slots[i] = comboToSlot(c); slotIds(d.slots[i]).forEach(id => used.add(id)); });
