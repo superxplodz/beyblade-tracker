@@ -83,6 +83,20 @@ function parseComboBlocks(html) {
   }
   return out;
 }
+// "Recent Tournament Results" on a blade page
+function parseRecent(html) {
+  const k = html.search(/Recent Tournament Results/); if (k < 0) return [];
+  const end = html.indexOf('<h2', k + 30);
+  const block = html.slice(k, end > 0 ? end : k + 20000);
+  return block.split(/<div[^>]*>\s*<span[^>]*>/).slice(1).map(it => {
+    const medal = (it.match(/^([^<]*)<\/span>/) || [])[1]?.trim() || '';
+    const a = it.match(/href="\/tournaments\/([^"]+)"[^>]*>([^<]*)<\/a>/);
+    if (!a) return null;
+    const spans = [...it.slice(it.indexOf('</a>')).matchAll(/<span[^>]*>([^<]*)<\/span>/g)].map(m => m[1].trim()).filter(Boolean);
+    const place = { '🥇': 1, '🥈': 2, '🥉': 3 }[medal] || null;
+    return { place, event: strip(a[2]), slug: a[1], date: spans[0] || '', build: spans[1] || '', region: spans[2] || '' };
+  }).filter(Boolean).slice(0, 12);
+}
 // Parts page: cards linking /parts/<cat>-<name> with tier / % / cuts text nearby
 function parseParts(html) {
   const out = {};
@@ -100,7 +114,7 @@ function parseParts(html) {
   return out;
 }
 
-const result = { source: 'BEYWATCH.GG', fetchedAt: new Date().toISOString(), windows: {} };
+const result = { source: 'BEYWATCH.GG', fetchedAt: new Date().toISOString(), windows: {}, recent: {} };
 for (const w of WINDOWS) {
   const tierHtml = await get(PAGES.tier, w);
   const meta = strip(tierHtml).match(/Updated:\s*([A-Z][a-z]{2} \d+, \d{4}).*?Combos Analyzed:\s*([\d.,K]+).*?Tournaments:\s*([\d,]+)/);
@@ -114,7 +128,7 @@ for (const w of WINDOWS) {
   try { merge(parseCombos(await get(PAGES.combos, w))); } catch (e) { console.warn(e.message); }
   const topBlades = [...entry.blades].sort((a, b) => b.cuts - a.cuts).slice(0, 30);
   for (const b of topBlades) {
-    try { const h = await get('/blades/' + b.blade, w); const rs = parseCombos(h); merge(rs.length ? rs : parseComboBlocks(h)); if (DUMP && b === topBlades[0] && w === '30d') { const k = h.search(/Recent [Tt]ournament/); console.log('RECENT@', k, h.slice(k, k + 3500).replace(/ class="[^"]*"/g, '').replace(/<svg[\s\S]*?<\/svg>/g, '<svg/>')); }
+    try { const h = await get('/blades/' + b.blade, w); const rs = parseCombos(h); merge(rs.length ? rs : parseComboBlocks(h)); if (w === '30d' || !result.recent[b.blade]) { const rec = parseRecent(h); if (rec.length) result.recent[b.blade] = rec; }
       if (b === topBlades[0]) console.log('sample', JSON.stringify((rs.length ? rs : parseComboBlocks(h)).slice(0, 3))); } catch (e) { console.warn(e.message); }
     await new Promise(r => setTimeout(r, 250));
   }
@@ -126,4 +140,5 @@ for (const w of WINDOWS) {
 const ok = Object.values(result.windows).every(e => e.blades.length >= 5);
 if (!ok) { console.error('Parse looks broken; keeping old meta.json'); process.exit(DUMP ? 0 : 1); }
 fs.writeFileSync('meta.json', JSON.stringify(result));
+console.log('recent for', Object.keys(result.recent).length, 'blades', JSON.stringify(Object.values(result.recent)[0]?.slice(0, 2)));
 console.log('meta.json written');

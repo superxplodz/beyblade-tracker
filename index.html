@@ -994,6 +994,15 @@
     if (p.stats) { const k = ['atk', 'def', 'sta'].sort((a, b) => p.stats[b] - p.stats[a])[0]; out.push(`Official stats lean towards ${({ atk: 'attack', def: 'defense', sta: 'stamina' })[k]}.`); }
     return out.join(' ');
   }
+  function recentHtml(id) {
+    const hit = Object.entries(META?.recent || {}).find(([k]) => resolve(k).includes(id));
+    if (!hit) return '';
+    const medal = { 1: '🥇', 2: '🥈', 3: '🥉' };
+    return `<h3>Recent tournament results</h3><div class="list">${hit[1].map(r => `<div class="item" style="min-height:52px">
+      <span style="font-size:22px;width:28px;text-align:center;flex:none">${medal[r.place] || '•'}</span>
+      <div class="main" style="cursor:default"><div class="name"><a href="https://beywatch.gg/tournaments/${encodeURIComponent(r.slug)}" target="_blank" rel="noopener" style="color:inherit">${esc(r.event)}</a></div>
+        <div class="sub"><b style="color:var(--text)">${esc(r.build)}</b><span>${esc(r.date)}</span>${r.region ? `<span class="tag">${esc(r.region)}</span>` : ''}</div></div></div>`).join('')}</div>`;
+  }
   function partDialog(id) {
     const p = part(id);
     const win = ui.ovWin || ui.win;
@@ -1048,6 +1057,7 @@
       ${most ? `<h3>Recommended builds</h3><div class="grid grid-3">${card('Most played', most, '')}${card('Highest 1st rate', high, '')}${card('Different parts', diff, 'if you lack the usual ratchet / bit')}</div>` : ''}
       ${combos.length ? `<h3>Best combos</h3><div class="list">${combos.slice(0, 8).map(c => comboRow(c)).join('')}</div>` : ''}
       ${combos.length ? `<div class="grid grid-2">${pairCats.map(([ttl, cs]) => pairTable(ttl, pairStats(combos, cs, id))).join('')}</div>` : ''}
+      ${recentHtml(id)}
       <h3>Overview</h3>
       <div class="card stack" style="padding:14px"><p style="margin:0">${overviewText(p, st, combos, win, trend)}</p>
         ${p.stats ? statBars(p.stats) : ''}
