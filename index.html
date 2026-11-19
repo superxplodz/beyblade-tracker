@@ -150,6 +150,7 @@
   .item.owned .thumb { box-shadow: 0 0 0 2px var(--pos); }
   .tag { font-size: 11px; padding: 1px 8px; border-radius: var(--r-pill); background: var(--surface-2); color: var(--muted); font-weight: 700; white-space: nowrap; }
   .tag-own { background: var(--pos-soft); color: var(--pos); }
+  .tag-up { background: rgba(245,184,61,.16); color: var(--gold); }
   .tag-miss { background: var(--neg-soft); color: var(--neg); }
   .t-Attack { color: var(--atk); } .t-Defense { color: var(--def); } .t-Stamina { color: var(--sta); } .t-Balance { color: var(--bal); }
   .tdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: 0; background: currentColor; }
@@ -595,6 +596,8 @@
   const purchaseBrand = x => x.lot ? x.brand : productById(x.pid)?.brand;
 
   // ---------- Rendering helpers ----------
+  const fmtDay = d => new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  const upTag = x => x?.upcoming ? `<span class="tag tag-up" title="Not released yet">Out ${fmtDay(x.upcoming)}</span>` : '';
   const partType = p => p.type || pStat(p)?.type || '';
   const TYPE_ICON = { Attack: '⚔', Defense: '🛡', Stamina: '∞', Balance: '◎' };
   const typeTag = t => t ? `<span class="tag t-${esc(t)}"><span class="tdot"></span>${esc(t)}</span>` : '';
@@ -613,7 +616,7 @@
   function partRow(p) {
     const q = qty(p.id);
     const nv = (C.partVariants[p.id] || []).filter(v => S.owned[v.id]).length;
-    const sub = [typeTag(partType(p)), tierTag(p), useLine(p), nv > 1 ? `<span>${nv} colours</span>` : '',
+    const sub = [upTag(p), typeTag(partType(p)), tierTag(p), useLine(p), nv > 1 ? `<span>${nv} colours</span>` : '',
       p.spin === 'L' ? '<span>Left spin</span>' : '', p.weight ? `<span>${p.weight} g</span>` : ''].filter(Boolean).join('');
     return `<div class="item ${q ? 'owned' : ''}">${img(p.img)}
       <div class="main" data-open="${esc(p.id)}"><div class="name">${esc(label(p))}</div><div class="sub">${sub}</div></div>
@@ -741,7 +744,7 @@
     const line = p.random ? 'other' : lineOf(p);
     return `<div class="box" id="set-${esc(p.code)}" style="--line:var(--line-${line})">
       <div class="box-pack">
-        <div class="box-band"><span class="code">${esc(p.code)}</span><span class="kind">${esc(setKind(p))}</span></div>
+        <div class="box-band"><span class="code">${esc(p.code)}</span><span class="kind">${p.upcoming ? 'Out ' + esc(fmtDay(p.upcoming)) : esc(setKind(p))}</span></div>
         <div class="box-art">${img(setImg(p), p.img, '', p.name)}</div>
         <span class="box-x">X</span>
         ${bought ? `<span class="box-owned">OWNED ×${bought}</span>` : ''}
@@ -1027,7 +1030,7 @@
           <div class="muted small">${esc(CAT_NAME[cat] || KIND[p.kind])} · ${brandName(p.brand)}</div>
           <h2 style="font-size:var(--fs-xl)">${esc(label(p))}</h2>
           ${p.alt ? `<div class="muted small">${p.brand === 'tt' ? 'Hasbro' : 'Takara Tomy'} name: ${esc(p.alt)}</div>` : ''}
-          <div class="row wrap" style="gap:6px;margin-top:8px">${t ? `<span class="typebig t-${esc(t)}">${TYPE_ICON[t] || ''} ${esc(t)}</span>` : '<span class="tag">No battle type</span>'}${tierTag(p)}
+          <div class="row wrap" style="gap:6px;margin-top:8px">${upTag(p)}${t ? `<span class="typebig t-${esc(t)}">${TYPE_ICON[t] || ''} ${esc(t)}</span>` : '<span class="tag">No battle type</span>'}${tierTag(p)}
             ${p.weight ? `<span class="tag">${p.weight} g</span>` : ''}${p.spin === 'L' ? '<span class="tag">Left spin</span>' : ''}${st ? `<span class="tag">#${st.rank} ${esc((CAT_NAME[cat] || '').toLowerCase())}</span>` : ''}
             ${qty(id) ? `<span class="tag tag-own">You own ${qty(id)}</span>` : ''}</div>
         </div>

@@ -114,7 +114,8 @@ for (const w of WINDOWS) {
   try { merge(parseCombos(await get(PAGES.combos, w))); } catch (e) { console.warn(e.message); }
   const topBlades = [...entry.blades].sort((a, b) => b.cuts - a.cuts).slice(0, 30);
   for (const b of topBlades) {
-    try { const h = await get('/blades/' + b.blade, w); const rs = parseCombos(h); merge(rs.length ? rs : parseComboBlocks(h)); if (b === topBlades[0]) console.log('sample', JSON.stringify((rs.length ? rs : parseComboBlocks(h)).slice(0, 3))); } catch (e) { console.warn(e.message); }
+    try { const h = await get('/blades/' + b.blade, w); const rs = parseCombos(h); merge(rs.length ? rs : parseComboBlocks(h)); if (DUMP && b === topBlades[0] && w === '30d') { const k = h.search(/Recent [Tt]ournament/); console.log('RECENT@', k, h.slice(k, k + 3500).replace(/ class="[^"]*"/g, '').replace(/<svg[\s\S]*?<\/svg>/g, '<svg/>')); }
+      if (b === topBlades[0]) console.log('sample', JSON.stringify((rs.length ? rs : parseComboBlocks(h)).slice(0, 3))); } catch (e) { console.warn(e.message); }
     await new Promise(r => setTimeout(r, 250));
   }
   entry.combos = [...combos.values()].sort((a, b) => b.cuts - a.cuts).slice(0, MAX_COMBOS);

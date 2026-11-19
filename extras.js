@@ -202,6 +202,15 @@
   ];
 
   // Battle types for CX main/metal blades and a few blades, from BEYWATCH's type column
-  const TYPE_FILL = {"tt:main:flame":"Stamina","tt:main:reaper":"Balance","tt:blade:horus-shatter":"Stamina","tt:main:fang":"Attack","tt:main:blast":"Attack","tt:main:brave":"Attack","tt:main:brush":"Attack","tt:main:arc":"Stamina","tt:main:dark":"Defense","tt:main:eclipse":"Balance","tt:main:hunt":"Stamina","tt:main:might":"Balance","tt:main:flare":"Defense","tt:metal:blitz":"Attack","tt:metal:fortress":"Defense","tt:metal:rage":"Stamina","tt:metal:delta":"Balance","tt:metal:whip":"Stamina","tt:main:volt":"Attack","hb:main:blast":"Attack","hb:main:fang":"Attack","hb:main:reaper":"Balance","hb:main:flame":"Stamina","hb:blade:stun-medusa":"Stamina","hb:metal:rage":"Stamina","hb:metal:blitz":"Attack","hb:main:might":"Balance","hb:main:courage":"Attack"};
+  const TYPE_FILL = {"tt:main:flame":"Stamina","tt:main:reaper":"Balance","tt:blade:horus-shatter":"Stamina","tt:main:fang":"Attack","tt:main:blast":"Attack","tt:main:brave":"Attack","tt:main:brush":"Attack","tt:main:arc":"Stamina","tt:main:dark":"Defense","tt:main:eclipse":"Balance","tt:main:hunt":"Stamina","tt:main:might":"Balance","tt:main:flare":"Defense","tt:metal:blitz":"Attack","tt:metal:fortress":"Defense","tt:metal:rage":"Stamina","tt:metal:delta":"Balance","tt:metal:whip":"Stamina","tt:main:volt":"Attack","tt:rblade:bison-burrow":"Stamina","tt:rblade:vanish-lucifer":"Defense","tt:metal:tread":"Defense","hb:metal:tread":"Defense","tt:metal:force":"Balance","hb:main:blast":"Attack","hb:main:fang":"Attack","hb:main:reaper":"Balance","hb:main:flame":"Stamina","hb:blade:stun-medusa":"Stamina","hb:metal:rage":"Stamina","hb:metal:blitz":"Attack","hb:main:might":"Balance","hb:main:courage":"Attack"};
   for (const [id, t] of Object.entries(TYPE_FILL)) if (C.parts[id] && !C.parts[id].type) C.parts[id].type = t;
+
+  // Japanese release dates for sets that are not out yet (checked Nov 2026)
+  C.releases = { 'tt|BX-54': '2026-11-21', 'tt|CX-20': '2026-11-21', 'tt|UX-22': '2026-12-26', 'tt|BX-55': '2026-12-26' };
+  const now = new Date().toISOString().slice(0, 10);
+  for (const p of C.products) { const r = C.releases[p.brand + '|' + p.code]; if (r && r > now) p.upcoming = r; }
+  for (const part of Object.values(C.parts)) {
+    const prods = (part.products || []).map(id => C.products.find(x => x.id === id)).filter(Boolean);
+    if (prods.length && prods.every(x => x.upcoming)) part.upcoming = prods.map(x => x.upcoming).sort()[0];
+  }
 })();
