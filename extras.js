@@ -178,4 +178,26 @@
   for (const v of Object.values(C.variants)) (C.partVariants[v.part] = C.partVariants[v.part] || []).push(v);
   C.topBuilds = TOP_BUILDS;
   C.metaUpdated = 'Nov 2026';
+
+  // Creator picks from YouTube testers, compiled by Beyblade X Combo Finder (albertocabasvidani.github.io), videos up to Mar 2026
+  C.creatorPicks = [
+    { name: 'Cobalt Dragoon 1-60 Elevate', src: 'JacobPomegranate · California deck' },
+    { name: 'Aero Pegasus 9-60 Rush', src: 'JacobPomegranate' },
+    { name: 'Impact Drake 3-60 Cyclone', src: 'JacobPomegranate' },
+    { name: 'Clock Mirage 4-55 Low Orb', src: 'JacobPomegranate · beats Wizard Rod' },
+    { name: 'Clock Mirage 7-55 Low Orb', src: 'JacobPomegranate · Jan 2026' },
+    { name: 'Phoenix Wing 3-60 Rush', src: 'JacobPomegranate · main attacker' },
+    { name: 'Shark Scale 4-50 Low Rush', src: 'Anti Wizard Wizard Club' },
+    { name: 'Phoenix Wing 1-60 Low Rush', src: 'MBBC theory videos' },
+    { name: 'Hover Wyvern 1-60 Kick', src: 'MBBC benchmark' },
+    { name: 'Hover Wyvern 9-60 Rush', src: 'MBBC / HaruRen Hobbies' },
+    { name: 'Meteor Dragoon 1-60 Level', src: 'HaruRen Hobbies' },
+    { name: 'Meteor Dragoon 9-60 Kick', src: 'HaruRen Hobbies' },
+    { name: 'Wizard Rod 1-60 Rush', src: 'HaruRen Hobbies' },
+    { name: 'Tricera Press 7-60 Hexa', src: 'HaruRen Hobbies' },
+    { name: 'Mummy Curse 7-60 Hexa', src: 'HaruRen Hobbies' },
+    { name: 'Dran Sword 9-60 Kick', src: 'HaruRen Hobbies' },
+    { name: 'Ghost Circle 9-70 Kick', src: 'HaruRen Hobbies' },
+    { name: 'Silver Wolf 9-60 Under Needle', src: 'Community pick' },
+  ];
 })();

@@ -5,169 +5,269 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#0a0c12">
 <title>Bey Vault · Beyblade X collection</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f0b429'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23111' stroke-width='2.6'/%3E%3Cpath d='M16 7v5M25 16h-5M16 25v-5M7 16h5' stroke='%23111' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23ff4655'/%3E%3Cpath d='M32 6a26 26 0 0 1 22 12l-9 5a16 16 0 0 0-13-7zM55 44a26 26 0 0 1-22 14l-1-10a16 16 0 0 0 13-8zM9 44a26 26 0 0 1 0-24l9 5a16 16 0 0 0 0 14z' fill='%23fff'/%3E%3Cpath d='M25 25l14 14M39 25L25 39' stroke='%23111' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
 <script>try { const t = localStorage.getItem('beyvault-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
 <style>
   :root {
-    --fs-xs: .75rem; --fs-sm: .875rem; --fs-md: 1rem; --fs-lg: 1.25rem; --fs-xl: 1.75rem;
+    --fs-xs: .75rem; --fs-sm: .875rem; --fs-md: 1rem; --fs-lg: 1.2rem; --fs-xl: 1.7rem;
     --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px;
-    --r-sm: 6px; --r-md: 10px; --r-lg: 16px; --r-pill: 999px;
+    --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-pill: 999px;
     --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     color-scheme: dark;
-    --bg: #0c0e12; --glow: rgba(240,180,41,.07); --surface: #14171d; --surface-2: #1b1f27; --border: #252a33;
-    --text: #edf0f4; --muted: #8b95a5; --subtle: #5f6876;
-    --accent: #f0b429; --accent-soft: rgba(240,180,41,.14); --on-accent: #1a1300;
-    --pos: #3ecf8e; --pos-soft: rgba(62,207,142,.12); --neg: #f26b6b; --neg-soft: rgba(242,107,107,.12);
-    --focus: #7cb7ff; --shadow: 0 8px 24px rgba(0,0,0,.25);
-    --atk: #f26b6b; --def: #66c0f4; --sta: #3ecf8e; --bal: #c792ea;
+    --bg: #0a0c12; --ring: rgba(255,255,255,.035); --surface: #131722; --surface-2: #1a1f2d; --border: #262c3b;
+    --text: #eef1f6; --muted: #8e98aa; --subtle: #5d6678;
+    --accent: #ff4655; --accent-2: #ff8a3d; --accent-soft: rgba(255,70,85,.14); --on-accent: #fff;
+    --blue: #4da3ff; --pos: #35d08f; --pos-soft: rgba(53,208,143,.13); --neg: #ff6b6b; --neg-soft: rgba(255,107,107,.12);
+    --gold: #f5b83d; --focus: #7cb7ff; --shadow: 0 10px 30px rgba(0,0,0,.35);
+    --atk: #ff5d5d; --def: #4da3ff; --sta: #35d08f; --bal: #c08cff;
+    --line-BX: #2f7bff; --line-UX: #ff3d4f; --line-CX: #9b5cff; --line-other: #f5b83d;
+    --nav-h: 64px;
   }
   @media (prefers-color-scheme: light) { :root:not([data-theme]) {
-    color-scheme: light; --bg: #f6f7f9; --glow: rgba(183,121,31,.07); --surface: #fff; --surface-2: #f1f3f6; --border: #e3e6eb;
-    --text: #14171c; --muted: #5b6575; --subtle: #8a93a2; --accent: #b7791f; --accent-soft: rgba(183,121,31,.12); --on-accent: #fff;
-    --pos: #12936a; --pos-soft: rgba(18,147,106,.1); --neg: #d23f3f; --neg-soft: rgba(210,63,63,.1); --focus: #2563eb;
-    --shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.06);
-    --atk: #d23f3f; --def: #1a73e8; --sta: #12936a; --bal: #8e44ad;
+    color-scheme: light; --bg: #f3f5f9; --ring: rgba(20,30,60,.04); --surface: #fff; --surface-2: #eef1f6; --border: #dfe3ea;
+    --text: #121620; --muted: #5a6475; --subtle: #8b94a3; --accent: #e8283b; --accent-soft: rgba(232,40,59,.1);
+    --pos: #12936a; --pos-soft: rgba(18,147,106,.1); --neg: #d23f3f; --neg-soft: rgba(210,63,63,.1); --gold: #b7791f; --focus: #2563eb;
+    --shadow: 0 1px 2px rgba(16,24,40,.05), 0 10px 28px rgba(16,24,40,.08); --atk: #d23f3f; --def: #1a73e8; --sta: #12936a; --bal: #8e44ad;
   } }
   :root[data-theme="light"] {
-    color-scheme: light; --bg: #f6f7f9; --glow: rgba(183,121,31,.07); --surface: #fff; --surface-2: #f1f3f6; --border: #e3e6eb;
-    --text: #14171c; --muted: #5b6575; --subtle: #8a93a2; --accent: #b7791f; --accent-soft: rgba(183,121,31,.12); --on-accent: #fff;
-    --pos: #12936a; --pos-soft: rgba(18,147,106,.1); --neg: #d23f3f; --neg-soft: rgba(210,63,63,.1); --focus: #2563eb;
-    --shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.06);
-    --atk: #d23f3f; --def: #1a73e8; --sta: #12936a; --bal: #8e44ad;
+    color-scheme: light; --bg: #f3f5f9; --ring: rgba(20,30,60,.04); --surface: #fff; --surface-2: #eef1f6; --border: #dfe3ea;
+    --text: #121620; --muted: #5a6475; --subtle: #8b94a3; --accent: #e8283b; --accent-soft: rgba(232,40,59,.1);
+    --pos: #12936a; --pos-soft: rgba(18,147,106,.1); --neg: #d23f3f; --neg-soft: rgba(210,63,63,.1); --gold: #b7791f; --focus: #2563eb;
+    --shadow: 0 1px 2px rgba(16,24,40,.05), 0 10px 28px rgba(16,24,40,.08); --atk: #d23f3f; --def: #1a73e8; --sta: #12936a; --bal: #8e44ad;
   }
-  * { box-sizing: border-box; }
-  body { margin: 0; font-family: var(--font); font-size: var(--fs-md); line-height: 1.5; color: var(--text);
-    background: radial-gradient(1100px 480px at 15% -10%, var(--glow), transparent 60%), var(--bg); background-attachment: fixed; min-height: 100vh; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-padding-top: 80px; }
+  body { margin: 0; font-family: var(--font); font-size: var(--fs-md); line-height: 1.5; color: var(--text); min-height: 100vh; background: var(--bg); }
+  /* Stadium rings behind everything */
+  body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background: repeating-radial-gradient(circle at 50% -120px, transparent 0 46px, var(--ring) 46px 48px),
+      radial-gradient(900px 420px at 50% -80px, var(--accent-soft), transparent 70%); }
   button, input, select, textarea { font: inherit; color: inherit; }
   :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: var(--r-sm); }
   [hidden] { display: none !important; }
-  .muted { color: var(--muted); } .pos { color: var(--pos); } .neg { color: var(--neg); }
-  .container { max-width: 1100px; margin: 0 auto; padding: 0 var(--s-4); }
+  a { color: var(--blue); }
+  .muted { color: var(--muted); } .small { font-size: var(--fs-xs); } .pos { color: var(--pos); } .neg { color: var(--neg); }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 var(--s-4); }
   @media (min-width: 768px) { .container { padding: 0 var(--s-6); } }
 
+  /* Logo: a spinning top */
+  .bey-logo { width: 34px; height: 34px; flex: none; display: block; }
+  .bey-logo .spin { transform-origin: 32px 32px; }
+  .bey-logo:hover .spin, .spinning .bey-logo .spin { animation: spin .6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .bey-logo .spin { animation: none !important; } }
+
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); border: 1px solid var(--border); background: var(--surface);
-    color: var(--muted); border-radius: var(--r-pill); padding: 7px var(--s-3); font-size: var(--fs-sm); cursor: pointer; transition: color .15s, border-color .15s; }
-  .btn:hover { color: var(--text); border-color: var(--subtle); }
+    color: var(--text); border-radius: var(--r-pill); padding: 8px 14px; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; min-height: 40px; transition: border-color .15s, background .15s; }
+  .btn:hover { border-color: var(--subtle); }
   .btn:disabled { opacity: .5; cursor: not-allowed; }
-  .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
-  .btn-primary:hover { color: var(--on-accent); border-color: var(--accent); filter: brightness(1.06); }
-  .btn-danger:hover { color: var(--neg); border-color: var(--neg); }
-  .chip { border: 1px solid var(--border); background: transparent; color: var(--muted); border-radius: var(--r-pill); padding: 6px var(--s-3);
-    font-size: var(--fs-xs); cursor: pointer; white-space: nowrap; }
+  .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-color: transparent; color: var(--on-accent); }
+  .btn-primary:hover { filter: brightness(1.08); border-color: transparent; }
+  .btn-ghost { background: transparent; }
+  .btn-danger { color: var(--neg); }
+  .btn-sm { min-height: 32px; padding: 4px 12px; font-size: var(--fs-xs); }
+  .icon-btn { width: 40px; height: 40px; padding: 0; border-radius: 50%; }
+  .chip { border: 1px solid var(--border); background: var(--surface); color: var(--muted); border-radius: var(--r-pill); padding: 7px 13px;
+    font-size: var(--fs-xs); font-weight: 600; cursor: pointer; white-space: nowrap; min-height: 34px; }
   .chip:hover { color: var(--text); }
-  .chip[aria-pressed="true"] { color: var(--text); background: var(--accent-soft); border-color: var(--accent); }
-  .chips { display: flex; gap: var(--s-2); overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
-  .input, select.input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-md); padding: 10px var(--s-3); }
+  .chip[aria-pressed="true"] { color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
+  .chips { display: flex; gap: var(--s-2); overflow-x: auto; padding: 2px 0; scrollbar-width: none; margin: 0 calc(-1 * var(--s-4)); padding-left: var(--s-4); padding-right: var(--s-4); }
+  .chips::-webkit-scrollbar { display: none; }
+  @media (min-width: 768px) { .chips { margin: 0; padding-left: 0; padding-right: 0; flex-wrap: wrap; } }
+  .input, select.input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 11px var(--s-3); min-height: 44px; }
   .input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
-  .logo { display: grid; place-items: center; background: var(--accent); border-radius: var(--r-sm); width: 30px; height: 30px; flex: none; }
+  .search { position: relative; } .search .input { padding-left: 40px; }
+  .search::before { content: ""; position: absolute; left: 14px; top: 50%; width: 14px; height: 14px; transform: translateY(-50%); border: 2px solid var(--subtle); border-radius: 50%; }
+  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: var(--r-pill); padding: 3px; background: var(--surface); }
+  .seg button { border: 0; background: transparent; color: var(--muted); border-radius: var(--r-pill); padding: 6px 12px; font-size: var(--fs-xs); cursor: pointer; font-weight: 700; min-height: 30px; }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
 
   /* Header */
-  header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
-  .top { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) 0; }
-  .top h1 { font-size: var(--fs-md); margin: 0; font-weight: 700; letter-spacing: -.01em; }
+  header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .top { display: flex; align-items: center; gap: var(--s-3); padding: 10px 0; }
+  .brandmark { display: flex; align-items: center; gap: 10px; }
+  .brandmark b { font-size: 1.05rem; letter-spacing: -.01em; }
+  .brandmark small { display: block; font-size: 11px; color: var(--muted); font-weight: 500; line-height: 1.1; }
   .top .spacer { flex: 1; }
-  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: var(--r-pill); padding: 2px; background: var(--surface); }
-  .seg button { border: 0; background: transparent; color: var(--muted); border-radius: var(--r-pill); padding: 5px 12px; font-size: var(--fs-xs); cursor: pointer; font-weight: 600; }
-  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
-  nav.tabs { display: flex; gap: var(--s-1); overflow-x: auto; scrollbar-width: none; }
-  nav.tabs button { border: 0; background: transparent; color: var(--muted); padding: var(--s-2) var(--s-3); font-size: var(--fs-sm); font-weight: 600; cursor: pointer;
+  nav.tabs { display: none; gap: var(--s-1); }
+  nav.tabs button { border: 0; background: transparent; color: var(--muted); padding: 10px 14px; font-size: var(--fs-sm); font-weight: 700; cursor: pointer;
     border-bottom: 2px solid transparent; white-space: nowrap; }
   nav.tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
   .sync { font-size: var(--fs-xs); color: var(--subtle); white-space: nowrap; }
   .short { display: none; }
-  @media (max-width: 560px) { .top .sync { display: none; } .long { display: none; } .short { display: inline; } .top { gap: var(--s-2); } }
+  @media (min-width: 900px) { nav.tabs { display: flex; } }
+  @media (max-width: 560px) { .top .sync, .brandmark small { display: none; } .long { display: none; } .short { display: inline; } }
 
-  main { padding: var(--s-4) 0 var(--s-6); }
+  /* Bottom nav (phones) */
+  .bottomnav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: repeat(5, 1fr);
+    background: color-mix(in srgb, var(--surface) 94%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border); padding-bottom: env(safe-area-inset-bottom); }
+  .bottomnav button { border: 0; background: transparent; color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; height: var(--nav-h); font-size: 11px; font-weight: 700; cursor: pointer; }
+  .bottomnav svg { width: 22px; height: 22px; }
+  .bottomnav button[aria-selected="true"] { color: var(--accent); }
+  @media (min-width: 900px) { .bottomnav { display: none; } }
+
+  main { padding: var(--s-4) 0 calc(var(--nav-h) + 40px); }
+  @media (min-width: 900px) { main { padding-bottom: var(--s-6); } }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-4); }
   .stack { display: flex; flex-direction: column; gap: var(--s-3); }
   .row { display: flex; align-items: center; gap: var(--s-3); }
+  .wrap { flex-wrap: wrap; }
+  .between { justify-content: space-between; }
   .grid { display: grid; gap: var(--s-3); }
-  @media (min-width: 720px) { .grid-2 { grid-template-columns: 1fr 1fr; } .grid-3 { grid-template-columns: repeat(3, 1fr); } }
-  h2 { font-size: var(--fs-lg); margin: 0; }
-  h3 { font-size: var(--fs-sm); margin: 0; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
-  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); margin: var(--s-5) 0 var(--s-2); }
-  .section-head:first-child { margin-top: 0; }
+  @media (min-width: 640px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 900px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } .grid-4 { grid-template-columns: repeat(4, 1fr); } }
+  .sets-grid { display: grid; gap: var(--s-3); grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); }
+  h2 { font-size: var(--fs-lg); margin: 0; letter-spacing: -.01em; }
+  h3 { font-size: var(--fs-xs); margin: 0; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-weight: 800; }
+  .section-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin: var(--s-5) 0 var(--s-2); }
+  .section-head h2::before { content: ""; display: inline-block; width: 10px; height: 18px; margin-right: 10px; vertical-align: -3px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); clip-path: polygon(30% 0, 100% 0, 70% 100%, 0 100%); }
+  .first { margin-top: 0; }
 
-  /* Stats tiles */
-  .tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-3); }
+  /* Hero + tiles */
+  .hero { position: relative; overflow: hidden; border-radius: var(--r-lg); padding: var(--s-5) var(--s-4); border: 1px solid var(--border);
+    background: radial-gradient(circle at 92% 50%, var(--accent-soft), transparent 55%), var(--surface); }
+  .hero::after { content: ""; position: absolute; right: -60px; top: 50%; width: 220px; height: 220px; transform: translateY(-50%); border-radius: 50%;
+    background: repeating-radial-gradient(circle, transparent 0 16px, var(--ring) 16px 18px); opacity: .9; }
+  .hero h2 { font-size: var(--fs-xl); }
+  .tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-3); margin-top: var(--s-4); position: relative; z-index: 1; }
   @media (min-width: 720px) { .tiles { grid-template-columns: repeat(4, 1fr); } }
-  .tile { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-3) var(--s-4); }
-  .tile .k { font-size: var(--fs-xs); color: var(--muted); }
-  .tile .v { font-size: var(--fs-xl); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; }
+  .tile { background: var(--surface-2); border-radius: var(--r-md); padding: var(--s-3); }
+  .tile .k { font-size: var(--fs-xs); color: var(--muted); font-weight: 600; }
+  .tile .v { font-size: var(--fs-xl); font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.15; }
 
   /* Part rows */
   .list { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
-  .item { display: flex; align-items: center; gap: var(--s-3); padding: 10px var(--s-3); border-top: 1px solid var(--border); }
+  .item { display: flex; align-items: center; gap: var(--s-3); padding: 10px var(--s-3); border-top: 1px solid var(--border); min-height: 64px; }
   .item:first-child { border-top: 0; }
   .item .main { flex: 1; min-width: 0; cursor: pointer; }
-  .item .name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .item .sub { font-size: var(--fs-xs); color: var(--muted); display: flex; gap: var(--s-2); flex-wrap: wrap; align-items: center; }
-  .item.owned .name::after { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--pos); margin-left: 8px; vertical-align: middle; }
-  .tag { font-size: 11px; padding: 1px 7px; border-radius: var(--r-pill); background: var(--surface-2); color: var(--muted); font-weight: 600; }
+  .item .name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item .sub { font-size: var(--fs-xs); color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 2px; }
+  .item.owned .thumb { box-shadow: 0 0 0 2px var(--pos); }
+  .tag { font-size: 11px; padding: 1px 8px; border-radius: var(--r-pill); background: var(--surface-2); color: var(--muted); font-weight: 700; white-space: nowrap; }
+  .tag-own { background: var(--pos-soft); color: var(--pos); }
+  .tag-miss { background: var(--neg-soft); color: var(--neg); }
   .t-Attack { color: var(--atk); } .t-Defense { color: var(--def); } .t-Stamina { color: var(--sta); } .t-Balance { color: var(--bal); }
-  .stepper { display: inline-flex; align-items: center; border: 1px solid var(--border); border-radius: var(--r-pill); overflow: hidden; flex: none; }
-  .stepper button { width: 32px; height: 32px; border: 0; background: transparent; cursor: pointer; color: var(--muted); font-size: 18px; line-height: 1; }
+  .tdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: 0; background: currentColor; }
+  .stepper { display: inline-flex; align-items: center; border: 1px solid var(--border); border-radius: var(--r-pill); overflow: hidden; flex: none; background: var(--surface); }
+  .stepper button { width: 36px; height: 36px; border: 0; background: transparent; cursor: pointer; color: var(--muted); font-size: 20px; line-height: 1; }
   .stepper button:hover { color: var(--text); background: var(--surface-2); }
-  .stepper span { min-width: 26px; text-align: center; font-variant-numeric: tabular-nums; font-weight: 700; font-size: var(--fs-sm); }
+  .stepper span { min-width: 24px; text-align: center; font-variant-numeric: tabular-nums; font-weight: 800; font-size: var(--fs-sm); }
   .stepper.zero span { color: var(--subtle); font-weight: 500; }
-  .star { border: 0; background: transparent; cursor: pointer; font-size: 18px; color: var(--subtle); width: 32px; height: 32px; flex: none; }
-  .star[aria-pressed="true"] { color: var(--accent); }
+  .star { border: 0; background: transparent; cursor: pointer; font-size: 20px; color: var(--subtle); width: 36px; height: 36px; flex: none; border-radius: 50%; }
+  .star[aria-pressed="true"] { color: var(--gold); }
+  .thumb { width: 44px; height: 44px; border-radius: 50%; object-fit: contain; background: var(--surface-2); flex: none; }
+  .thumb-sm { width: 30px; height: 30px; border-radius: 50%; object-fit: contain; background: var(--surface-2); flex: none; }
+  .noimg { display: inline-block; background: repeating-radial-gradient(circle, var(--surface-2) 0 4px, var(--border) 4px 5px); }
+  .bigimg { width: 84px; height: 84px; border-radius: 50%; object-fit: contain; background: var(--surface-2); flex: none; }
+  details.group > summary { list-style: none; cursor: pointer; }
+  details.group > summary::-webkit-details-marker { display: none; }
+  details.group > summary .chev { transition: transform .2s; color: var(--subtle); }
+  details.group[open] > summary .chev { transform: rotate(90deg); }
 
-  /* Products */
-  .prod { display: flex; flex-direction: column; gap: var(--s-2); }
-  .prod .code { font-size: var(--fs-xs); font-weight: 700; color: var(--accent); letter-spacing: .04em; }
-  .prod .title { font-weight: 700; }
-  .prod ul { margin: 0; padding-left: 18px; font-size: var(--fs-sm); color: var(--muted); }
+  /* Tiers */
+  .tier { display: inline-grid; place-items: center; min-width: 22px; height: 20px; font-size: 11px; font-weight: 900; padding: 0 6px; border-radius: 6px; font-style: italic; }
+  .tier-X { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; }
+  .tier-S, .tier-Sp { background: var(--gold); color: #1a1300; }
+  .tier-A { background: var(--pos-soft); color: var(--pos); }
+  .tier-B { background: rgba(77,163,255,.14); color: var(--blue); }
+  .tier-C, .tier-D, .tier-q { background: var(--surface-2); color: var(--muted); }
+
+  /* Product boxes */
+  .box { position: relative; display: flex; flex-direction: column; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
+  .box-pack { position: relative; margin: 10px 10px 0; border-radius: 12px; overflow: hidden; aspect-ratio: 4 / 3.3;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--line) 85%, #000) 0%, #07080c 70%); color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.08); }
+  .box-pack::before { content: ""; position: absolute; inset: 0; background: repeating-radial-gradient(circle at 70% 60%, transparent 0 22px, rgba(255,255,255,.05) 22px 24px); }
+  .box-pack::after { content: ""; position: absolute; left: -10%; top: 0; width: 55%; height: 100%; background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.08) 41%, transparent 60%); }
+  .box-band { position: absolute; left: 0; right: 0; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 8px 10px;
+    background: linear-gradient(90deg, var(--line), color-mix(in srgb, var(--line) 50%, transparent)); font-weight: 900; font-style: italic; letter-spacing: .02em; }
+  .box-band .code { font-size: 15px; } .box-band .kind { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; opacity: .9; font-style: normal; font-weight: 800; }
+  .box-art { position: absolute; inset: 36px 8px 30px; z-index: 1; display: grid; place-items: center; }
+  .box-art img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 8px 14px rgba(0,0,0,.5)); }
+  .box-title { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 6px 10px; font-size: 12px; font-weight: 800; background: linear-gradient(0deg, rgba(0,0,0,.75), transparent);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .box-x { position: absolute; right: 8px; bottom: 26px; z-index: 2; font-weight: 900; font-size: 40px; font-style: italic; line-height: 1; color: rgba(255,255,255,.12); }
+  .box-owned { position: absolute; top: 44px; right: 10px; z-index: 3; background: var(--pos); color: #04170f; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: var(--r-pill); }
+  .box-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .box-body .beys { font-size: var(--fs-xs); color: var(--muted); margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
   .bar { height: 6px; border-radius: var(--r-pill); background: var(--surface-2); overflow: hidden; }
-  .bar > i { display: block; height: 100%; background: var(--pos); border-radius: var(--r-pill); }
+  .bar > i { display: block; height: 100%; background: linear-gradient(90deg, var(--pos), #7be3b5); border-radius: var(--r-pill); }
   .note { font-size: var(--fs-xs); color: var(--subtle); }
 
+  /* Combos */
+  .combo { display: flex; align-items: center; gap: var(--s-3); padding: 10px var(--s-3); border-top: 1px solid var(--border); }
+  .combo:first-child { border-top: 0; }
+  .combo .parts { display: flex; flex: none; }
+  .combo .parts > * { margin-left: -8px; border: 2px solid var(--surface); }
+  .combo .parts > *:first-child { margin-left: 0; }
+  .combo .parts .miss { opacity: .35; filter: grayscale(1); }
+  .cname { font-weight: 800; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  img.thumb, img.thumb-sm, img.bigimg { color: transparent; font-size: 0; }
+  .rank { width: 26px; flex: none; text-align: center; font-weight: 900; font-style: italic; color: var(--subtle); }
+  .num { font-variant-numeric: tabular-nums; }
+  .metric { text-align: right; flex: none; font-size: var(--fs-xs); color: var(--muted); }
+  .metric b { display: block; font-size: var(--fs-sm); color: var(--text); }
+
   /* Deck builder */
-  .slot { display: flex; flex-direction: column; gap: var(--s-2); }
-  .slot label { font-size: var(--fs-xs); color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
-  .slot .bey { font-weight: 700; min-height: 1.5em; }
+  .slot { display: flex; flex-direction: column; gap: var(--s-2); position: relative; overflow: hidden; }
+  .slot::after { content: attr(data-n); position: absolute; right: 10px; top: -6px; font-size: 64px; font-weight: 900; font-style: italic; color: var(--ring); pointer-events: none; }
+  .slot label { font-size: var(--fs-xs); color: var(--muted); display: flex; flex-direction: column; gap: 4px; font-weight: 600; }
+  .slot .bey { font-weight: 800; min-height: 1.5em; font-size: var(--fs-md); }
   .warnbox { border: 1px solid var(--neg); background: var(--neg-soft); color: var(--neg); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); font-size: var(--fs-sm); }
   .okbox { border: 1px solid var(--pos); background: var(--pos-soft); color: var(--pos); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); font-size: var(--fs-sm); }
+  .infobox { border: 1px solid var(--border); background: var(--surface-2); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); font-size: var(--fs-sm); color: var(--muted); }
 
-  /* Dialog */
-  dialog { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: var(--r-lg); padding: 0; width: min(560px, calc(100vw - 24px));
+  /* Dialog: a bottom sheet on phones */
+  dialog { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: var(--r-lg); padding: 0; width: min(580px, calc(100vw - 24px));
     max-height: calc(100vh - 48px); box-shadow: var(--shadow); }
-  dialog::backdrop { background: rgba(0,0,0,.55); }
-  .dlg { padding: var(--s-5); display: flex; flex-direction: column; gap: var(--s-3); }
+  @media (max-width: 640px) { dialog { width: 100vw; max-width: 100vw; margin: auto 0 0; border-radius: 20px 20px 0 0; max-height: 90vh; padding-bottom: env(safe-area-inset-bottom); } }
+  dialog::backdrop { background: rgba(0,0,0,.6); }
+  .dlg { padding: var(--s-5) var(--s-4); display: flex; flex-direction: column; gap: var(--s-3); }
   .dlg-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
   .empty { text-align: center; color: var(--muted); padding: var(--s-6) var(--s-4); }
-  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: var(--r-pill);
-    font-size: var(--fs-sm); font-weight: 600; z-index: 50; box-shadow: var(--shadow); }
-  .thumb { width: 40px; height: 40px; border-radius: var(--r-sm); object-fit: contain; background: var(--surface-2); flex: none; }
-  .noimg { display: inline-block; }
-  .pimg { width: 64px; height: 64px; border-radius: var(--r-md); object-fit: contain; background: var(--surface-2); flex: none; }
-  .bigimg { width: 72px; height: 72px; border-radius: var(--r-md); object-fit: contain; background: var(--surface-2); flex: none; }
-  .tier { font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: var(--r-pill); }
-  .tier-Sp { background: var(--accent); color: var(--on-accent); } .tier-S { background: var(--accent-soft); color: var(--accent); }
-  .tier-A { background: var(--pos-soft); color: var(--pos); } .tier-B { background: var(--surface-2); color: var(--muted); }
+  .toast { position: fixed; left: 50%; bottom: calc(var(--nav-h) + 20px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--text); color: var(--bg);
+    padding: 10px 16px; border-radius: var(--r-pill); font-size: var(--fs-sm); font-weight: 700; z-index: 50; box-shadow: var(--shadow); max-width: calc(100vw - 32px); }
+  @media (min-width: 900px) { .toast { bottom: 24px; } }
   .stats { display: flex; flex-direction: column; gap: 6px; }
   .stat { display: grid; grid-template-columns: 36px 1fr 28px; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
   .stat b { color: var(--text); text-align: right; }
   .lock { min-height: 100vh; display: grid; place-items: center; padding: var(--s-4); }
-  .lock-card { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-6);
+  .lock-card { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-6) var(--s-5);
     box-shadow: var(--shadow); display: flex; flex-direction: column; gap: var(--s-3); }
+  .lock-card .bey-logo { width: 64px; height: 64px; }
+  .lock-card .bey-logo .spin { animation: spin 3s linear infinite; }
   .lock-card h1 { margin: 0; font-size: var(--fs-xl); } .lock-card p { margin: 0; }
-  footer { color: var(--subtle); font-size: var(--fs-xs); padding: var(--s-5) 0; border-top: 1px solid var(--border); }
+  footer { color: var(--subtle); font-size: var(--fs-xs); padding: var(--s-5) 0 calc(var(--nav-h) + 24px); border-top: 1px solid var(--border); }
+  @media (min-width: 900px) { footer { padding-bottom: var(--s-5); } }
   footer a { color: var(--muted); }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="bey" viewBox="0 0 64 64">
+    <defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4655"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs>
+    <g class="spin">
+      <circle cx="32" cy="32" r="29" fill="url(#bg1)"/>
+      <path d="M32 7a25 25 0 0 1 21.6 12.5l-8.7 5A15 15 0 0 0 32 17zM53.6 44.5A25 25 0 0 1 32 57V47a15 15 0 0 0 12.9-7.5zM10.4 44.5a25 25 0 0 1 0-25l8.7 5a15 15 0 0 0 0 15z" fill="#fff" opacity=".95"/>
+      <circle cx="32" cy="32" r="11" fill="#12151d"/>
+    </g>
+    <path d="M27 27l10 10M37 27L27 37" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/>
+  </symbol>
+</svg>
 <div class="lock" id="lock" hidden>
   <form class="lock-card" id="lockForm" autocomplete="on">
-    <span class="logo" style="width:44px;height:44px;border-radius:10px"><svg width="24" height="24" viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="none" stroke="currentColor" stroke-width="3" style="color:var(--on-accent)"/><path d="M16 5v6M27 16h-6M16 27v-6M5 16h6" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="color:var(--on-accent)"/></svg></span>
+    <svg class="bey-logo"><use href="#bey"/></svg>
     <h1 id="lockTitle">Bey Vault</h1>
     <p class="muted" id="lockText">Sign in to open your collection.</p>
     <input class="input" id="lockUser" name="username" autocomplete="username" placeholder="Username" required>
     <input class="input" id="lockPass" name="password" type="password" autocomplete="current-password" placeholder="Password" required>
     <input class="input" id="lockPass2" type="password" autocomplete="new-password" placeholder="Repeat password" hidden>
     <label class="muted" style="font-size:14px;display:flex;gap:8px;align-items:center"><input type="checkbox" id="lockRemember" checked> Stay signed in on this device</label>
-    <button class="btn btn-primary" id="lockBtn" type="submit" style="padding:12px">Sign in</button>
+    <button class="btn btn-primary" id="lockBtn" type="submit" style="min-height:48px">Sign in</button>
     <p class="muted" id="lockMsg" style="font-size:13px;min-height:1.2em"></p>
   </form>
 </div>
@@ -175,46 +275,54 @@
 <header>
   <div class="container">
     <div class="top">
-      <span class="logo"><svg width="18" height="18" viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="none" stroke="currentColor" stroke-width="3" style="color:var(--on-accent)"/><path d="M16 5v6M27 16h-6M16 27v-6M5 16h6" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="color:var(--on-accent)"/></svg></span>
-      <h1>Bey Vault</h1>
+      <div class="brandmark"><svg class="bey-logo"><use href="#bey"/></svg><div><b>Bey Vault</b><small>Beyblade X collection</small></div></div>
+      <nav class="tabs" role="tablist" style="margin-left:12px">
+        <button role="tab" data-tab="home" aria-selected="true">Collection</button>
+        <button role="tab" data-tab="parts" aria-selected="false">Parts</button>
+        <button role="tab" data-tab="sets" aria-selected="false">Sets</button>
+        <button role="tab" data-tab="meta" aria-selected="false">Meta</button>
+        <button role="tab" data-tab="decks" aria-selected="false">Decks</button>
+      </nav>
       <div class="spacer"></div>
       <span class="sync" id="syncStatus"></span>
       <div class="seg" role="group" aria-label="Brand">
-        <button data-brand="tt" aria-pressed="true"><span class="long">Takara Tomy</span><span class="short">Takara</span></button>
+        <button data-brand="tt" aria-pressed="true"><span class="long">Takara Tomy</span><span class="short">TT</span></button>
         <button data-brand="hb" aria-pressed="false">Hasbro</button>
       </div>
-      <button class="btn" id="settingsBtn" aria-label="Settings" style="width:36px;height:36px;padding:0">⚙</button>
+      <button class="btn icon-btn" id="settingsBtn" aria-label="Settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      </button>
     </div>
-    <nav class="tabs" role="tablist">
-      <button role="tab" data-tab="collection" aria-selected="true">My collection</button>
-      <button role="tab" data-tab="parts" aria-selected="false">Parts</button>
-      <button role="tab" data-tab="products" aria-selected="false">Products</button>
-      <button role="tab" data-tab="decks" aria-selected="false">Deck builder</button>
-      <button role="tab" data-tab="stats" aria-selected="false">Stats</button>
-    </nav>
   </div>
 </header>
 
 <main class="container">
-  <section id="tab-collection"></section>
+  <section id="tab-home"></section>
   <section id="tab-parts" hidden></section>
-  <section id="tab-products" hidden></section>
+  <section id="tab-sets" hidden></section>
+  <section id="tab-meta" hidden></section>
   <section id="tab-decks" hidden></section>
-  <section id="tab-stats" hidden></section>
 </main>
 
 <footer class="container">
-  Parts catalog from the official Takara Tomy lineup, byybladebuilder.com, the Beyblade Wiki and retailer set listings. Hasbro list is partial.
-  Takara Tomy and Hasbro parts are tracked separately because they are different moulds.<br>
-  Part photos: <a href="https://beybladehub.app" target="_blank" rel="noopener">BeybladeHub</a>. Meta: BEYWATCH.GG, BBX Weekly, Beyblade Kingdom, note.com tier lists. Official stats via byybladebuilder.com.
+  Parts catalog from the official Takara Tomy lineup, byybladebuilder.com, the Beyblade Wiki and retailer listings. Hasbro list is partial.
+  Set photos: <a href="https://beyblade.takaratomy.co.jp/beyblade-x/lineup/" target="_blank" rel="noopener">Takara Tomy</a>. Part photos: <a href="https://beybladehub.app" target="_blank" rel="noopener">BeybladeHub</a>.<br>
+  Meta: <a href="https://beywatch.gg" target="_blank" rel="noopener">BEYWATCH.GG</a> tournament top cuts, refreshed every Monday. Creator picks: JacobPomegranate, HaruRen Hobbies, MBBC, Anti Wizard Wizard Club (via Beyblade X Combo Finder). Consensus tiers: BBX Weekly, Beyblade Kingdom, note.com.
 </footer>
 
+<nav class="bottomnav" role="tablist">
+  <button data-tab="home" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>Collection</button>
+  <button data-tab="parts" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Parts</button>
+  <button data-tab="sets" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg>Sets</button>
+  <button data-tab="meta" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Meta</button>
+  <button data-tab="decks" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="12" r="3"/><circle cx="12" cy="12" r="3"/><circle cx="18" cy="12" r="3"/></svg>Decks</button>
+</nav>
 </div>
 <dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
 <div class="toast" id="toast" hidden></div>
 
 <script>
-  function imgFail(el) { const fb = (el.dataset.fb || '').split('|').filter(Boolean); if (fb.length) { el.src = fb.shift(); el.dataset.fb = fb.join('|'); } else el.style.visibility = 'hidden'; }
+  function imgFail(el) { const fb = (el.dataset.fb || '').split('|').filter(Boolean); if (fb.length) { el.src = fb.shift(); el.dataset.fb = fb.join('|'); } else { el.removeAttribute('src'); el.classList.add('noimg'); } }
 </script>
 <script src="data.js"></script>
 <script src="extras.js"></script>
@@ -230,27 +338,28 @@
     lock: 'Lock chip', main: 'Main blade', metal: 'Metal blade', over: 'Over blade', assist: 'Assist blade',
   };
   const KIND_ORDER = ['blade', 'rblade', 'lock', 'main', 'metal', 'over', 'assist', 'ratchet', 'rbit', 'bit'];
-  const KIND_FILTERS = [['all', 'All'], ['blade', 'Blades'], ['cx', 'CX parts'], ['ratchet', 'Ratchets'], ['bit', 'Bits']];
-  const kindGroup = k => (k === 'blade' || k === 'rblade') ? 'blade' : (k === 'ratchet') ? 'ratchet' : (k === 'bit' || k === 'rbit') ? 'bit' : 'cx';
+  // Same split as BEYWATCH: each CX piece is its own category
+  const CATS = [['blade', 'Blades'], ['lock', 'Lock chips'], ['main', 'Main blades'], ['metal', 'Metal blades'], ['over', 'Over blades'], ['assist', 'Assist blades'], ['ratchet', 'Ratchets'], ['bit', 'Bits']];
+  const CAT_NAME = Object.fromEntries(CATS);
+  const catOf = k => k === 'rblade' ? 'blade' : k === 'rbit' ? 'bit' : k;
+  const TABS = ['home', 'parts', 'sets', 'meta', 'decks'];
 
   // ---------- State ----------
-  const blank = () => ({ v: 1, updatedAt: 0, owned: {}, wish: {}, notes: {}, purchases: [], custom: [], decks: [] });
+  const blank = () => ({ v: 1, updatedAt: 0, owned: {}, wish: {}, want: {}, notes: {}, purchases: [], custom: [], decks: [] });
   let S = blank();
-  let brand = 'tt', tab = 'collection';
-  const ui = { partsQ: '', partsKind: 'all', partsShow: 'all', partsSort: 'meta', prodQ: '', prodLine: 'all', deck: null };
-  try { brand = localStorage.getItem('beyvault-brand') || 'tt'; } catch (e) {}
+  let brand = 'tt', tab = 'home';
+  const ui = { partsQ: '', partsCat: 'all', partsShow: 'all', partsSort: 'meta', setsQ: '', setsLine: 'all', setsShow: 'all',
+    metaCat: 'blade', metaView: 'combos', comboFilter: 'all', deck: null, win: '30d' };
+  try { brand = localStorage.getItem('beyvault-brand') || 'tt'; ui.win = localStorage.getItem('beyvault-win') || '30d'; } catch (e) {}
 
-  // Custom parts join the catalog
   function mergeCustom() { for (const p of S.custom) if (!C.parts[p.id]) C.parts[p.id] = { products: [], weight: null, ...p }; }
   mergeCustom();
 
   const part = id => C.parts[id];
   const vqty = id => S.owned[id] || 0;
   const qty = id => (S.owned[id] || 0) + (C.partVariants[id] || []).reduce((n, v) => n + (S.owned[v.id] || 0), 0);
-  const TIER_SCORE = { 'S+': 5, S: 4, A: 3, B: 2 };
-  const tierScore = p => p.meta ? TIER_SCORE[p.meta.tier] || 1 : 0;
-  // Older saves stored plain part ids for purchases; move them onto the matching release variant.
   function migrate() {
+    S.want = S.want || {};
     for (const x of S.purchases) {
       if (!x.parts || x.parts.some(id => id.includes('@'))) continue;
       const p = productById(x.pid); if (!p) continue;
@@ -265,7 +374,88 @@
   const brandProducts = () => C.products.filter(p => p.brand === brand);
   const productById = id => C.products.find(p => p.id === id);
   const label = p => p.code && (p.kind === 'bit' || p.kind === 'rbit' || p.kind === 'assist' || p.kind === 'over') ? `${p.name} (${p.code})` : p.name;
+  const brandName = b => b === 'tt' ? 'Takara Tomy' : 'Hasbro';
 
+  // ---------- Live meta (meta.json, refreshed weekly by a GitHub Action from BEYWATCH.GG) ----------
+  const WINS = [['30d', '30 days'], ['90d', '90 days'], ['6mo', '6 months'], ['all', 'All time']];
+  const WIN_NAME = Object.fromEntries(WINS);
+  const TIERV = { X: 6, S: 5, A: 4, B: 3, C: 2, D: 1, '?': .5 };
+  const CONS_TIER = { 'S+': 'X', S: 'S', A: 'A', B: 'B' };
+  let META = null, metaCache = {};
+  const normKey = s => String(s).toLowerCase().replace(/\(metal\)/g, '').replace(/[^a-z0-9]+/g, ' ').trim().split(' ').sort().join(' ');
+  let idx = null;
+  function buildIndex() {
+    idx = {};
+    for (const p of Object.values(C.parts)) {
+      const cat = catOf(p.kind);
+      for (const n of [p.name, p.alt].filter(Boolean)) {
+        const k = `${p.brand}|${cat}|${normKey(n)}`;
+        (idx[k] = idx[k] || []).includes(p.id) || idx[k].push(p.id);
+      }
+    }
+  }
+  // BEYWATCH slug -> candidate part ids in the current brand
+  function resolve(slug, b = brand) {
+    if (!idx) buildIndex();
+    const pre = [['ratchet-', 'ratchet'], ['bit-', 'bit'], ['lockchip-', 'lock'], ['assist-', 'assist'], ['overblade-', 'over']].find(([p]) => slug.startsWith(p));
+    const name = pre ? slug.slice(pre[0].length) : slug;
+    const cats = pre ? [pre[1]] : ['blade', 'main', 'metal'];
+    const k = normKey(name.replace(/-/g, ' '));
+    const key = pre && pre[1] === 'ratchet' ? normKey(name) : k;
+    return cats.flatMap(c => idx[`${b}|${c}|${key}`] || []);
+  }
+  const SLOT_OF = { blade: 'blade', rblade: 'blade', main: 'main', metal: 'main', lock: 'lock', over: 'over', assist: 'assist', ratchet: 'ratchet', bit: 'bit', rbit: 'bit' };
+  function metaFor(win = ui.win) {
+    const key = brand + win;
+    if (metaCache[key]) return metaCache[key];
+    const W = META?.windows?.[win];
+    const out = { stat: {}, combos: [], info: W };
+    if (!W) return (metaCache[key] = out);
+    const setStat = (ids, s) => ids.forEach(id => { out.stat[id] = { ...(out.stat[id] || {}), ...Object.fromEntries(Object.entries(s).filter(([, v]) => v != null && v !== '')) }; });
+    for (const b of W.blades) setStat(resolve(b.blade), { tier: b.tier, cuts: b.cuts, first: b.firstRate, share: b.winShare, type: b.type });
+    for (const [, list] of Object.entries(W.parts || {})) for (const x of list) {
+      const ids = resolve(x.slug);
+      ids.forEach(id => { const s = out.stat[id] || {}; if (!s.tier || s.tier === '?') s.tier = x.tier; if (!s.cuts) s.cuts = x.cuts; if (s.first == null) s.first = x.pct; out.stat[id] = s; });
+    }
+    // Combos: the combos page plus each blade's best combo
+    const seen = new Map();
+    const addCombo = c => {
+      if (!c || !c.slug) return;
+      const prev = seen.get(c.slug);
+      if (prev) { prev.cuts = Math.max(prev.cuts || 0, c.cuts || 0); if (c.first != null && prev.first == null) prev.first = c.first; return; }
+      const slots = c.parts.map(s => ({ slug: s, ids: resolve(s) }));
+      const cx = c.parts.some(s => s.startsWith('lockchip-'));
+      const bladeSlot = slots.find(s => !/^(ratchet|bit|lockchip|assist|overblade)-/.test(s.slug));
+      const bladePart = bladeSlot?.ids.map(part).find(Boolean);
+      const o = { slug: c.slug, name: c.name || c.slug.replace(/-/g, ' '), cuts: c.cuts || 0, first: c.first ?? null, share: c.share ?? null,
+        slots, cx, type: c.type || bladePart?.type || '', known: slots.every(s => s.ids.length) };
+      seen.set(c.slug, o); out.combos.push(o);
+    };
+    for (const c of W.combos || []) addCombo({ ...c, first: c.pct?.[1] ?? null, share: c.pct?.[0] ?? null });
+    for (const b of W.blades) if (b.combo) addCombo({ ...b.combo, cuts: null, type: b.type });
+    // Part usage from combos (fills parts the tier tables skip, e.g. many bits and ratchets)
+    for (const c of out.combos) for (const s of c.slots) s.ids.forEach(id => { const st = out.stat[id] = out.stat[id] || {}; st.comboCuts = (st.comboCuts || 0) + c.cuts; });
+    out.combos.sort((a, b) => comboScore(b) - comboScore(a));
+    // Rank inside each category
+    const byCat = {};
+    for (const [id, st] of Object.entries(out.stat)) { const p = part(id); if (!p) continue; (byCat[catOf(p.kind)] = byCat[catOf(p.kind)] || []).push([id, st]); }
+    for (const list of Object.values(byCat)) { list.sort((a, b) => statScore(b[1]) - statScore(a[1])); list.forEach(([, st], i) => st.rank = i + 1); }
+    return (metaCache[key] = out);
+  }
+  const statScore = st => st ? (TIERV[st.tier] || 0) * 100000 + (st.cuts || st.comboCuts || 0) : 0;
+  const comboScore = c => (c.cuts || 0) * ((c.first ?? 30) / 100 + .5);
+  const pStat = (p, win) => metaFor(win).stat[p.id];
+  function partScore(p) {
+    const st = pStat(p);
+    return statScore(st) + (p.meta ? (TIERV[CONS_TIER[p.meta.tier]] || 0) * 1000 + (p.meta.usage || 0) : 0) + (p.stats ? (p.stats.atk + p.stats.def + p.stats.sta) / 100 : 0);
+  }
+  const owns = ids => ids.find(id => qty(id));
+  const comboMissing = c => c.slots.filter(s => !owns(s.ids));
+  async function loadMeta() {
+    try { const r = await fetch('meta.json?t=' + Math.floor(Date.now() / 36e5), { cache: 'no-cache' }); if (r.ok) { META = await r.json(); metaCache = {}; if (!$('app').hidden) render(); } } catch (e) {}
+  }
+
+  // ---------- Saving ----------
   // ---------- Encryption (username + password -> AES-256-GCM key via PBKDF2) ----------
   const ENC_KEY = 'beyvault-enc-v1', KEY_STORE = 'beyvault-key-v1', ITER = 310000;
   const te = new TextEncoder(), td = new TextDecoder();
@@ -356,7 +546,6 @@
     } catch (e) { return null; }
   }
 
-
   // ---------- Purchases ----------
   function addPurchase(pid, beyIdx, note) {
     const p = productById(pid);
@@ -365,122 +554,229 @@
     else ids = p.beys[beyIdx].parts.map(pid => `${pid}@${p.id}#${beyIdx}`);
     ids.forEach(id => S.owned[id] = (S.owned[id] || 0) + 1);
     S.purchases.unshift({ id: 'u' + Date.now().toString(36), pid, bey: beyIdx ?? 'all', parts: ids, date: new Date().toISOString().slice(0, 10), note: note || '' });
-    save(`Added ${p.code} ${p.name}`);
+    delete S.want[pid];
+    save(`Added ${p.code} · ${p.beys.length > 1 && beyIdx !== 'all' && beyIdx != null ? p.beys[beyIdx].name : p.name}`);
   }
-  function removePurchase(uid) {
+  function removePurchase(uid, quiet) {
     const i = S.purchases.findIndex(x => x.id === uid); if (i < 0) return;
     S.purchases[i].parts.forEach(id => { if (S.owned[id]) { S.owned[id]--; if (!S.owned[id]) delete S.owned[id]; } });
+    const p = productById(S.purchases[i].pid);
     S.purchases.splice(i, 1);
-    save('Purchase removed');
+    save(quiet ? '' : `Removed one ${p?.code || ''} purchase`);
   }
 
   // ---------- Rendering helpers ----------
-  const typeTag = t => t ? `<span class="tag t-${esc(t)}">${esc(t)}</span>` : '';
-  const img = (src, fb, cls = 'thumb') => src ? `<img class="${cls}" src="${esc(src)}" data-fb="${esc(fb || '')}" loading="lazy" referrerpolicy="no-referrer" alt="" onerror="imgFail(this)">` : `<span class="${cls} noimg"></span>`;
-  const tierTag = p => p.meta ? `<span class="tier tier-${p.meta.tier.replace('+', 'p')}">${esc(p.meta.tier)}</span>` : '';
-  function partRow(p, opts = {}) {
+  const typeTag = t => t ? `<span class="tag t-${esc(t)}"><span class="tdot"></span>${esc(t)}</span>` : '';
+  const img = (src, fb, cls = 'thumb', alt = '') => src ? `<img class="${cls}" src="${esc(src)}" data-fb="${esc(fb || '')}" loading="lazy" referrerpolicy="no-referrer" alt="${esc(alt)}" onerror="imgFail(this)">` : `<span class="${cls} noimg"></span>`;
+  const tierBadge = (t, title = '') => t ? `<span class="tier tier-${t === '?' ? 'q' : esc(t.replace('+', 'p'))}" title="${esc(title)}">${esc(t)}</span>` : '';
+  function tierTag(p) {
+    const st = pStat(p);
+    if (st?.tier && st.tier !== '?') return tierBadge(st.tier, `BEYWATCH tier, ${WIN_NAME[ui.win]}`);
+    return p.meta ? tierBadge(CONS_TIER[p.meta.tier] || p.meta.tier, 'Consensus tier') : '';
+  }
+  function useLine(p) {
+    const st = pStat(p); if (!st) return '';
+    const cuts = st.cuts || st.comboCuts;
+    return `<span>#${st.rank} ${esc((CAT_NAME[catOf(p.kind)] || '').toLowerCase().replace(/s$/, ''))}${cuts ? ` · ${cuts.toLocaleString()} cuts` : ''}</span>`;
+  }
+  function partRow(p) {
     const q = qty(p.id);
     const nv = (C.partVariants[p.id] || []).filter(v => S.owned[v.id]).length;
-    const sub = [ tierTag(p), `<span class="tag">${esc(KIND[p.kind] || p.kind)}</span>`, typeTag(p.type), nv ? `<span>${nv} colour${nv > 1 ? 's' : ''}</span>` : '',
-      p.line ? `<span>${esc(p.line)}</span>` : '', p.spin === 'L' ? '<span>Left spin</span>' : '',
-      p.weight ? `<span>${p.weight} g</span>` : '', p.alt ? `<span>${esc(p.alt)}</span>` : '' ].filter(Boolean).join('');
+    const sub = [tierTag(p), typeTag(p.type), useLine(p), nv > 1 ? `<span>${nv} colours</span>` : '',
+      p.spin === 'L' ? '<span>Left spin</span>' : '', p.weight ? `<span>${p.weight} g</span>` : ''].filter(Boolean).join('');
     return `<div class="item ${q ? 'owned' : ''}">${img(p.img)}
       <div class="main" data-open="${esc(p.id)}"><div class="name">${esc(label(p))}</div><div class="sub">${sub}</div></div>
       <button class="star" data-wish="${esc(p.id)}" aria-pressed="${!!S.wish[p.id]}" aria-label="Wishlist">★</button>
       <div class="stepper ${q ? '' : 'zero'}"><button data-dec="${esc(p.id)}" aria-label="Remove one">−</button><span>${q}</span><button data-inc="${esc(p.id)}" aria-label="Add one">+</button></div>
     </div>`;
   }
-  const sortMeta = list => list.sort((a, b) => tierScore(b) - tierScore(a) || (b.meta?.usage || 0) - (a.meta?.usage || 0) || (b.meta?.bbx || 0) - (a.meta?.bbx || 0) || a.name.localeCompare(b.name, undefined, { numeric: true }));
-  const sortParts = list => list.sort((a, b) => KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind) || a.name.localeCompare(b.name, undefined, { numeric: true }));
+  const byName = (a, b) => a.name.localeCompare(b.name, undefined, { numeric: true });
+  const sortMeta = list => list.sort((a, b) => partScore(b) - partScore(a) || byName(a, b));
+  const sortParts = list => list.sort((a, b) => KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind) || byName(a, b));
+  const winChips = () => `<div class="seg" role="group" aria-label="Time window">${WINS.map(([k, n]) => `<button data-win="${k}" aria-pressed="${ui.win === k}">${k === 'all' ? 'All' : k}</button>`).join('')}</div>`;
+  const metaStamp = () => { const W = META?.windows?.[ui.win]; return W ? `BEYWATCH · ${esc(WIN_NAME[ui.win])} · ${W.tournaments?.toLocaleString() || '?'} tournaments · data to ${esc(W.updated || '')}` : 'Live meta not loaded yet'; };
+  const chev = '<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>';
 
   // ---------- Tab: collection ----------
-  function renderCollection() {
-    const owned = sortParts(brandParts().filter(p => qty(p.id)));
+  function renderHome() {
+    const all = brandParts();
+    const owned = sortParts(all.filter(p => qty(p.id)));
     const pieces = owned.reduce((s, p) => s + qty(p.id), 0);
     const purchases = S.purchases.filter(x => productById(x.pid)?.brand === brand);
-    const wish = sortParts(brandParts().filter(p => S.wish[p.id]));
-    const groups = {};
-    for (const p of owned) (groups[kindGroup(p.kind)] = groups[kindGroup(p.kind)] || []).push(p);
-    const gName = { blade: 'Blades', cx: 'CX parts', ratchet: 'Ratchets', bit: 'Bits' };
-    let h = `<div class="tiles">
-      <div class="tile"><div class="k">Unique parts</div><div class="v">${owned.length}</div></div>
-      <div class="tile"><div class="k">Total pieces</div><div class="v">${pieces}</div></div>
-      <div class="tile"><div class="k">Purchases</div><div class="v">${purchases.length}</div></div>
-      <div class="tile"><div class="k">Wishlist</div><div class="v">${wish.length}</div></div>
-    </div>`;
-    if (!owned.length) h += `<div class="card empty" style="margin-top:16px">No ${brand === 'tt' ? 'Takara Tomy' : 'Hasbro'} parts yet.<br>
-      Add a set from <b>Products</b>, or single parts from <b>Parts</b>.</div>`;
-    for (const g of ['blade', 'cx', 'ratchet', 'bit']) if (groups[g]) {
-      h += `<div class="section-head"><h3>${gName[g]}</h3><span class="muted" style="font-size:12px">${groups[g].length}</span></div>
-        <div class="list">${groups[g].map(p => partRow(p)).join('')}</div>`;
-    }
+    const wish = sortParts(all.filter(p => S.wish[p.id]));
+    const wantSets = brandProducts().filter(p => S.want[p.id]);
+    const metaOwned = owned.filter(p => { const st = pStat(p); return st && (TIERV[st.tier] || 0) >= 4; }).length;
+    const deck = bestMetaDeck(true);
+    let h = `<div class="hero">
+      <h2>${owned.length ? 'Your vault' : 'Start your vault'}</h2>
+      <div class="muted small">${brandName(brand)} · ${owned.length ? `${pieces} pieces from ${purchases.length} purchase${purchases.length === 1 ? '' : 's'}` : 'Add a set from Sets, or single parts from Parts'}</div>
+      <div class="tiles">
+        <div class="tile"><div class="k">Unique parts</div><div class="v">${owned.length}</div></div>
+        <div class="tile"><div class="k">Total pieces</div><div class="v">${pieces}</div></div>
+        <div class="tile"><div class="k">Sets bought</div><div class="v">${purchases.length}</div></div>
+        <div class="tile"><div class="k">A-tier or better</div><div class="v">${metaOwned}</div></div>
+      </div></div>`;
+    if (owned.length) {
+      h += `<div class="section-head"><h2>Best deck you can build</h2><button class="btn btn-sm" data-tab="decks">Open in Decks</button></div>
+        <div class="card stack">${deck.slots.some(s => Object.keys(s.p).length) ? deck.slots.map((s, i) => `<div class="row"><span class="rank">${i + 1}</span>
+          <div class="row" style="gap:0">${slotIds(s).map(id => img(part(id).img, '', 'thumb-sm')).join('')}</div><b style="flex:1;min-width:0">${esc(slotName(s) || '—')}</b>
+          ${s.src ? `<span class="tag">${esc(s.src)}</span>` : ''}</div>`).join('') : '<span class="muted">Not enough parts yet.</span>'}
+          <div class="note">${deck.note}</div></div>`;
+      h += `<div class="section-head"><h2>Completion</h2></div><div class="card stack">${CATS.map(([c, n]) => {
+        const t = all.filter(p => catOf(p.kind) === c); if (!t.length) return '';
+        const hv = t.filter(p => qty(p.id)).length; const pct = Math.round(hv / t.length * 100);
+        return `<div><div class="row between small"><b>${n}</b><span class="muted">${hv} / ${t.length}</span></div><div class="bar"><i style="width:${pct}%"></i></div></div>`; }).join('')}</div>`;
+      h += `<div class="section-head"><h2>Your parts</h2></div><div class="stack">`;
+      for (const [c, n] of CATS) {
+        const list = owned.filter(p => catOf(p.kind) === c); if (!list.length) continue;
+        h += `<details class="group" open><summary class="row between" style="padding:6px 2px"><h3>${n} · ${list.length}</h3>${chev}</summary>
+          <div class="list" style="margin-top:6px">${sortMeta(list).map(partRow).join('')}</div></details>`;
+      }
+      h += `</div>`;
+    } else h += `<div class="card empty" style="margin-top:16px">No ${brandName(brand)} parts yet.<br><button class="btn btn-primary" data-tab="sets" style="margin-top:12px">Browse sets</button></div>`;
+    if (wantSets.length) h += `<div class="section-head"><h2>Shopping list</h2></div><div class="list">${wantSets.map(p => `<div class="item">
+      ${img(setImg(p), p.img)}<div class="main" data-gotoset="${esc(p.code)}"><div class="name">${esc(p.code)} ${esc(p.name)}</div><div class="sub">${esc(p.beys.map(b => b.name).join(' · '))}</div></div>
+      <button class="btn btn-sm" data-want="${esc(p.id)}">Remove</button></div>`).join('')}</div>`;
+    if (wish.length) h += `<div class="section-head"><h2>Wishlist parts</h2></div><div class="list">${wish.map(partRow).join('')}</div>`;
     if (purchases.length) {
-      h += `<div class="section-head"><h3>Purchases</h3></div><div class="list">` + purchases.map(x => {
+      h += `<div class="section-head"><h2>Purchase history</h2></div><div class="list">` + purchases.map(x => {
         const p = productById(x.pid); const bey = x.bey === 'all' ? '' : ' · ' + p.beys[x.bey].name;
-        return `<div class="item"><div class="main"><div class="name">${esc(p.code)} ${esc(p.name)}</div>
+        return `<div class="item">${img(setImg(p), p.img)}<div class="main"><div class="name">${esc(p.code)} ${esc(p.name)}</div>
           <div class="sub"><span>${esc(x.date)}${esc(bey)}</span><span>${x.parts.length} parts</span>${x.note ? `<span>${esc(x.note)}</span>` : ''}</div></div>
-          <button class="btn btn-danger" data-unbuy="${esc(x.id)}">Undo</button></div>`;
+          <button class="btn btn-sm btn-danger" data-unbuy="${esc(x.id)}">Remove</button></div>`;
       }).join('') + `</div>`;
     }
-    if (wish.length) h += `<div class="section-head"><h3>Wishlist</h3></div><div class="list">${wish.map(p => partRow(p)).join('')}</div>`;
-    $('tab-collection').innerHTML = h;
+    $('tab-home').innerHTML = h;
   }
 
   // ---------- Tab: parts ----------
   function renderParts() {
     const q = ui.partsQ.trim().toLowerCase();
-    let list = brandParts().filter(p => ui.partsKind === 'all' || kindGroup(p.kind) === ui.partsKind);
+    const inCat = brandParts().filter(p => ui.partsCat === 'all' || catOf(p.kind) === ui.partsCat);
+    let list = inCat;
     if (ui.partsShow === 'owned') list = list.filter(p => qty(p.id));
     if (ui.partsShow === 'missing') list = list.filter(p => !qty(p.id));
     if (ui.partsShow === 'wish') list = list.filter(p => S.wish[p.id]);
-    if (ui.partsShow === 'meta') list = list.filter(p => p.meta);
+    if (ui.partsShow === 'meta') list = list.filter(p => { const st = pStat(p); return (st && (TIERV[st.tier] || 0) >= 4) || (p.meta && !st); });
     if (q) list = list.filter(p => [p.name, p.code, p.alt, p.type, KIND[p.kind]].join(' ').toLowerCase().includes(q));
     (ui.partsSort === 'meta' ? sortMeta : sortParts)(list);
-    const total = brandParts().filter(p => ui.partsKind === 'all' || kindGroup(p.kind) === ui.partsKind);
-    const have = total.filter(p => qty(p.id)).length;
+    const cats = [['all', 'All'], ...CATS.filter(([c]) => brandParts().some(p => catOf(p.kind) === c))];
     $('tab-parts').innerHTML = `<div class="stack">
-      <input class="input" id="partsQ" placeholder="Search parts, e.g. Wizard Rod, 1-60, Hexa" value="${esc(ui.partsQ)}" autocomplete="off">
-      <div class="chips">${KIND_FILTERS.map(([k, n]) => `<button class="chip" data-pkind="${k}" aria-pressed="${ui.partsKind === k}">${n}</button>`).join('')}</div>
-      <div class="chips">${[['all', 'Everything'], ['owned', 'Owned'], ['missing', 'Missing'], ['meta', 'Meta parts'], ['wish', 'Wishlist']].map(([k, n]) =>
-        `<button class="chip" data-pshow="${k}" aria-pressed="${ui.partsShow === k}">${n}</button>`).join('')}
-        <button class="chip" id="addCustom">+ Custom part</button></div>
-      <div class="chips"><span class="muted" style="font-size:12px;align-self:center">Sort:</span>${[['meta', 'Meta first'], ['name', 'By type & name']].map(([k, n]) =>
-        `<button class="chip" data-psort="${k}" aria-pressed="${ui.partsSort === k}">${n}</button>`).join('')}</div>
-      <div class="muted" style="font-size:12px">You own ${have} of ${total.length} ${brand === 'tt' ? 'Takara Tomy' : 'Hasbro'} parts in this view.</div>
-      ${list.length ? `<div class="list">${list.map(p => partRow(p)).join('')}</div>` : '<div class="card empty">No parts match.</div>'}
+      <div class="search"><input class="input" id="partsQ" placeholder="Search: Wizard Rod, 1-60, Hexa…" value="${esc(ui.partsQ)}" autocomplete="off" enterkeyhint="search"></div>
+      <div class="chips">${cats.map(([k, n]) => `<button class="chip" data-pcat="${k}" aria-pressed="${ui.partsCat === k}">${n}</button>`).join('')}</div>
+      <div class="chips">${[['all', 'Everything'], ['owned', 'Owned'], ['missing', 'Missing'], ['meta', 'Meta (A+)'], ['wish', '★ Wishlist']].map(([k, n]) =>
+        `<button class="chip" data-pshow="${k}" aria-pressed="${ui.partsShow === k}">${n}</button>`).join('')}</div>
+      <div class="row between wrap"><span class="muted small">${inCat.filter(p => qty(p.id)).length} of ${inCat.length} owned · sorted by ${ui.partsSort === 'meta' ? 'meta (' + esc(WIN_NAME[ui.win]) + ')' : 'type & name'}</span>
+        <div class="row" style="gap:6px"><button class="btn btn-sm" data-psort="${ui.partsSort === 'meta' ? 'name' : 'meta'}">${ui.partsSort === 'meta' ? 'Sort A–Z' : 'Sort by meta'}</button>
+        <button class="btn btn-sm" id="addCustom">+ Custom</button></div></div>
+      ${list.length ? `<div class="list">${list.map(partRow).join('')}</div>` : '<div class="card empty">No parts match.</div>'}
     </div>`;
     const inp = $('partsQ'); inp.oninput = () => { ui.partsQ = inp.value; const pos = inp.selectionStart; renderParts(); const n = $('partsQ'); n.focus(); n.setSelectionRange(pos, pos); };
   }
 
-  // ---------- Tab: products ----------
-  function productLine(p) { const c = p.code.slice(0, 2); return p.random ? 'random' : ['BX', 'UX', 'CX'].includes(c) ? c : 'other'; }
-  function renderProducts() {
-    const q = ui.prodQ.trim().toLowerCase();
+  // ---------- Tab: sets ----------
+  const lineOf = p => { const c = p.code.slice(0, 2); return ['BX', 'UX', 'CX'].includes(c) ? c : 'other'; };
+  const setKind = p => p.random ? 'Random booster' : /deck set/i.test(p.name) ? 'Deck set' : /starter/i.test(p.name) ? 'Starter' : /booster/i.test(p.name) ? 'Booster' : /set|pack/i.test(p.name) ? 'Set' : 'Release';
+  // Official Takara Tomy release photo of everything in the box
+  const setImg = p => { const m = p.brand === 'tt' && p.code.match(/^(BX|UX|CX)-(\d{2})$/); return m && m[2] !== '00' ? `https://beyblade.takaratomy.co.jp/beyblade-x/lineup/_image/${m[1]}${m[2]}_list.png` : (p.img || ''); };
+  function renderSets() {
+    const q = ui.setsQ.trim().toLowerCase();
     let list = brandProducts();
-    if (ui.prodLine !== 'all') list = list.filter(p => productLine(p) === ui.prodLine || (ui.prodLine === 'random' && p.random));
+    if (ui.setsLine === 'random') list = list.filter(p => p.random); else if (ui.setsLine !== 'all') list = list.filter(p => lineOf(p) === ui.setsLine);
+    if (ui.setsShow === 'bought') list = list.filter(p => S.purchases.some(x => x.pid === p.id));
+    if (ui.setsShow === 'want') list = list.filter(p => S.want[p.id]);
     if (q) list = list.filter(p => [p.code, p.name, ...p.beys.map(b => b.name)].join(' ').toLowerCase().includes(q));
     const lines = brand === 'tt' ? [['all', 'All'], ['BX', 'BX'], ['UX', 'UX'], ['CX', 'CX'], ['random', 'Random boosters']] : [['all', 'All']];
-    $('tab-products').innerHTML = `<div class="stack">
-      <input class="input" id="prodQ" placeholder="Search sets, e.g. CX-11, Shark Scale" value="${esc(ui.prodQ)}" autocomplete="off">
-      <div class="chips">${lines.map(([k, n]) => `<button class="chip" data-pline="${k}" aria-pressed="${ui.prodLine === k}">${n}</button>`).join('')}</div>
-      ${brand === 'hb' ? '<div class="note">Hasbro list covers the main releases only. Use “+ Custom part” on the Parts tab for anything missing.</div>' : ''}
-      <div class="grid grid-2">${list.map(p => {
-        const ids = [...new Set([...p.beys.flatMap(b => b.parts), ...p.extra])];
-        const have = ids.filter(id => qty(id)).length;
-        const bought = S.purchases.filter(x => x.pid === p.id).length;
-        return `<div class="card prod">
-          <div class="row" style="justify-content:space-between"><span class="code">${esc(p.code)}${p.random ? ' · RANDOM' : ''}</span>
-            ${bought ? `<span class="tag" style="color:var(--pos)">Bought ×${bought}</span>` : ''}</div>
-          <div class="row" style="align-items:flex-start">${img(p.img, '', 'pimg')}<div class="title">${esc(p.name)}</div></div>
-          <ul>${p.beys.map(b => `<li>${esc(b.name)}</li>`).join('')}${p.extra.length ? `<li>+ ${p.extra.map(id => esc(part(id).name)).join(', ')}</li>` : ''}</ul>
-          ${p.partial ? '<div class="note">Some contents not confirmed yet.</div>' : ''}
-          <div class="bar"><i style="width:${ids.length ? Math.round(have / ids.length * 100) : 0}%"></i></div>
-          <div class="row" style="justify-content:space-between"><span class="muted" style="font-size:12px">You own ${have}/${ids.length} parts</span>
-            <button class="btn btn-primary" data-buy="${esc(p.id)}">I bought this</button></div>
-        </div>`;
-      }).join('') || '<div class="card empty">No sets match.</div>'}</div>
+    $('tab-sets').innerHTML = `<div class="stack">
+      <div class="search"><input class="input" id="setsQ" placeholder="Search sets: CX-11, Shark Scale…" value="${esc(ui.setsQ)}" autocomplete="off" enterkeyhint="search"></div>
+      <div class="chips">${lines.map(([k, n]) => `<button class="chip" data-sline="${k}" aria-pressed="${ui.setsLine === k}">${n}</button>`).join('')}
+        <span style="width:8px;flex:none"></span>${[['all', 'Any'], ['bought', 'Bought'], ['want', '★ Want']].map(([k, n]) => `<button class="chip" data-sshow="${k}" aria-pressed="${ui.setsShow === k}">${n}</button>`).join('')}</div>
+      ${brand === 'hb' ? '<div class="note">Hasbro list covers the main releases only. Use “+ Custom” on Parts for anything missing.</div>' : ''}
+      <div class="sets-grid">${list.map(setCard).join('') || '<div class="card empty">No sets match.</div>'}</div>
     </div>`;
-    const inp = $('prodQ'); inp.oninput = () => { ui.prodQ = inp.value; const pos = inp.selectionStart; renderProducts(); const n = $('prodQ'); n.focus(); n.setSelectionRange(pos, pos); };
+    const inp = $('setsQ'); inp.oninput = () => { ui.setsQ = inp.value; const pos = inp.selectionStart; renderSets(); const n = $('setsQ'); n.focus(); n.setSelectionRange(pos, pos); };
+  }
+  function setCard(p) {
+    const ids = [...new Set([...p.beys.flatMap(b => b.parts), ...p.extra])];
+    const have = ids.filter(id => qty(id)).length;
+    const bought = S.purchases.filter(x => x.pid === p.id).length;
+    const line = p.random ? 'other' : lineOf(p);
+    return `<div class="box" id="set-${esc(p.code)}" style="--line:var(--line-${line})">
+      <div class="box-pack">
+        <div class="box-band"><span class="code">${esc(p.code)}</span><span class="kind">${esc(setKind(p))}</span></div>
+        <div class="box-art">${img(setImg(p), p.img, '', p.name)}</div>
+        <span class="box-x">X</span>
+        ${bought ? `<span class="box-owned">OWNED ×${bought}</span>` : ''}
+        <div class="box-title">${esc(p.name)}</div>
+      </div>
+      <div class="box-body">
+        <ul class="beys">${p.beys.map(b => `<li>${esc(b.name)}</li>`).join('')}${p.extra.length ? `<li>+ ${p.extra.map(id => esc(part(id).name)).join(', ')}</li>` : ''}</ul>
+        ${p.partial ? '<div class="note">Some contents not confirmed yet.</div>' : ''}
+        <div style="margin-top:auto"><div class="row between small muted"><span>You own ${have}/${ids.length} parts</span></div><div class="bar"><i style="width:${ids.length ? Math.round(have / ids.length * 100) : 0}%"></i></div></div>
+        <div class="row between">
+          <button class="star" data-want="${esc(p.id)}" aria-pressed="${!!S.want[p.id]}" aria-label="Want to buy" title="Want to buy">★</button>
+          <div class="row" style="gap:8px"><span class="muted small">Bought</span>
+          <div class="stepper ${bought ? '' : 'zero'}"><button data-sdec="${esc(p.id)}" aria-label="Remove a purchase">−</button><span>${bought}</span><button data-sinc="${esc(p.id)}" aria-label="Add a purchase">+</button></div></div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ---------- Tab: meta ----------
+  const titleCase = s => s.replace(/\b[a-z]/g, m => m.toUpperCase());
+  function comboRow(c, i, opts = {}) {
+    const miss = comboMissing(c);
+    const status = !c.known ? '<span class="tag">part not in catalog</span>' : miss.length ? `<span class="tag tag-miss">Need ${miss.length}</span>` : '<span class="tag tag-own">✓ Can build</span>';
+    const stats = [c.cuts ? `<b class="num" style="color:var(--text)">${c.cuts.toLocaleString()}</b> cuts` : '', c.first != null ? `<b class="num" style="color:var(--text)">${c.first}%</b> 1st` : ''].filter(Boolean).join(' · ');
+    return `<div class="combo">
+      ${i != null ? `<span class="rank">${i + 1}</span>` : ''}
+      <div style="flex:1;min-width:0">
+        <div class="row" style="gap:8px"><div class="parts">${c.slots.map(s => { const p = part(owns(s.ids) || s.ids[0]); return p ? `<span class="${owns(s.ids) ? '' : 'miss'}" style="border-radius:50%;display:inline-flex">${img(p.img, '', 'thumb-sm')}</span>` : '<span class="thumb-sm noimg"></span>'; }).join('')}</div>
+          <div class="cname">${esc(/[A-Z]/.test(c.name) ? c.name : titleCase(c.name))}</div></div>
+        <div class="sub small muted row wrap" style="gap:6px;margin-top:4px">${typeTag(c.type)}${status}${stats ? `<span>${stats}</span>` : ''}${opts.src ? `<span>${esc(opts.src)}</span>` : ''}</div></div>
+      ${opts.add !== false && c.known ? `<button class="btn btn-sm" data-usecombo="${esc(c.slug)}" title="Put into your deck">Use</button>` : ''}
+    </div>`;
+  }
+  function renderMeta() {
+    const M = metaFor();
+    const views = [['combos', 'Top combos'], ['parts', 'Best parts'], ['creators', 'Creator picks']];
+    let body = '';
+    if (!META) body = '<div class="card empty">Loading live meta…</div>';
+    else if (ui.metaView === 'combos') {
+      const list = M.combos.filter(c => ui.comboFilter === 'all' || (ui.comboFilter === 'can' && c.known && !comboMissing(c).length) || (ui.comboFilter === 'near' && c.known && comboMissing(c).length === 1)).slice(0, 60);
+      body = `<div class="chips">${[['all', 'All'], ['can', 'I can build'], ['near', '1 part away']].map(([k, n]) => `<button class="chip" data-cfilter="${k}" aria-pressed="${ui.comboFilter === k}">${n}</button>`).join('')}</div>
+        ${list.length ? `<div class="list">${list.map((c, i) => comboRow(c, i)).join('')}</div>` : '<div class="card empty">No combos match.</div>'}`;
+    } else if (ui.metaView === 'parts') {
+      const cat = ui.metaCat;
+      const list = brandParts().filter(p => catOf(p.kind) === cat && pStat(p)).sort((a, b) => pStat(a).rank - pStat(b).rank).slice(0, 25);
+      body = `<div class="chips">${CATS.map(([k, n]) => `<button class="chip" data-mcat="${k}" aria-pressed="${cat === k}">${n}</button>`).join('')}</div>
+        ${list.length ? `<div class="list">${list.map(p => { const st = pStat(p); const cuts = st.cuts || st.comboCuts;
+          return `<div class="item ${qty(p.id) ? 'owned' : ''}"><span class="rank">${st.rank}</span>${img(p.img)}
+            <div class="main" data-open="${esc(p.id)}"><div class="name">${esc(label(p))}</div><div class="sub">${tierBadge(st.tier && st.tier !== '?' ? st.tier : '')}${typeTag(p.type || st.type)}${qty(p.id) ? '<span class="tag tag-own">Owned</span>' : ''}</div></div>
+            ${cuts ? `<div class="metric"><b class="num">${cuts.toLocaleString()}</b>cuts</div>` : ''}${st.first != null ? `<div class="metric"><b class="num">${st.first}%</b>1st</div>` : ''}</div>`; }).join('')}</div>`
+          : '<div class="card empty">No tournament data for this part type in this window.</div>'}
+        <div class="note">Cuts = times the part appeared in a reported top-cut deck. 1st = how often those decks won. Tiers need 60+ cuts on BEYWATCH.</div>`;
+    } else {
+      const picks = (C.creatorPicks || []).map(x => ({ ...x, c: comboFromName(x.name) }));
+      body = `<div class="infobox">Favourite combos from YouTube creators who test with data. Compiled by Beyblade X Combo Finder from videos up to March 2026, so check them against the live combos tab.</div>
+        <div class="list">${picks.map(x => x.c ? comboRow(x.c, null, { src: x.src }) : `<div class="combo"><div style="flex:1"><b>${esc(x.name)}</b><div class="small muted">${esc(x.src)}</div></div></div>`).join('')}</div>`;
+    }
+    $('tab-meta').innerHTML = `<div class="stack">
+      <div class="row between wrap"><h2>Meta</h2>${winChips()}</div>
+      <div class="muted small">${metaStamp()}. Auto-updated every Monday.</div>
+      <div class="chips">${views.map(([k, n]) => `<button class="chip" data-mview="${k}" aria-pressed="${ui.metaView === k}">${n}</button>`).join('')}</div>
+      ${body}
+    </div>`;
+  }
+  // Build a combo object from a plain name like "Wizard Rod 1-60 Hexa"
+  function comboFromName(name) {
+    const m = name.match(/^(.*?)\s+(\d+-\d+|M-\d+)\s+(.+)$/);
+    const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const parts = m ? [slugify(m[1]), 'ratchet-' + m[2].toLowerCase(), 'bit-' + slugify(m[3])] : null;
+    if (!parts) return null;
+    const slots = parts.map(s => ({ slug: s, ids: resolve(s) }));
+    const bp = part(slots[0].ids[0]);
+    return { slug: 'pick-' + slugify(name), name, cuts: 0, first: null, slots, cx: false, type: bp?.type || '', known: slots.every(s => s.ids.length) };
   }
 
   // ---------- Tab: deck builder ----------
@@ -488,7 +784,7 @@
     bx: [['blade', ['blade', 'rblade']], ['ratchet', ['ratchet']], ['bit', ['bit', 'rbit']]],
     cx: [['lock', ['lock']], ['main', ['main', 'metal']], ['over', ['over']], ['assist', ['assist']], ['ratchet', ['ratchet']], ['bit', ['bit', 'rbit']]],
   };
-  const FIELD_NAME = { blade: 'Blade', ratchet: 'Ratchet', bit: 'Bit', lock: 'Lock chip', main: 'Main / metal blade', over: 'Over blade (Expand only)', assist: 'Assist blade' };
+  const FIELD_NAME = { blade: 'Blade', ratchet: 'Ratchet', bit: 'Bit', lock: 'Lock chip', main: 'Main / metal blade', over: 'Over blade (metal blades only)', assist: 'Assist blade' };
   const newDeck = () => ({ id: 'd' + Date.now().toString(36), name: 'My deck', brand, onlyOwned: true, slots: [0, 1, 2].map(() => ({ mode: 'bx', p: {} })) });
   function slotHidden(slot, f) {
     const p = slot.p;
@@ -505,37 +801,66 @@
     if (!l && !m) return '';
     return `${l ? l.name.replace(' (Metal)', '') : ''}${m ? m.name : ''} ${o ? o.code : ''}${a ? a.code : ''}${r}${bc}`.trim();
   }
-  // Greedy: best owned blades first, then best unused ratchet and bit for each. Same part never used twice.
-  function suggestDeck() {
-    const d = newDeck(); d.name = 'Suggested deck';
+  // Combo -> deck slot. preferOwned picks the owned copy when a name maps to several parts.
+  function comboToSlot(c) {
+    const slot = { mode: c.cx ? 'cx' : 'bx', p: {}, src: c.cuts ? `${c.cuts} cuts` : '' };
+    for (const s of c.slots) { const id = owns(s.ids) || s.ids[0]; if (!id) continue; const f = SLOT_OF[part(id).kind]; if (f) slot.p[f] = id; }
+    return slot;
+  }
+  // Pick the 3 strongest meta combos that never share a part (3on3 rule)
+  function pickThree(cands) {
+    cands = cands.slice(0, 45);
+    const ids = cands.map(c => c.slots.map(s => owns(s.ids) || s.ids[0]));
+    const sc = cands.map(comboScore);
+    const clash = (a, b) => ids[a].some(x => ids[b].includes(x));
+    let best = cands.length ? [0] : [], bestS = cands.length ? sc[0] : -1, bestLen = best.length;
+    const n = cands.length;
+    for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) {
+      if (clash(a, b)) continue;
+      if (bestLen < 2 || (bestLen === 2 && sc[a] + sc[b] > bestS)) { best = [a, b]; bestS = sc[a] + sc[b]; bestLen = 2; }
+      for (let c = b + 1; c < n; c++) {
+        if (clash(a, c) || clash(b, c)) continue;
+        const s = sc[a] + sc[b] + sc[c];
+        if (bestLen < 3 || s > bestS) { best = [a, b, c]; bestS = s; bestLen = 3; }
+      }
+    }
+    return best.map(i => cands[i]);
+  }
+  // Greedy filler from owned parts by meta score, avoiding parts already used
+  function greedyFill(d, used) {
     const owned = brandParts().filter(p => qty(p.id));
-    const score = p => tierScore(p) * 100 + (p.meta?.usage || 0) + (p.meta?.bbx || 0) / 10 + (p.stats ? (p.stats.atk + p.stats.def + p.stats.sta) / 100 : 0);
-    const best = kinds => owned.filter(p => kinds.includes(p.kind) && !used.has(p.id)).sort((a, b) => score(b) - score(a))[0];
-    const used = new Set();
+    const best = kinds => owned.filter(p => kinds.includes(p.kind) && !used.has(p.id)).sort((a, b) => partScore(b) - partScore(a))[0];
     const take = p => { if (p) used.add(p.id); return p; };
-    const tops = [];
-    owned.filter(p => p.kind === 'blade' || p.kind === 'rblade').forEach(p => tops.push({ s: score(p), mode: 'bx', p }));
-    owned.filter(p => p.kind === 'main' || p.kind === 'metal').forEach(p => tops.push({ s: score(p), mode: 'cx', p }));
-    tops.sort((a, b) => b.s - a.s);
-    let i = 0;
+    const tops = owned.filter(p => ['blade', 'rblade', 'main', 'metal'].includes(p.kind) && !used.has(p.id)).sort((a, b) => partScore(b) - partScore(a));
     for (const t of tops) {
-      if (i > 2) break;
+      const i = d.slots.findIndex(s => !Object.keys(s.p).length); if (i < 0) break;
       const slot = d.slots[i];
-      if (t.mode === 'bx') {
-        slot.mode = 'bx'; slot.p.blade = take(t.p).id;
-        const bit = t.p.kind === 'rblade' ? take(best(['bit'])) : take(best(['bit', 'rbit']));
-        if (bit) slot.p.bit = bit.id;
-        if (t.p.kind !== 'rblade' && bit?.kind !== 'rbit') { const r = take(best(['ratchet'])); if (r) slot.p.ratchet = r.id; }
+      if (t.kind === 'blade' || t.kind === 'rblade') {
+        slot.mode = 'bx'; slot.p.blade = take(t).id;
+        const bit = take(best(t.kind === 'rblade' ? ['bit'] : ['bit', 'rbit'])); if (bit) slot.p.bit = bit.id;
+        if (t.kind !== 'rblade' && bit?.kind !== 'rbit') { const r = take(best(['ratchet'])); if (r) slot.p.ratchet = r.id; }
       } else {
         const lock = take(best(['lock'])), as = take(best(['assist']));
         if (!lock || !as) { if (lock) used.delete(lock.id); if (as) used.delete(as.id); continue; }
-        slot.mode = 'cx'; slot.p.lock = lock.id; slot.p.main = take(t.p).id; slot.p.assist = as.id;
-        if (t.p.kind === 'metal') { const o = take(best(['over'])); if (o) slot.p.over = o.id; }
+        slot.mode = 'cx'; slot.p.lock = lock.id; slot.p.main = take(t).id; slot.p.assist = as.id;
+        if (t.kind === 'metal') { const o = take(best(['over'])); if (o) slot.p.over = o.id; }
         const bit = take(best(['bit', 'rbit'])); if (bit) slot.p.bit = bit.id;
         if (bit?.kind !== 'rbit') { const r = take(best(['ratchet'])); if (r) slot.p.ratchet = r.id; }
       }
-      i++;
+      slot.src = 'best parts';
     }
+  }
+  function bestMetaDeck(fromOwned) {
+    const d = newDeck(); d.name = fromOwned ? 'Meta deck (my parts)' : 'Meta deck (shopping)';
+    const M = metaFor();
+    const cands = M.combos.filter(c => c.known && c.cuts && (!fromOwned || !comboMissing(c).length));
+    const three = pickThree(cands);
+    const used = new Set();
+    three.forEach((c, i) => { d.slots[i] = comboToSlot(c); slotIds(d.slots[i]).forEach(id => used.add(id)); });
+    if (fromOwned && three.length < 3) greedyFill(d, used);
+    d.note = !META ? 'Live meta still loading. Using consensus tiers.' : three.length === 3 ? `All three are proven top-cut combos (${esc(WIN_NAME[ui.win])}).`
+      : `${three.length} proven combo${three.length === 1 ? '' : 's'} from your parts. The rest is built from your highest-rated parts.`;
+    if (!fromOwned) { const need = [...new Set(d.slots.flatMap(s => slotIds(s)).filter(id => !qty(id)))]; d.need = need; }
     return d;
   }
   function renderDecks() {
@@ -546,72 +871,54 @@
     const notOwned = Object.keys(used).filter(id => !qty(id)).map(id => part(id).name);
     const allParts = brandParts();
     const options = (kinds, cur, i) => {
-      const list = sortParts(allParts.filter(p => kinds.includes(p.kind) && (!d.onlyOwned || qty(p.id) || p.id === cur)));
+      const list = sortMeta(allParts.filter(p => kinds.includes(p.kind) && (!d.onlyOwned || qty(p.id) || p.id === cur)));
       return `<option value="">—</option>` + list.map(p => {
         const elsewhere = (used[p.id] || []).some(j => j !== i);
-        return `<option value="${esc(p.id)}" ${p.id === cur ? 'selected' : ''}>${esc(label(p))}${elsewhere ? ' (in use)' : ''}${!qty(p.id) ? ' · not owned' : ''}</option>`;
+        const st = pStat(p);
+        return `<option value="${esc(p.id)}" ${p.id === cur ? 'selected' : ''}>${st?.tier && st.tier !== '?' ? `[${st.tier}] ` : ''}${esc(label(p))}${elsewhere ? ' (in use)' : ''}${!qty(p.id) ? ' · not owned' : ''}</option>`;
       }).join('');
     };
     const weight = s => { const ids = slotIds(s); if (!ids.length) return ''; const w = ids.map(id => part(id).weight);
-      return w.every(x => x != null) ? w.reduce((a, b) => a + b, 0).toFixed(1) + ' g' : 'weight: some parts unknown'; };
+      return w.every(x => x != null) ? w.reduce((a, b) => a + b, 0).toFixed(1) + ' g' : 'Weight: some parts unknown'; };
     const saved = S.decks.filter(x => x.brand === brand);
+    const M = metaFor();
+    const buildable = M.combos.filter(c => c.known && !comboMissing(c).length).slice(0, 8);
+    const near = M.combos.filter(c => c.known && comboMissing(c).length === 1).slice(0, 6);
     $('tab-decks').innerHTML = `<div class="stack">
-      <div class="row" style="flex-wrap:wrap">
-        <input class="input" id="deckName" value="${esc(d.name)}" style="max-width:260px">
-        <label class="muted" style="font-size:14px;display:flex;gap:6px;align-items:center"><input type="checkbox" id="onlyOwned" ${d.onlyOwned ? 'checked' : ''}> Only parts I own</label>
-        <div class="spacer" style="flex:1"></div>
-        <button class="btn" id="deckSuggest">Suggest from my parts</button><button class="btn" id="deckNew">New</button><button class="btn btn-primary" id="deckSave">Save deck</button>
+      <div class="row between wrap"><h2>Deck builder</h2>${winChips()}</div>
+      <div class="grid grid-2">
+        <button class="btn btn-primary" id="deckMeta">⚡ Best meta deck from my parts</button>
+        <button class="btn" id="deckShop">Best meta deck overall + shopping list</button>
       </div>
-      <div class="note">3on3 rule: no blade, ratchet, bit or CX piece can repeat across the three beys.</div>
-      ${dupes.length ? `<div class="warnbox">Repeated part: ${esc([...new Set(dupes)].join(', '))}. Pick a different one.</div>` : ''}
-      ${!dupes.length && Object.keys(used).length ? `<div class="okbox">No repeated parts.${notOwned.length ? ' Still need: ' + esc(notOwned.join(', ')) : ''}</div>` : ''}
-      <div class="grid grid-3">${d.slots.map((s, i) => `<div class="card slot">
-        <div class="row" style="justify-content:space-between"><h3>Bey ${i + 1}</h3>
-          <div class="seg"><button data-mode="${i}:bx" aria-pressed="${s.mode === 'bx'}">BX / UX</button><button data-mode="${i}:cx" aria-pressed="${s.mode === 'cx'}">CX</button></div></div>
-        <div class="bey">${esc(slotName(s)) || '<span class="muted">Pick parts</span>'}</div>
-        <div class="muted" style="font-size:12px">${esc(weight(s))}</div>
+      <div class="row wrap" style="gap:8px">
+        <input class="input" id="deckName" value="${esc(d.name)}" style="max-width:240px;min-height:40px">
+        <label class="muted small row" style="gap:6px"><input type="checkbox" id="onlyOwned" ${d.onlyOwned ? 'checked' : ''}> Only parts I own</label>
+        <div style="flex:1"></div><button class="btn btn-sm" id="deckNew">Clear</button><button class="btn btn-sm btn-primary" id="deckSave">Save deck</button>
+      </div>
+      ${dupes.length ? `<div class="warnbox">Repeated part: ${esc([...new Set(dupes)].join(', '))}. 3on3 rules allow each part once.</div>` : ''}
+      ${!dupes.length && Object.keys(used).length ? `<div class="okbox">Legal 3on3 deck.${notOwned.length ? ' Still need: ' + esc(notOwned.join(', ')) : ' You own every part.'}</div>` : ''}
+      <div class="grid grid-3">${d.slots.map((s, i) => `<div class="card slot" data-n="${i + 1}">
+        <div class="row between"><div class="seg"><button data-mode="${i}:bx" aria-pressed="${s.mode === 'bx'}">BX / UX</button><button data-mode="${i}:cx" aria-pressed="${s.mode === 'cx'}">CX</button></div></div>
+        <div class="row" style="gap:0;min-height:30px">${slotIds(s).map(id => img(part(id).img, '', 'thumb-sm')).join('')}</div>
+        <div class="bey">${esc(slotName(s)) || '<span class="muted">Pick parts or tap “Use” on a combo</span>'}</div>
+        <div class="muted small">${esc(weight(s))}${s.src ? ' · ' + esc(s.src) : ''}</div>
         ${SLOT_FIELDS[s.mode].filter(([f]) => !slotHidden(s, f)).map(([f, kinds]) =>
           `<label>${FIELD_NAME[f]}<select class="input" data-slot="${i}:${f}">${options(kinds, s.p[f], i)}</select></label>`).join('')}
       </div>`).join('')}</div>
-      ${saved.length ? `<div class="section-head"><h3>Saved decks</h3></div><div class="list">${saved.map(x => `<div class="item">
+      <div class="section-head"><h2>Meta combos you can build</h2><button class="btn btn-sm" data-tab="meta">All combos</button></div>
+      ${buildable.length ? `<div class="list">${buildable.map(c => comboRow(c)).join('')}</div>` : '<div class="card empty">None of the top combos fully match your parts yet.</div>'}
+      ${near.length ? `<div class="section-head"><h2>One part away</h2></div><div class="list">${near.map(c => comboRow(c)).join('')}</div>` : ''}
+      ${saved.length ? `<div class="section-head"><h2>Saved decks</h2></div><div class="list">${saved.map(x => `<div class="item">
         <div class="main" data-loaddeck="${esc(x.id)}"><div class="name">${esc(x.name)}</div><div class="sub">${x.slots.map(s => esc(slotName(s) || '—')).join(' · ')}</div></div>
-        <button class="btn btn-danger" data-deldeck="${esc(x.id)}">Delete</button></div>`).join('')}</div>` : ''}
+        <button class="btn btn-sm btn-danger" data-deldeck="${esc(x.id)}">Delete</button></div>`).join('')}</div>` : ''}
     </div>`;
     $('deckName').oninput = e => d.name = e.target.value;
     $('onlyOwned').onchange = e => { d.onlyOwned = e.target.checked; renderDecks(); };
   }
 
-  // ---------- Tab: stats ----------
-  function renderStats() {
-    const all = brandParts();
-    const groups = [['blade', 'Blades'], ['cx', 'CX parts'], ['ratchet', 'Ratchets'], ['bit', 'Bits']];
-    const types = ['Attack', 'Defense', 'Stamina', 'Balance'];
-    const ownedBlades = all.filter(p => (p.kind === 'blade' || p.kind === 'rblade') && qty(p.id));
-    const otherBrand = Object.values(C.parts).filter(p => p.brand !== brand && qty(p.id)).length;
-    $('tab-stats').innerHTML = `<div class="stack">
-      <div class="card stack"><h3>Completion · ${brand === 'tt' ? 'Takara Tomy' : 'Hasbro'}</h3>
-        ${groups.map(([g, n]) => { const t = all.filter(p => kindGroup(p.kind) === g); const h = t.filter(p => qty(p.id)).length; const pct = t.length ? Math.round(h / t.length * 100) : 0;
-          return `<div><div class="row" style="justify-content:space-between;font-size:14px"><span>${n}</span><span class="muted">${h} / ${t.length} · ${pct}%</span></div><div class="bar"><i style="width:${pct}%"></i></div></div>`; }).join('')}
-      </div>
-      <div class="card stack"><h3>Owned blades by type</h3>
-        ${types.map(t => { const n = ownedBlades.filter(p => p.type === t).length;
-          return `<div class="row" style="justify-content:space-between"><span class="t-${t}" style="font-weight:600">${t}</span><span>${n}</span></div>`; }).join('')}
-      </div>
-      <div class="card stack"><h3>Meta right now · ${esc(C.metaUpdated)}</h3>
-        <div class="muted" style="font-size:13px">Most-played full builds (BEYWATCH, top cuts, last 30 days)</div>
-        ${C.topBuilds.map(([n, c]) => `<div class="row" style="justify-content:space-between"><span>${esc(n)}</span><span class="muted">${c} cuts</span></div>`).join('')}
-        <div class="muted" style="font-size:13px;margin-top:8px">Your meta parts</div>
-        <div class="row" style="flex-wrap:wrap;gap:6px">${sortMeta(all.filter(p => p.meta && qty(p.id))).map(p => `<span class="tag">${esc(p.meta.tier)} · ${esc(label(p))}</span>`).join('') || '<span class="muted">None yet</span>'}</div>
-        <div class="muted" style="font-size:13px;margin-top:8px">Top meta parts you're missing</div>
-        <div class="row" style="flex-wrap:wrap;gap:6px">${sortMeta(all.filter(p => p.meta && !qty(p.id))).slice(0, 10).map(p => `<span class="tag" data-open="${esc(p.id)}" style="cursor:pointer">${esc(p.meta.tier)} · ${esc(label(p))}</span>`).join('')}</div>
-      </div>
-      <div class="card"><span class="muted">You also own ${otherBrand} ${brand === 'tt' ? 'Hasbro' : 'Takara Tomy'} parts. Switch brand at the top to see them.</span></div>
-    </div>`;
-  }
-
   // ---------- Dialogs ----------
   const dlg = $('dlg');
-  function openDlg(html) { $('dlgBody').innerHTML = html; dlg.showModal(); }
+  function openDlg(html) { $('dlgBody').innerHTML = html; if (!dlg.open) dlg.showModal(); }
   function statBars(st) {
     if (!st) return '';
     return `<div class="stats">${[['atk', 'ATK', 'var(--atk)'], ['def', 'DEF', 'var(--def)'], ['sta', 'STA', 'var(--sta)']].map(([k, n, c]) =>
@@ -621,15 +928,14 @@
     const p = part(id);
     const vars = C.partVariants[id] || [];
     const m = p.meta;
-    openDlg(`<div class="dlg-head"><div class="row">${img(p.img, '', 'bigimg')}<h2>${esc(label(p))}</h2></div><button class="btn" data-close>Close</button></div>
-      <div class="row" style="flex-wrap:wrap;gap:6px">${tierTag(p)}<span class="tag">${esc(KIND[p.kind])}</span>${typeTag(p.type)}
-        ${p.weight ? `<span class="tag">${p.weight} g</span>` : ''}${p.alt ? `<span class="tag">${esc(p.alt)}</span>` : ''}<span class="tag">${p.brand === 'tt' ? 'Takara Tomy' : 'Hasbro'}</span></div>
+    const wins = META ? WINS.map(([w, n]) => { const st = metaFor(w).stat[id]; return st ? `<div class="row between small"><span>${n}</span><span class="row" style="gap:6px">${tierBadge(st.tier && st.tier !== '?' ? st.tier : '')}<span class="muted">#${st.rank} · ${(st.cuts || st.comboCuts || 0).toLocaleString()} cuts${st.first != null ? ` · ${st.first}% 1st` : ''}</span></span></div>` : `<div class="row between small"><span>${n}</span><span class="muted">no top cuts</span></div>`; }).join('') : '';
+    const combos = META ? metaFor().combos.filter(c => c.slots.some(s => s.ids.includes(id))).slice(0, 4) : [];
+    openDlg(`<div class="dlg-head"><div class="row">${img(p.img, '', 'bigimg')}<div><h2>${esc(label(p))}</h2><div class="row wrap" style="gap:6px;margin-top:4px">${tierTag(p)}<span class="tag">${esc(KIND[p.kind])}</span>${typeTag(p.type)}
+        ${p.weight ? `<span class="tag">${p.weight} g</span>` : ''}${p.alt ? `<span class="tag">${esc(p.alt)}</span>` : ''}</div></div></div><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
       ${p.stats ? `<h3>Official stats</h3>${statBars(p.stats)}` : ''}
-      ${m ? `<h3>Meta · ${esc(C.metaUpdated)}</h3><div class="card" style="padding:12px;font-size:14px">
-        <div>Consensus tier <b>${esc(m.tier)}</b></div>
-        ${m.usage != null ? `<div>In <b>${m.usage}%</b> of top-cut decks (BEYWATCH, last 30 days)</div>` : ''}
-        ${m.bbx != null ? `<div>BBX Weekly score <b>${m.bbx}</b> / 100</div>` : ''}
-        ${m.notes ? `<div class="muted">${esc(m.notes)}</div>` : ''}</div>` : ''}
+      ${wins ? `<h3>Tournament meta · BEYWATCH</h3><div class="card stack" style="padding:12px;gap:6px">${wins}</div>` : ''}
+      ${combos.length ? `<h3>Top combos with it</h3><div class="list">${combos.map(c => comboRow(c, null, { add: false })).join('')}</div>` : ''}
+      ${m ? `<div class="note">Consensus tier ${esc(m.tier)}${m.bbx != null ? ` · BBX Weekly ${m.bbx}/100` : ''}${m.notes ? ` · ${esc(m.notes)}` : ''}</div>` : ''}
       <h3>Your copies</h3>
       <div class="list">
         <div class="item"><div class="main"><div class="name">Colour not specified</div><div class="sub">Loose or unsure which release</div></div>
@@ -639,46 +945,62 @@
             <div class="main"><div class="name">${esc(prod.code)} ${esc(prod.name)}</div><div class="sub">${esc(v.bey === 'x' ? 'Loose part in set' : prod.beys[v.bey].name)}${prod.random ? ' · random' : ''}</div></div>
             <div class="stepper ${q ? '' : 'zero'}"><button data-vdec="${esc(v.id)}">−</button><span>${q}</span><button data-vinc="${esc(v.id)}">+</button></div></div>`; }).join('')}
       </div>
-      <label class="muted" style="font-size:14px">Notes
-        <textarea class="input" id="partNote" rows="2">${esc(S.notes[id] || '')}</textarea></label>
+      <label class="muted small">Notes<textarea class="input" id="partNote" rows="2">${esc(S.notes[id] || '')}</textarea></label>
       <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" data-savenote="${esc(id)}">Save note</button></div>`);
   }
   function buyDialog(pid) {
     const p = productById(pid);
-    openDlg(`<div class="dlg-head"><h2>${esc(p.code)} ${esc(p.name)}</h2><button class="btn" data-close>Close</button></div>
+    openDlg(`<div class="dlg-head"><h2>${esc(p.code)} ${esc(p.name)}</h2><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
       ${p.random ? `<p class="muted" style="margin:0">Random booster. Which bey did you get?</p>
         <select class="input" id="buyBey">${p.beys.map((b, i) => `<option value="${i}">${esc(b.name)}</option>`).join('')}<option value="all">Full set (all of them)</option></select>`
         : `<p class="muted" style="margin:0">Adds every part in this set to your collection.</p>`}
-      <label class="muted" style="font-size:14px">Note (price, shop) — optional<input class="input" id="buyNote" placeholder="e.g. Rp450k Tokopedia"></label>
+      <label class="muted small">Note (price, shop) · optional<input class="input" id="buyNote" placeholder="e.g. Rp450k Tokopedia"></label>
       <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" data-confirmbuy="${esc(pid)}">Add to collection</button></div>`);
   }
+  function unbuyDialog(pid) {
+    const p = productById(pid);
+    const list = S.purchases.filter(x => x.pid === pid);
+    openDlg(`<div class="dlg-head"><h2>Remove a ${esc(p.code)} purchase</h2><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
+      <p class="muted" style="margin:0">Its parts come out of your collection too.</p>
+      <div class="list">${list.map(x => `<div class="item"><div class="main"><div class="name">${esc(x.bey === 'all' ? p.name : p.beys[x.bey].name)}</div>
+        <div class="sub"><span>${esc(x.date)}</span>${x.note ? `<span>${esc(x.note)}</span>` : ''}</div></div>
+        <button class="btn btn-sm btn-danger" data-unbuy="${esc(x.id)}">Remove</button></div>`).join('')}</div>`);
+  }
   function customDialog() {
-    openDlg(`<div class="dlg-head"><h2>Add a custom part</h2><button class="btn" data-close>Close</button></div>
-      <p class="muted" style="margin:0">For parts not in the catalog yet. It is added to ${brand === 'tt' ? 'Takara Tomy' : 'Hasbro'}.</p>
-      <label class="muted" style="font-size:14px">Name<input class="input" id="cName" placeholder="e.g. Tiga Rage"></label>
-      <label class="muted" style="font-size:14px">Part type<select class="input" id="cKind">${KIND_ORDER.map(k => `<option value="${k}">${KIND[k]}</option>`).join('')}</select></label>
-      <label class="muted" style="font-size:14px">Battle type<select class="input" id="cType"><option value="">—</option><option>Attack</option><option>Defense</option><option>Stamina</option><option>Balance</option></select></label>
+    openDlg(`<div class="dlg-head"><h2>Add a custom part</h2><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
+      <p class="muted" style="margin:0">For parts not in the catalog yet. It is added to ${brandName(brand)}.</p>
+      <label class="muted small">Name<input class="input" id="cName" placeholder="e.g. Tiga Rage"></label>
+      <label class="muted small">Part type<select class="input" id="cKind">${KIND_ORDER.map(k => `<option value="${k}">${KIND[k]}</option>`).join('')}</select></label>
+      <label class="muted small">Battle type<select class="input" id="cType"><option value="">—</option><option>Attack</option><option>Defense</option><option>Stamina</option><option>Balance</option></select></label>
       <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" id="cSave">Add part</button></div>`);
+  }
+  function shopDialog(d) {
+    openDlg(`<div class="dlg-head"><h2>Shopping list</h2><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
+      <p class="muted" style="margin:0">Parts you still need for the strongest legal meta deck (${esc(WIN_NAME[ui.win])}).</p>
+      ${d.need.length ? `<div class="list">${d.need.map(id => { const p = part(id); const sets = (p.products || []).map(productById).filter(Boolean).slice(0, 3);
+        return `<div class="item">${img(p.img)}<div class="main" data-open="${esc(id)}"><div class="name">${esc(label(p))}</div><div class="sub">${sets.map(s => `<span>${esc(s.code)}</span>`).join('') || '<span>Not in a listed set</span>'}</div></div></div>`; }).join('')}</div>`
+        : '<div class="okbox">You already own every part.</div>'}
+      <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" data-close>Got it</button></div>`);
   }
   function settingsDialog() {
     const tok = ghToken();
     const theme = document.documentElement.dataset.theme || 'auto';
-    openDlg(`<div class="dlg-head"><h2>Settings</h2><button class="btn" data-close>Close</button></div>
+    openDlg(`<div class="dlg-head"><h2>Settings</h2><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
       <h3>Sync across devices</h3>
-      <p class="muted" style="margin:0;font-size:14px">${tok ? 'Connected. Changes save to <b>collection.json</b> in your repo.' :
+      <p class="muted" style="margin:0;font-size:14px">${tok ? 'Connected. Changes save encrypted to <b>collection.enc</b> in your repo.' :
         'Changes are saved on this device. To sync them, connect a GitHub token that can only edit <b>beyblade-tracker</b>.'}</p>
       ${tok ? `<div class="row"><button class="btn" id="ghPush">Sync now</button><button class="btn btn-danger" id="ghOff">Disconnect</button></div>` : `
       <ol class="muted" style="font-size:14px;margin:0;padding-left:20px">
-        <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="color:var(--accent)">GitHub → New fine-grained token</a></li>
+        <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → New fine-grained token</a></li>
         <li>Repository access: <b>Only select repositories</b> → beyblade-tracker</li>
         <li>Permissions → Contents: <b>Read and write</b></li>
         <li>Generate, copy and paste it below</li></ol>
       <input class="input" id="ghTok" placeholder="github_pat_…" autocomplete="off">
       <div class="row"><button class="btn btn-primary" id="ghSave">Connect</button><span class="muted" id="ghMsg" style="font-size:13px"></span></div>`}
       <h3>Account</h3>
-      <div class="row" style="flex-wrap:wrap"><button class="btn" id="lockNow">Sign out on this device</button><button class="btn" id="changePass">Change username / password</button></div>
+      <div class="row wrap"><button class="btn" id="lockNow">Sign out on this device</button><button class="btn" id="changePass">Change username / password</button></div>
       <h3>Backup</h3>
-      <div class="row" style="flex-wrap:wrap"><button class="btn" id="exportBtn">Export JSON</button>
+      <div class="row wrap"><button class="btn" id="exportBtn">Export JSON</button>
         <label class="btn">Import JSON<input type="file" id="importFile" accept=".json,application/json" hidden></label></div>
       <h3>Theme</h3>
       <div class="seg">${['auto', 'dark', 'light'].map(t => `<button data-theme="${t}" aria-pressed="${theme === t}">${t[0].toUpperCase() + t.slice(1)}</button>`).join('')}</div>
@@ -689,31 +1011,48 @@
   // ---------- Render ----------
   function render() {
     document.querySelectorAll('.seg [data-brand]').forEach(b => b.setAttribute('aria-pressed', b.dataset.brand === brand));
-    document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
-    for (const t of ['collection', 'parts', 'products', 'decks', 'stats']) $('tab-' + t).hidden = t !== tab;
-    ({ collection: renderCollection, parts: renderParts, products: renderProducts, decks: renderDecks, stats: renderStats })[tab]();
+    document.querySelectorAll('nav [data-tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
+    for (const t of TABS) $('tab-' + t).hidden = t !== tab;
+    ({ home: renderHome, parts: renderParts, sets: renderSets, meta: renderMeta, decks: renderDecks })[tab]();
   }
+  const go = t => { tab = t; render(); window.scrollTo(0, 0); };
 
   // ---------- Events ----------
   document.addEventListener('click', async e => {
-    const t = e.target.closest('button, [data-open], [data-loaddeck]');
+    const t = e.target.closest('button, [data-open], [data-loaddeck], [data-gotoset]');
     if (!t) return;
     const d = t.dataset;
     if (d.brand) { brand = d.brand; try { localStorage.setItem('beyvault-brand', brand); } catch (x) {} render(); }
-    else if (d.tab) { tab = d.tab; render(); window.scrollTo(0, 0); }
+    else if (d.tab) { if (dlg.open) dlg.close(); go(d.tab); }
+    else if (d.win) { ui.win = d.win; try { localStorage.setItem('beyvault-win', ui.win); } catch (x) {} render(); }
     else if (d.inc) setQty(d.inc, vqty(d.inc) + 1);
     else if (d.dec) { if (vqty(d.dec)) setQty(d.dec, vqty(d.dec) - 1); else if (qty(d.dec)) { partDialog(d.dec); toast('Pick which colour to remove'); } }
     else if (d.vinc) { S.owned[d.vinc] = vqty(d.vinc) + 1; save(); partDialog(C.variants[d.vinc]?.part || d.vinc.split('@')[0]); }
     else if (d.vdec) { const n = vqty(d.vdec) - 1; if (n > 0) S.owned[d.vdec] = n; else delete S.owned[d.vdec]; save(); partDialog(C.variants[d.vdec]?.part || d.vdec.split('@')[0]); }
     else if (d.wish) { if (S.wish[d.wish]) delete S.wish[d.wish]; else S.wish[d.wish] = 1; save(); }
+    else if (d.want) { if (S.want[d.want]) delete S.want[d.want]; else S.want[d.want] = 1; save(S.want[d.want] ? 'Added to shopping list' : 'Removed from shopping list'); }
     else if (d.open) partDialog(d.open);
-    else if (d.pkind) { ui.partsKind = d.pkind; renderParts(); }
+    else if (d.gotoset) { ui.setsQ = d.gotoset; go('sets'); }
+    else if (d.pcat) { ui.partsCat = d.pcat; renderParts(); }
     else if (d.pshow) { ui.partsShow = d.pshow; renderParts(); }
     else if (d.psort) { ui.partsSort = d.psort; renderParts(); }
-    else if (d.pline) { ui.prodLine = d.pline; renderProducts(); }
-    else if (d.buy) buyDialog(d.buy);
+    else if (d.sline) { ui.setsLine = d.sline; renderSets(); }
+    else if (d.sshow) { ui.setsShow = d.sshow; renderSets(); }
+    else if (d.mview) { ui.metaView = d.mview; renderMeta(); }
+    else if (d.mcat) { ui.metaCat = d.mcat; renderMeta(); }
+    else if (d.cfilter) { ui.comboFilter = d.cfilter; renderMeta(); }
+    else if (d.sinc) { const p = productById(d.sinc); if (p.random) buyDialog(p.id); else addPurchase(p.id, 'all', ''); }
+    else if (d.sdec) { const list = S.purchases.filter(x => x.pid === d.sdec); if (list.length === 1) { if (confirm('Remove this purchase and its parts?')) removePurchase(list[0].id); } else if (list.length) unbuyDialog(d.sdec); }
     else if (d.confirmbuy) { const sel = $('buyBey'); addPurchase(d.confirmbuy, sel ? (sel.value === 'all' ? 'all' : +sel.value) : 'all', $('buyNote').value.trim()); dlg.close(); }
-    else if (d.unbuy) { if (confirm('Remove this purchase and its parts from your collection?')) removePurchase(d.unbuy); }
+    else if (d.unbuy) { if (dlg.open) dlg.close(); if (confirm('Remove this purchase and its parts from your collection?')) removePurchase(d.unbuy); }
+    else if (d.usecombo) {
+      const c = metaFor().combos.find(x => x.slug === d.usecombo) || (C.creatorPicks || []).map(x => comboFromName(x.name)).find(x => x?.slug === d.usecombo);
+      if (!c) return;
+      if (!ui.deck || ui.deck.brand !== brand) ui.deck = newDeck();
+      let i = ui.deck.slots.findIndex(s => !Object.keys(s.p).length); if (i < 0) i = 2;
+      ui.deck.slots[i] = comboToSlot(c); ui.deck.onlyOwned = false;
+      toast(`${c.name} → Bey ${i + 1}`); go('decks');
+    }
     else if (d.close !== undefined) dlg.close();
     else if (d.savenote) { const v = $('partNote').value.trim(); if (v) S.notes[d.savenote] = v; else delete S.notes[d.savenote]; dlg.close(); save('Note saved'); }
     else if (d.mode) { const [i, m] = d.mode.split(':'); ui.deck.slots[i] = { mode: m, p: {} }; renderDecks(); }
@@ -727,10 +1066,11 @@
       const name = $('cName').value.trim(); if (!name) return;
       const kind = $('cKind').value;
       const id = `${brand}:${kind}:custom-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-      if (!C.parts[id]) { const p = { id, brand, kind, name, type: $('cType').value, custom: true }; S.custom.push(p); mergeCustom(); }
+      if (!C.parts[id]) { const p = { id, brand, kind, name, type: $('cType').value, custom: true }; S.custom.push(p); mergeCustom(); idx = null; metaCache = {}; }
       dlg.close(); save('Custom part added');
     }
-    else if (t.id === 'deckSuggest') { ui.deck = suggestDeck(); renderDecks(); toast('Built from your highest-rated parts'); }
+    else if (t.id === 'deckMeta') { ui.deck = bestMetaDeck(true); renderDecks(); toast(ui.deck.note.replace(/<[^>]+>/g, '')); }
+    else if (t.id === 'deckShop') { const dd = bestMetaDeck(false); dd.onlyOwned = false; ui.deck = dd; renderDecks(); shopDialog(dd); }
     else if (t.id === 'deckNew') { ui.deck = newDeck(); renderDecks(); }
     else if (t.id === 'deckSave') {
       const dd = ui.deck; const i = S.decks.findIndex(y => y.id === dd.id);
@@ -753,9 +1093,10 @@
     else if (t.id === 'lockNow') { try { localStorage.removeItem(KEY_STORE); sessionStorage.removeItem(KEY_STORE); } catch (x) {} location.reload(); }
     else if (t.id === 'changePass') { dlg.close(); showLock('change'); }
   });
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
   document.addEventListener('change', e => {
     const t = e.target;
-    if (t.dataset.slot) { const [i, f] = t.dataset.slot.split(':'); const s = ui.deck.slots[i]; if (t.value) s.p[f] = t.value; else delete s.p[f]; renderDecks(); }
+    if (t.dataset.slot) { const [i, f] = t.dataset.slot.split(':'); const s = ui.deck.slots[i]; if (t.value) s.p[f] = t.value; else delete s.p[f]; delete s.src; renderDecks(); }
     if (t.id === 'importFile' && t.files[0]) {
       t.files[0].text().then(txt => { const j = JSON.parse(txt); if (!j.owned) throw new Error('bad file'); S = { ...blank(), ...j }; mergeCustom(); migrate(); dlg.close(); save('Collection imported'); })
         .catch(() => toast('That file is not a Bey Vault export'));
@@ -778,7 +1119,7 @@
   }
   function enterApp() {
     $('lock').hidden = true; $('app').hidden = false;
-    mergeCustom(); migrate(); render();
+    mergeCustom(); migrate(); idx = null; metaCache = {}; render();
     setSync(ghToken() ? 'Synced to GitHub' : 'Saved on this device');
   }
   $('lockForm').addEventListener('submit', async e => {
@@ -831,6 +1172,8 @@
     showLock('setup');
   }
   boot();
+  loadMeta();
+  if (location.search.includes('debug')) window.__bv = { metaFor, resolve, part, get META() { return META; } };
 })();
 </script>
 </body>

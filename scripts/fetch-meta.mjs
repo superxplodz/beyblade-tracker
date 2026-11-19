@@ -3,6 +3,7 @@
 import fs from 'node:fs';
 const BASE = 'https://beywatch.gg';
 const WINDOWS = ['30d', '90d', '6mo', 'all'];
+const MAX_COMBOS = 200;
 const PAGES = { tier: '/', parts: '/parts', combos: '/combos' };
 const DUMP = !!process.env.DUMP;
 if (DUMP) fs.mkdirSync('raw', { recursive: true });
@@ -44,7 +45,7 @@ function parseTier(html) {
     return {
       blade: blade.split('/').pop(), type: alts[0] || '', tier: cells[3] || '',
       winShare: num(pct[0]), firstRate: num(pct[1]), cuts: num(cells[cells.length - 1]),
-      combo: combo && { ...combo, name: cells[cells.length - 2] },
+      combo: combo && { ...combo, name: cells[cells.length - 2].replace(/^[+\s]+/, '') },
     };
   }).filter(r => r && r.cuts);
 }
@@ -54,7 +55,8 @@ function parseCombos(html) {
     if (!combo) return null;
     const pct = cells.filter(c => /%$/.test(c)).map(num);
     const ints = cells.map(c => /^[\d,]+$/.test(c) ? num(c) : null).filter(v => v != null);
-    const name = cells.find(c => /[A-Za-z].*\d-\d|[A-Za-z]{3,} [A-Z][a-z]*$/.test(c)) || '';
+    const raw = cells.find(c => /[A-Za-z]/.test(c) && !/^(Attack|Defense|Stamina|Balance)$/.test(c)) || '';
+    const name = raw.replace(/\s+[\d.]+%.*$/, '').replace(/[+\s]+$/, '').trim();
     return { ...combo, name, pct, cuts: ints.length ? Math.max(...ints) : null };
   }).filter(Boolean);
 }
@@ -81,14 +83,14 @@ for (const w of WINDOWS) {
   const meta = strip(tierHtml).match(/Updated:\s*([A-Z][a-z]{2} \d+, \d{4}).*?Combos Analyzed:\s*([\d.,K]+).*?Tournaments:\s*([\d,]+)/);
   const entry = {
     updated: meta?.[1] || null, combosAnalyzed: meta?.[2] || null, tournaments: meta ? num(meta[3]) : null,
-    blades: parseTier(tierHtml),
+    blades: parseTier(tierHtml).filter(b => b.cuts > 0),
   };
-  try { entry.combos = parseCombos(await get(PAGES.combos, w)).slice(0, 60); } catch (e) { console.warn(e.message); entry.combos = []; }
+  try { entry.combos = parseCombos(await get(PAGES.combos, w)).filter(c => c.cuts).slice(0, MAX_COMBOS); } catch (e) { console.warn(e.message); entry.combos = []; }
   try { entry.parts = parseParts(await get(PAGES.parts, w)); } catch (e) { console.warn(e.message); entry.parts = {}; }
   console.log(w, 'blades', entry.blades.length, 'combos', entry.combos.length, 'part cats', Object.keys(entry.parts).join(','));
   result.windows[w] = entry;
 }
 const ok = Object.values(result.windows).every(e => e.blades.length >= 5);
 if (!ok) { console.error('Parse looks broken; keeping old meta.json'); process.exit(DUMP ? 0 : 1); }
-fs.writeFileSync('meta.json', JSON.stringify(result, null, 1));
+fs.writeFileSync('meta.json', JSON.stringify(result));
 console.log('meta.json written');
