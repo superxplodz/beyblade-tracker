@@ -111,7 +111,7 @@ window.CATALOG = (() => {
   const ACCESSORIES = {
     'Winder Launcher': ['launcher'], 'Long Winder Launcher': ['launcher'], 'String Launcher': ['launcher'], 'String Launcher L (left spin)': ['launcher'],
     'Ripcord Launcher': ['launcher'], 'Launcher Grip': ['gear'], 'Xtreme Stadium': ['stadium'], 'Xtreme Stadium (Red)': ['stadium'],
-    'Wide Xtreme Stadium': ['stadium'], 'Clash and Carry Stadium': ['stadium'], 'Drop Attack Stadium': ['stadium'], 'Double Xtreme Motorized Stadium': ['stadium'],
+    'Wide Xtreme Stadium': ['stadium'], 'Infinity Stadium': ['stadium'], 'Double Xtreme Stadium': ['stadium'], 'Storage Box (Evangelion)': ['gear'], 'Clash and Carry Stadium': ['stadium'], 'Drop Attack Stadium': ['stadium'], 'Double Xtreme Motorized Stadium': ['stadium'],
     '3on3 Deck Case': ['gear'], '3on3 Deck Case (Black)': ['gear'], 'Bey Battle Pass': ['gear'],
   };
   TT_LOCKS.push('Dyna');
@@ -135,10 +135,10 @@ window.CATALOG = (() => {
     ['BX-13', 'Booster Knight Lance 4-80HN', ['Knight Lance|4-80|HN']],
     ['BX-14', 'Random Booster Vol.1', ['Shark Edge|3-60|LF', 'Shark Edge|4-80|N', 'Dran Sword|3-80|B', 'Hells Scythe|4-80|LF', 'Knight Shield|4-60|LF', 'Wizard Arrow|3-60|T'], null, { random: true }],
     ['BX-15', 'Starter Leon Claw 5-60P', ['Leon Claw|5-60|P']],
-    ['BX-16', 'Random Booster Viper Tail Select', ['Viper Tail|5-80|O'], null, { random: true, partial: true }],
+    ['BX-16', 'Random Booster Viper Tail Select', ['Viper Tail|5-80|O', 'Viper Tail|4-60|F', 'Viper Tail|3-80|HN'], null, { random: true }],
     ['BX-17', 'Battle Entry Set', ['Dran Sword|3-60|F', 'Wizard Arrow|4-80|B'], ['acc:Xtreme Stadium', 'acc:Winder Launcher', 'acc:Winder Launcher']],
     ['BX-19', 'Booster Rhino Horn 3-80S', ['Rhino Horn|3-80|S']],
-    ['BX-20', 'Dran Dagger Deck Set', ['Dran Dagger|?|?'], null, { partial: true }],
+    ['BX-20', 'Dran Dagger Deck Set', ['Dran Dagger|4-60|R', 'Knight Shield|5-80|T', 'Shark Edge|3-80|F']],
     ['BX-21', 'Hells Chain Deck Set', ['Hells Chain|5-60|HT', 'Knight Lance|3-60|LF', 'Wizard Arrow|4-80|N']],
     ['BX-22', 'Dran Sword 3-60F Entry Package', ['Dran Sword|3-60|F']],
     ['BX-23', 'Starter Phoenix Wing 9-60GF', ['Phoenix Wing|9-60|GF']],
@@ -149,13 +149,13 @@ window.CATALOG = (() => {
     ['BX-33', 'Booster Weiss Tiger 3-60U', ['Weiss Tiger|3-60|U']],
     ['BX-34', 'Starter Cobalt Dragoon 2-60C', ['Cobalt Dragoon|2-60|C']],
     ['BX-35', 'Random Booster Vol.4', ['Black Shell|4-60|D', 'Black Shell|9-80|B', 'Unicorn Sting|3-70|D', 'Wizard Rod|1-60|R', 'Phoenix Wing|5-80|H', 'Viper Tail|5-70|D'], null, { random: true }],
-    ['BX-36', 'Random Booster Whale Wave Select', ['Whale Wave|?|?'], null, { random: true, partial: true }],
-    ['BX-37', 'Double Xtreme Stadium Set', ['Bear Scratch|?|?'], null, { partial: true }],
+    ['BX-36', 'Random Booster Whale Wave Select', ['Whale Wave|5-80|E', 'Whale Wave|4-80|HN', 'Whale Wave|3-80|GB'], null, { random: true }],
+    ['BX-37', 'Double Xtreme Stadium Set', ['Bear Scratch|5-60|F'], ['acc:Double Xtreme Stadium', 'acc:Winder Launcher']],
     ['BX-38', 'Booster Crimson Garuda 4-70TP', ['Crimson Garuda|4-70|TP']],
-    ['BX-39', 'Random Booster Shelter Drake Select', ['Shelter Drake|?|?'], null, { random: true, partial: true }],
+    ['BX-39', 'Random Booster Shelter Drake Select', ['Shelter Drake|7-80|GP', 'Shelter Drake|5-70|O', 'Shelter Drake|3-60|D'], null, { random: true }],
     ['BX-44', 'Booster Tricera Press M-85BS', ['Tricera Press|M-85|BS']],
     ['BX-45', 'Booster Samurai Calibur 6-70M', ['Samurai Calibur|6-70|M']],
-    ['BX-46', 'Battle Entry Set ∞', ['Cobalt Drake|?|?', 'Goat Tackle|?|?'], ['acc:Xtreme Stadium', 'acc:Winder Launcher', 'acc:Winder Launcher'], { partial: true }],
+    ['BX-46', 'Battle Entry Set ∞', ['Cobalt Drake|9-60|R', 'Goat Tackle|7-70|T'], ['acc:Infinity Stadium', 'acc:Winder Launcher', 'acc:Winder Launcher']],
     ['BX-47', 'String Launcher L (Red)', [], ['acc:String Launcher L (left spin)']],
     ['BX-48', 'Random Booster Vol.9', ['Cobalt Dragoon|9-80|F', 'Shark Edge|4-70|E', 'Mammoth Tusk|7-60|S', 'Hells Scythe|3-85|GB', 'Dran Buster|2-80|Q'], null, { random: true }],
     ['BX-49', 'Starter Dran Strike 4-50FF', ['Dran Strike|4-50|FF']],
@@ -169,7 +169,7 @@ window.CATALOG = (() => {
     ['BX-00', 'Booster Dranzer Spiral 3-80T', ['Dranzer Spiral|3-80|T']],
     ['BX-00', 'Booster Driger Slash 4-80P', ['Driger Slash|4-80|P']],
     ['BX-00', 'Booster Draciel Shield 7-60D', ['Draciel Shield|7-60|D']],
-    ['BX-00', 'Random Booster Lightning L-Drago 1-60F', ['Lightning L-Drago|1-60|F'], null, { random: true, partial: true }],
+    ['BX-00', 'Random Booster Lightning L-Drago 1-60F', ['Lightning L-Drago|1-60|F', 'Lightning L-Drago|1-60|F'], null, { random: true }],
     ['BX-00', 'Booster Rock Leone 6-80GN', ['Rock Leone|6-80|GN']],
     ['BX-00', 'Starter Xeno Xcalibur 3-60GF', ['Xeno Xcalibur|3-60|GF']],
     ['BX-00', 'Booster Dragoon Storm 4-60RA', ['Dragoon Storm|4-60|RA']],
@@ -187,12 +187,13 @@ window.CATALOG = (() => {
     ['UX-01', 'Starter Dran Buster 1-60A', ['Dran Buster|1-60|A']],
     ['UX-02', 'Starter Hells Hammer 3-70H', ['Hells Hammer|3-70|H']],
     ['UX-03', 'Booster Wizard Rod 5-70DB', ['Wizard Rod|5-70|DB']],
-    ['UX-05', 'Random Booster Shinobi Shadow Select', ['Shinobi Shadow|1-80|MN'], null, { random: true, partial: true }],
+    ['UX-04', 'Battle Entry Set U', ['Dran Buster|1-60|A', 'Wizard Rod|5-70|DB'], ['acc:Xtreme Stadium', 'acc:Winder Launcher', 'acc:Winder Launcher']],
+    ['UX-05', 'Random Booster Shinobi Shadow Select', ['Shinobi Shadow|1-80|MN', 'Shinobi Shadow|9-60|LF', 'Shinobi Shadow|3-70|GP'], null, { random: true }],
     ['UX-06', 'Booster Leon Crest 7-60GN', ['Leon Crest|7-60|GN']],
-    ['UX-07', 'Phoenix Rudder Deck Set', ['Phoenix Rudder|9-70|G'], null, { partial: true }],
+    ['UX-07', 'Phoenix Rudder Deck Set', ['Phoenix Rudder|9-70|G', 'Sphinx Cowl|1-80|GF', 'Wyvern Gale|2-60|S']],
     ['UX-08', 'Starter Silver Wolf 3-80FB', ['Silver Wolf|3-80|FB']],
     ['UX-09', 'Starter Samurai Saber 2-70L', ['Samurai Saber|2-70|L']],
-    ['UX-10', 'Customize Set U', ['Knight Mail|3-85|BS', 'Ptera Swing|?|?'], null, { partial: true }],
+    ['UX-10', 'Customize Set U', ['Knight Mail|3-85|BS'], ['blade:Ptera Swing', 'blade:Hells Hammer', 'blade:Tyranno Beat', 'ratchet:1-60', 'ratchet:7-70', 'bit:B', 'bit:R', 'bit:P', 'bit:MN'], { partial: true }],
     ['UX-11', 'Starter Impact Drake 9-60LR', ['Impact Drake|9-60|LR']],
     ['UX-12', 'Random Booster Vol.5', ['Ghost Circle|0-80|GB', 'Ghost Circle|4-60|H', 'Shinobi Shadow|3-80|F', 'Leon Claw|0-80|E', 'Phoenix Feather|2-60|N', 'Wyvern Gale|0-80|C'], null, { random: true }],
     ['UX-13', 'Booster Golem Rock 1-60UN', ['Golem Rock|1-60|UN']],
@@ -224,11 +225,11 @@ window.CATALOG = (() => {
     ['CX-17', 'Random Booster Vol.10', ['@Unicorn/Delta/P+O|3-60|GU', '@Unicorn/Delta/P+O|1-80|GR', 'Samurai Saber|9-65|LO', 'Hells Hammer|3-85|GU', 'Tyranno Beat|3-60|N', 'Crimson Garuda|7-80|GU'], null, { random: true }],
     ['CX-18', 'Random Booster Brachio Whip Select', ['@Brachio/Whip/O+W|5-70|Nr'], null, { random: true }],
     ['CX-19', 'Random Booster Croco Tread Select', ['@Croco/Tread/T+Q|5-50|GN'], null, { random: true }],
-    ['CX-20', 'Customize Set C', ['@Phoenix/Force/W+H|M-65|MT', 'Shark Scale|?|?', 'Wizard Rod|?|?', 'Hells Scythe|?|?'], null, { partial: true }],
+    ['CX-20', 'Customize Set C', ['@Phoenix/Force/W+H|M-65|MT'], ['blade:Shark Scale', 'blade:Wizard Rod', 'blade:Hells Scythe', 'ratchet:1-70', 'ratchet:8-80', 'bit:K', 'bit:LR', 'bit:HN', 'bit:LO', 'bit:UF']],
     ['CX-00', 'Valkyrie Volt S4-70V', ['@Valkyrie*/Volt/S|4-70|V']],
     ['CX-00', 'Valkyrie Volt S4-70V Gunmetal Ver.', ['@Valkyrie*/Volt/S|4-70|V'], null, { limited: true }],
     ['CX-00', 'Dyna Rage FT3-60T (Ultraman Dyna collab)', ['@Dyna/Rage/F+T|3-60|T'], null, { limited: true, collab: true }],
-    ['CX-00', 'Evangelion Deck Set (collab)', [], null, { limited: true, collab: true, partial: true }],
+    ['CX-00', 'Evangelion Deck Set (collab)', [], ['acc:Long Winder Launcher', 'acc:Long Winder Launcher', 'acc:Storage Box (Evangelion)'], { limited: true, collab: true, partial: true }],
     ['CX-00', 'Leon Fang T4-60A (Red Ver.)', ['@Leon/Fang/T|4-60|A']],
     ['CX-00', 'Kid Hunt K4-70TK', ['@Kid/Hunt/K|4-70|TK']],
   ];
@@ -242,7 +243,8 @@ window.CATALOG = (() => {
     'The Mandalorian': ['BX', '', null, 'R'], 'Moff Gideon': ['BX', '', null, 'R'], 'Luke Skywalker': ['BX', '', null, 'R'], 'Darth Vader': ['BX', '', null, 'R'],
     'Obi-Wan Kenobi': ['BX', '', null, 'R'], 'General Grievous': ['BX', '', null, 'R'], 'Chewbacca': ['BX', '', null, 'R'], 'Stormtrooper': ['BX', '', null, 'R'],
     'Optimus Primal': ['BX', '', null, 'R'], 'Starscream': ['BX', '', null, 'R'], 'Optimus Prime': ['BX', '', null, 'R'], 'Megatron': ['BX', '', null, 'R'],
-    'Captain America': ['BX', 'Stamina', null, 'R'], 'Red Hulk': ['BX', '', null, 'R'] };
+    'Captain America': ['BX', 'Stamina', null, 'R'], 'Red Hulk': ['BX', '', null, 'R'],
+    'T. Rex': ['BX', 'Stamina', null, 'R'], 'Mosasaurus': ['BX', 'Balance', null, 'R'], 'Spinosaurus': ['BX', 'Attack', null, 'R'], 'Quetzalcoatlus': ['BX', 'Defense', null, 'R'] };
   const H_PRODUCTS = [
     ['F9580', 'Sword Dran 3-60F Starter', ['Sword Dran|3-60|F']],
     ['F9581', 'Scythe Incendio 4-60T Starter', ['Scythe Incendio|4-60|T']],
@@ -275,10 +277,10 @@ window.CATALOG = (() => {
     ['G4572', 'Blitz Bahamut BK 1-50I Starter', ['@Bahamut/Blitz/B+K|1-50|I']],
     ['G4564', 'Nether Incendio Z Starter', ['Nether Incendio||Z']],
     ['G4565', 'Tread Croco TQ5-50GN Starter', ['@Croco/Tread/T+Q|5-50|GN']],
-    ['H-XBS', 'Xtreme Battle Set', [], ['acc:Xtreme Stadium', 'acc:Ripcord Launcher', 'acc:Ripcord Launcher'], { partial: true }],
+    ['H-XBS', 'Xtreme Battle Set', ['Dagger Dran|4-60|R', 'Tusk Mammoth|3-60|T'], ['acc:Xtreme Stadium', 'acc:Ripcord Launcher', 'acc:Ripcord Launcher']],
     ['BX-32H', 'Wide Beystadium', [], ['acc:Wide Xtreme Stadium']],
     ['H-CCS', 'Clash and Carry Stadium', [], ['acc:Clash and Carry Stadium']],
-    ['H-DAB', 'Drop Attack Battle Set', [], ['acc:Drop Attack Stadium'], { partial: true }],
+    ['H-DAB', 'Drop Attack Battle Set', ['Impact Drake|9-60|LR', 'Hover Wyvern|3-85|N'], ['acc:Drop Attack Stadium', 'acc:Ripcord Launcher', 'acc:Ripcord Launcher']],
     ['BX-00H', 'Double Xtreme Motorized Beystadium', [], ['acc:Double Xtreme Motorized Stadium']],
     ['H-MV1', 'Marvel: Spider-Man 3-60F vs. Venom 3-80N', ['Spider-Man|3-60|F', 'Venom|3-80|N'], ['acc:Ripcord Launcher', 'acc:Ripcord Launcher'], { collab: true }],
     ['H-MV2', 'Marvel: Iron Man 4-80B vs. Thanos 4-60B', ['Iron Man|4-80|B', 'Thanos|4-60|B'], ['acc:Ripcord Launcher', 'acc:Ripcord Launcher'], { collab: true }],
@@ -289,6 +291,9 @@ window.CATALOG = (() => {
     ['H-SW4', 'Star Wars: Chewbacca 4-80LF vs. Stormtrooper 5-70B', ['Chewbacca|4-80|LF', 'Stormtrooper|5-70|B'], ['acc:Ripcord Launcher', 'acc:Ripcord Launcher'], { collab: true }],
     ['H-TF1', 'Transformers: Optimus Primal 3-60F vs. Starscream 3-80N', ['Optimus Primal|3-60|F', 'Starscream|3-80|N'], ['acc:Ripcord Launcher', 'acc:Ripcord Launcher'], { collab: true }],
     ['H-TF2', 'Transformers: Optimus Prime 4-60P vs. Megatron 4-80B', ['Optimus Prime|4-60|P', 'Megatron|4-80|B'], ['acc:Ripcord Launcher', 'acc:Ripcord Launcher'], { collab: true }],
+    ['G1898', 'Jurassic World: T. Rex 1-80GB vs. Mosasaurus 9-60U', ['T. Rex|1-80|GB', 'Mosasaurus|9-60|U'], ['acc:Ripcord Launcher', 'acc:Ripcord Launcher'], { collab: true }],
+    ['G1899', 'Jurassic World: Spinosaurus 3-85A vs. Quetzalcoatlus 4-55D', ['Spinosaurus|3-85|A', 'Quetzalcoatlus|4-55|D'], ['acc:Ripcord Launcher', 'acc:Ripcord Launcher'], { collab: true }],
+    ['G3607', 'NFL: AFC vs. NFC CX Top Pack', ['@NFC/Arc/R|9-60|LO', '@AFC/Courage/S|6-70|H'], ['lock:NFC', 'lock:AFC', 'acc:Ripcord Launcher', 'acc:Ripcord Launcher'], { collab: true }],
     ['CX-11H', 'X-treme Battlers Pack (Emperor Might Deck Set)', ['@Emperor*/Might/H||Op', 'Rock Golem|M-85|HN', 'Gill Shark|5-60|FB']],
   ];
 
@@ -365,7 +370,8 @@ window.CATALOG = (() => {
       const extraIds = (extra || []).map(e => {
         const [k, v] = e.split(':');
         return k === 'lock' ? lock(brand, v) : k === 'metal' ? main(brand, v, true) : k === 'over' ? over(brand, v)
-          : k === 'assist' ? assist(brand, v) : k === 'blade' ? blade(brand, v) : k === 'acc' ? acc(brand, v) : null;
+          : k === 'assist' ? assist(brand, v) : k === 'blade' ? blade(brand, v) : k === 'acc' ? acc(brand, v)
+          : k === 'ratchet' ? ratchet(brand, v) : k === 'bit' ? bit(brand, v) : null;
       }).filter(Boolean);
       // Starters come with a launcher
       if (!extraIds.some(x => parts[x].acc) && /starter|deluxe launcher/i.test(name)) extraIds.push(acc(brand, brand === 'tt' ? (/UX-22/.test(code) ? 'Long Winder Launcher' : 'Winder Launcher') : 'Ripcord Launcher'));
