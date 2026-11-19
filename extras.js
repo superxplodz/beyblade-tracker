@@ -213,4 +213,12 @@
     const prods = (part.products || []).map(id => C.products.find(x => x.id === id)).filter(Boolean);
     if (prods.length && prods.every(x => x.upcoming)) part.upcoming = prods.map(x => x.upcoming).sort()[0];
   }
+
+  // Accessory photos: the Takara Tomy release photo of the standalone accessory, else of the first set with it
+  for (const part of Object.values(C.parts)) {
+    if (!part.acc || part.img) continue;
+    const prods = (part.products || []).map(id => C.products.find(x => x.id === id)).filter(Boolean);
+    const pick = prods.find(x => x.acc && /^(BX|UX|CX)-\d{2}$/.test(x.code) && !x.code.endsWith('00')) || prods.find(x => /^(BX|UX|CX)-\d{2}$/.test(x.code) && !x.code.endsWith('00'));
+    if (pick) part.img = `https://beyblade.takaratomy.co.jp/beyblade-x/lineup/_image/${pick.code.replace('-', '')}_list.png`;
+  }
 })();

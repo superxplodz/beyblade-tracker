@@ -9,6 +9,7 @@ Static site at **https://beyvault.superxplodz.biz.id**, served by GitHub Pages f
 | `extras.js` | Part photos (BeybladeHub), official ATK/DEF/STA stats, meta ratings, and release/colour variants. |
 | `collection.enc` | Your collection, AES-256-GCM encrypted with a key derived from your username + password (PBKDF2, 310k rounds). Written by the site when GitHub sync is on. |
 | `meta.json` | Live tournament meta from BEYWATCH.GG (30d / 90d / 6mo / all time). Rebuilt every Monday by `.github/workflows/meta.yml` running `scripts/fetch-meta.mjs`. |
+| `prices.json` | Snapshot of Indonesian Tokopedia listings for common parts and sets. Tokopedia blocks GitHub's servers, so this is refreshed by hand, not by the weekly job. |
 | `CNAME` | Custom domain for GitHub Pages. |
 
 ## Features
@@ -41,3 +42,7 @@ There is no reset. If you forget them, restore from an exported JSON backup and 
 ## Weekly meta refresh
 The Action runs Mondays 03:17 UTC. Run it by hand from Actions → Weekly meta update → Run workflow.
 If BEYWATCH changes its layout and parsing fails, the old `meta.json` is kept and the run shows as failed.
+
+## Prices and deals
+Each part and set has an Indonesian price box: snapshot listings, prices you log yourself (FB groups, Shopee, local shops), and a target price.
+When any seen price is at or under your target, the part shows a **Deal** tag. Quick links open Tokopedia (new and bekas), Shopee and Facebook Marketplace sorted by cheapest.
