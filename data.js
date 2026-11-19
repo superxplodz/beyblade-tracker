@@ -193,7 +193,7 @@ window.CATALOG = (() => {
     ['UX-07', 'Phoenix Rudder Deck Set', ['Phoenix Rudder|9-70|G', 'Sphinx Cowl|1-80|GF', 'Wyvern Gale|2-60|S']],
     ['UX-08', 'Starter Silver Wolf 3-80FB', ['Silver Wolf|3-80|FB']],
     ['UX-09', 'Starter Samurai Saber 2-70L', ['Samurai Saber|2-70|L']],
-    ['UX-10', 'Customize Set U', ['Knight Mail|3-85|BS'], ['blade:Ptera Swing', 'blade:Hells Hammer', 'blade:Tyranno Beat', 'ratchet:1-60', 'ratchet:7-70', 'bit:B', 'bit:R', 'bit:P', 'bit:MN'], { partial: true }],
+    ['UX-10', 'Customize Set U', ['Knight Mail|3-85|BS'], ['blade:Ptera Swing', 'blade:Hells Hammer', 'blade:Tyranno Beat', 'ratchet:1-60', 'ratchet:7-70', 'bit:B', 'bit:R', 'bit:P', 'bit:MN', 'bit:RA']],
     ['UX-11', 'Starter Impact Drake 9-60LR', ['Impact Drake|9-60|LR']],
     ['UX-12', 'Random Booster Vol.5', ['Ghost Circle|0-80|GB', 'Ghost Circle|4-60|H', 'Shinobi Shadow|3-80|F', 'Leon Claw|0-80|E', 'Phoenix Feather|2-60|N', 'Wyvern Gale|0-80|C'], null, { random: true }],
     ['UX-13', 'Booster Golem Rock 1-60UN', ['Golem Rock|1-60|UN']],
@@ -229,7 +229,7 @@ window.CATALOG = (() => {
     ['CX-00', 'Valkyrie Volt S4-70V', ['@Valkyrie*/Volt/S|4-70|V']],
     ['CX-00', 'Valkyrie Volt S4-70V Gunmetal Ver.', ['@Valkyrie*/Volt/S|4-70|V'], null, { limited: true }],
     ['CX-00', 'Dyna Rage FT3-60T (Ultraman Dyna collab)', ['@Dyna/Rage/F+T|3-60|T'], null, { limited: true, collab: true }],
-    ['CX-00', 'Evangelion Deck Set (collab)', [], ['acc:Long Winder Launcher', 'acc:Long Winder Launcher', 'acc:Storage Box (Evangelion)'], { limited: true, collab: true, partial: true }],
+    ['CX-00', 'Evangelion Deck Set (collab)', ['@EVA-01 /Brave/A|1-70|V', '@EVA-00 /Arc/B|0-70|E', '@EVA-02 /Brush/T|2-70|A'], ['acc:Long Winder Launcher', 'acc:Long Winder Launcher', 'acc:Storage Box (Evangelion)'], { limited: true, collab: true }],
     ['CX-00', 'Leon Fang T4-60A (Red Ver.)', ['@Leon/Fang/T|4-60|A']],
     ['CX-00', 'Kid Hunt K4-70TK', ['@Kid/Hunt/K|4-70|TK']],
   ];

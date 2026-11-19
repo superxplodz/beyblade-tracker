@@ -323,7 +323,7 @@
 <footer class="container">
   Parts catalog from the official Takara Tomy lineup, byybladebuilder.com, the Beyblade Wiki and retailer listings. Hasbro list is partial.
   Set photos: <a href="https://beyblade.takaratomy.co.jp/beyblade-x/lineup/" target="_blank" rel="noopener">Takara Tomy</a>. Part photos: <a href="https://beybladehub.app" target="_blank" rel="noopener">BeybladeHub</a>.<br>
-  Meta: <a href="https://beywatch.gg" target="_blank" rel="noopener">BEYWATCH.GG</a> tournament top cuts, refreshed every Monday. Creator picks: JacobPomegranate, HaruRen Hobbies, MBBC, Anti Wizard Wizard Club (via Beyblade X Combo Finder). Consensus tiers: BBX Weekly, Beyblade Kingdom, note.com. Indonesian prices: Tokopedia snapshot plus prices you log.
+  Meta: <a href="https://beywatch.gg" target="_blank" rel="noopener">BEYWATCH.GG</a> tournament top cuts, refreshed every Monday. Creator picks: JacobPomegranate, HaruRen Hobbies, MBBC, Anti Wizard Wizard Club (via Beyblade X Combo Finder). Consensus tiers: BBX Weekly, Beyblade Kingdom, note.com. Indonesian prices: Tokopedia, Shopee and FB buy/sell group snapshots plus prices you log.
 </footer>
 
 <nav class="bottomnav" role="tablist">
@@ -481,13 +481,15 @@
     return { low: Math.min(...all), mid: median(all), n: all.length, snap, mine };
   }
   const searchName = p => p.kind ? `beyblade x ${p.acc ? '' : (KIND[p.kind] || '').replace(/ \(.*\)/, '').toLowerCase()} ${p.code && ['bit', 'rbit', 'assist', 'over'].includes(p.kind) ? p.name + ' ' + p.code : p.name}`.replace(/\s+/g, ' ') : `beyblade x ${p.code} ${p.name}`;
+  const FB_GROUPS = [['BI Marketplace', '948108697372517'], ['BX Indo Community', 'beybladeindonesia'], ['FJBBI', 'Jualbeybladedanbarter']];
   function shopLinks(q) {
     const e = encodeURIComponent(q);
     return `<div class="row wrap" style="gap:6px">
       <a class="btn btn-sm" target="_blank" rel="noopener" href="https://www.tokopedia.com/search?q=${e}&ob=3">Tokopedia · cheapest</a>
       <a class="btn btn-sm" target="_blank" rel="noopener" href="https://www.tokopedia.com/search?q=${e}&condition=2&ob=3">Tokopedia · bekas</a>
       <a class="btn btn-sm" target="_blank" rel="noopener" href="https://shopee.co.id/search?keyword=${e}&order=asc&sortBy=price">Shopee</a>
-      <a class="btn btn-sm" target="_blank" rel="noopener" href="https://www.facebook.com/marketplace/jakarta/search?query=${e}&sortBy=price_ascend">FB Marketplace</a></div>`;
+      <a class="btn btn-sm" target="_blank" rel="noopener" href="https://www.facebook.com/marketplace/jakarta/search?query=${e}&sortBy=price_ascend">FB Marketplace</a>
+      ${FB_GROUPS.map(([n, id]) => `<a class="btn btn-sm" target="_blank" rel="noopener" href="https://www.facebook.com/groups/${id}/search/?q=${encodeURIComponent(q.replace(/^beyblade x /i, ''))}">FB · ${n}</a>`).join('')}</div>`;
   }
   function priceBlock(key, q) {
     const m = marketOf(key); const t = S.target?.[key];
@@ -499,9 +501,9 @@
         ${deal ? '<div class="okbox">A price at or under your target has been seen. Worth grabbing.</div>' : ''}
         <div class="list">${[...m.mine.map(x => ({ ...x, mine: true })), ...m.snap].sort((a, b) => a.price - b.price).map(x => `<div class="item" style="min-height:48px"><div class="main" style="cursor:default">
           <div class="name">${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener" style="color:inherit">${esc(x.title || x.where || 'Listing')}</a>` : esc(x.where || 'Seen by you')}</div>
-          <div class="sub">${x.mine ? '<span class="tag tag-up">You logged</span>' : `<span>${esc(x.shop || '')}</span>`}${x.cond === 'used' ? '<span class="tag">Bekas</span>' : ''}${x.date ? `<span>${esc(x.date)}</span>` : ''}</div></div>
+          <div class="sub">${x.mine ? '<span class="tag tag-up">You logged</span>' : `${x.src ? `<span class="tag">${esc(x.src.replace(/^FB: /, 'FB · '))}</span>` : ''}<span>${esc(x.shop || '')}</span>`}${x.cond === 'used' ? '<span class="tag">Bekas</span>' : ''}${x.date ? `<span>${esc(x.date)}</span>` : ''}</div></div>
           <b class="num">${rp(x.price)}</b>${x.mine ? `<button class="btn btn-sm btn-ghost" data-unseen="${esc(key)}~${esc(x.id)}" aria-label="Delete">✕</button>` : ''}</div>`).join('')}</div>
-        ${m.snap.length ? `<div class="note">Tokopedia listings checked ${esc(PRICES.checked)}. Prices move, so tap a shop link for today's price.</div>` : ''}`
+        ${m.snap.length ? `<div class="note">Tokopedia, Shopee and FB group listings checked ${esc(PRICES.checked)}. FB posts can sell fast and prices are often negotiable (nego).</div>` : ''}`
         : '<div class="muted small">No prices logged yet. Check the shops below, then log what you see.</div>'}
       ${shopLinks(q)}
       <div class="grid grid-2"><label class="muted small">Price you saw (Rp)<input class="input" id="seenPrice" inputmode="numeric" placeholder="e.g. 120k"></label>
@@ -799,7 +801,7 @@
       <div class="box-body">
         <ul class="beys">${p.beys.map(b => `<li>${esc(b.name)}</li>`).join('')}${p.extra.length ? `<li>+ ${[...new Set(p.extra)].map(id => { const n = p.extra.filter(x => x === id).length; return esc(part(id).name) + (n > 1 ? ' ×' + n : ''); }).join(', ')}</li>` : ''}</ul>
         ${p.partial ? '<div class="note">Some contents not confirmed yet.</div>' : ''}
-        ${(() => { const m = marketOf(p.brand + '|' + p.code); return m ? `<div class="small muted" data-setprice="${esc(p.id)}" style="cursor:pointer">Tokopedia ≈ <b style="color:var(--text)">${rp(m.mid)}</b> · from ${rp(m.low)}</div>` : `<button class="btn btn-sm btn-ghost" data-setprice="${esc(p.id)}" style="align-self:flex-start;padding-left:0">Check price in Indonesia →</button>`; })()}
+        ${(() => { const m = marketOf(p.brand + '|' + p.code); return m ? `<div class="small muted" data-setprice="${esc(p.id)}" style="cursor:pointer">Market ≈ <b style="color:var(--text)">${rp(m.mid)}</b> · from ${rp(m.low)}</div>` : `<button class="btn btn-sm btn-ghost" data-setprice="${esc(p.id)}" style="align-self:flex-start;padding-left:0">Check price in Indonesia →</button>`; })()}
         <div style="margin-top:auto"><div class="row between small muted"><span>You own ${have}/${ids.length} parts</span></div><div class="bar"><i style="width:${ids.length ? Math.round(have / ids.length * 100) : 0}%"></i></div></div>
         <div class="row between">
           <button class="star" data-want="${esc(p.id)}" aria-pressed="${!!S.want[p.id]}" aria-label="Want to buy" title="Want to buy">★</button>
