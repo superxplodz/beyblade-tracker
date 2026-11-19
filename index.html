@@ -428,7 +428,7 @@
       const bladeSlot = slots.find(s => !/^(ratchet|bit|lockchip|assist|overblade)-/.test(s.slug));
       const bladePart = bladeSlot?.ids.map(part).find(Boolean);
       const o = { slug: c.slug, name: c.name || c.slug.replace(/-/g, ' '), cuts: c.cuts || 0, first: c.first ?? null, share: c.share ?? null,
-        slots, cx, type: c.type || bladePart?.type || '', known: slots.every(s => s.ids.length) };
+        slots, cx, type: c.type || bladePart?.type || '', known: slots.length >= 2 && slots.every(s => s.ids.length) };
       seen.set(c.slug, o); out.combos.push(o);
     };
     for (const c of W.combos || []) addCombo({ ...c, first: c.pct?.[1] ?? null, share: c.pct?.[0] ?? null });

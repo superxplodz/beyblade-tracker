@@ -110,7 +110,7 @@ for (const w of WINDOWS) {
   };
   // The combos page only lists ~100 rows, so also read each top blade's own page
   const combos = new Map();
-  const merge = list => { for (const c of list) { if (!c.cuts) continue; const o = combos.get(c.slug); if (!o || (c.cuts > (o.cuts || 0))) combos.set(c.slug, o && !c.name ? { ...c, name: o.name } : c); } };
+  const merge = list => { for (const c of list) { if (!c.cuts || !c.parts || c.parts.length < 2) continue; const o = combos.get(c.slug); if (!o || (c.cuts > (o.cuts || 0))) combos.set(c.slug, o && !c.name ? { ...c, name: o.name } : c); } };
   try { merge(parseCombos(await get(PAGES.combos, w))); } catch (e) { console.warn(e.message); }
   const topBlades = [...entry.blades].sort((a, b) => b.cuts - a.cuts).slice(0, 30);
   for (const b of topBlades) {
