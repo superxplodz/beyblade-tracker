@@ -493,9 +493,9 @@
     const m = marketOf(key); const t = S.target?.[key];
     const deal = m && t && m.low <= t;
     return `<h3>Indonesian price</h3><div class="card stack" style="padding:14px">
-      ${m ? `<div class="tiles" style="margin-top:0;grid-template-columns:repeat(3,1fr)"><div class="tile"><div class="k">Lowest seen</div><div class="v" style="font-size:1.15rem">${rp(m.low)}</div></div>
-        <div class="tile"><div class="k">Typical</div><div class="v" style="font-size:1.15rem">${rp(m.mid)}</div></div>
-        <div class="tile"><div class="k">Your target</div><div class="v" style="font-size:1.15rem">${t ? rp(t) : '—'}</div></div></div>
+      ${m ? `<div class="tiles" style="margin-top:0;grid-template-columns:repeat(auto-fit,minmax(96px,1fr))"><div class="tile"><div class="k">Lowest seen</div><div class="v" style="font-size:1rem">${rp(m.low)}</div></div>
+        <div class="tile"><div class="k">Typical</div><div class="v" style="font-size:1rem">${rp(m.mid)}</div></div>
+        <div class="tile"><div class="k">Your target</div><div class="v" style="font-size:1rem">${t ? rp(t) : '—'}</div></div></div>
         ${deal ? '<div class="okbox">A price at or under your target has been seen. Worth grabbing.</div>' : ''}
         <div class="list">${[...m.mine.map(x => ({ ...x, mine: true })), ...m.snap].sort((a, b) => a.price - b.price).map(x => `<div class="item" style="min-height:48px"><div class="main" style="cursor:default">
           <div class="name">${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener" style="color:inherit">${esc(x.title || x.where || 'Listing')}</a>` : esc(x.where || 'Seen by you')}</div>
