@@ -551,9 +551,10 @@
     return crypto.subtle.importKey('raw', fromB64(rec.key), 'AES-GCM', true, ['encrypt', 'decrypt']);
   }
   let pendingEnc = Promise.resolve();
+  // No sign-in for now: the collection is stored as plain JSON on this device
   function persistLocal() {
-    pendingEnc = pendingEnc.then(async () => { const env = await seal(S); try { localStorage.setItem(ENC_KEY, JSON.stringify(env)); } catch (e) {} return env; });
-    return pendingEnc;
+    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
+    return Promise.resolve(S);
   }
 
   function save(msg) {
@@ -585,12 +586,12 @@
     if (syncing) { scheduleSync(); return; }
     syncing = true;
     try {
-      const env = await persistLocal();
+      const data = await persistLocal();
       let sha;
-      try { sha = (await gh('collection.enc?ref=main')).sha; } catch (e) { if (e.status !== 404) throw e; }
-      await gh('collection.enc', { method: 'PUT', body: JSON.stringify({ message: 'Update collection (encrypted)', content: b64(JSON.stringify(env)), sha, branch: 'main' }) });
-      // Remove the old public plaintext copy once the encrypted one is up
-      try { const old = await gh('collection.json?ref=main'); await gh('collection.json', { method: 'DELETE', body: JSON.stringify({ message: 'Remove plaintext collection', sha: old.sha, branch: 'main' }) }); } catch (e) {}
+      try { sha = (await gh('collection.json?ref=main')).sha; } catch (e) { if (e.status !== 404) throw e; }
+      await gh('collection.json', { method: 'PUT', body: JSON.stringify({ message: 'Update collection', content: b64(JSON.stringify(data, null, 1)), sha, branch: 'main' }) });
+      // Remove the old encrypted copy once the plain one is up
+      try { const old = await gh('collection.enc?ref=main'); await gh('collection.enc', { method: 'DELETE', body: JSON.stringify({ message: 'Remove encrypted collection', sha: old.sha, branch: 'main' }) }); } catch (e) {}
       setSync('Synced to GitHub');
     } catch (e) { setSync(e.status === 401 ? 'GitHub token rejected' : 'Sync failed, saved locally'); }
     syncing = false;
@@ -1250,7 +1251,7 @@
     const theme = document.documentElement.dataset.theme || 'auto';
     openDlg(`<div class="dlg-head"><h2>Settings</h2><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
       <h3>Sync across devices</h3>
-      <p class="muted" style="margin:0;font-size:14px">${tok ? 'Connected. Changes save encrypted to <b>collection.enc</b> in your repo.' :
+      <p class="muted" style="margin:0;font-size:14px">${tok ? 'Connected. Changes save to <b>collection.json</b> in your repo. Sign-in is off, so anyone who opens the repo can see it.' :
         'Changes are saved on this device. To sync them, connect a GitHub token that can only edit <b>beyblade-tracker</b>.'}</p>
       ${tok ? `<div class="row"><button class="btn" id="ghPush">Sync now</button><button class="btn btn-danger" id="ghOff">Disconnect</button></div>` : `
       <ol class="muted" style="font-size:14px;margin:0;padding-left:20px">
@@ -1260,8 +1261,6 @@
         <li>Generate, copy and paste it below</li></ol>
       <input class="input" id="ghTok" placeholder="github_pat_…" autocomplete="off">
       <div class="row"><button class="btn btn-primary" id="ghSave">Connect</button><span class="muted" id="ghMsg" style="font-size:13px"></span></div>`}
-      <h3>Account</h3>
-      <div class="row wrap"><button class="btn" id="lockNow">Sign out on this device</button><button class="btn" id="changePass">Change username / password</button></div>
       <h3>Backup</h3>
       <div class="row wrap"><button class="btn" id="exportBtn">Export JSON</button>
         <label class="btn">Import JSON<input type="file" id="importFile" accept=".json,application/json" hidden></label></div>
@@ -1393,11 +1392,13 @@
     lockMode = mode;
     $('app').hidden = true; $('lock').hidden = false;
     const setup = mode !== 'login';
-    $('lockTitle').textContent = mode === 'setup' ? 'Protect Bey Vault' : mode === 'change' ? 'New username & password' : 'Bey Vault';
-    $('lockText').textContent = setup ? 'Pick a username and password. Your collection is encrypted with them. There is no reset, so keep them in your password manager.' : 'Sign in to open your collection.';
+    $('lockTitle').textContent = 'Unlock one last time';
+    $('lockText').textContent = 'Sign-in is being removed. Enter your old username and password once to unlock your collection. After this, Bey Vault opens without a password.';
     $('lockPass2').hidden = !setup; $('lockPass2').required = setup;
     $('lockPass').autocomplete = setup ? 'new-password' : 'current-password';
-    $('lockBtn').textContent = setup ? 'Save and lock' : 'Sign in';
+    $('lockBtn').textContent = 'Unlock';
+    $('lockRemember').parentElement.hidden = true;
+    if (!$('lockSkip')) $('lockMsg').insertAdjacentHTML('afterend', '<button class="btn btn-ghost" id="lockSkip" type="button">Skip and start a new empty collection</button>');
     $('lockMsg').textContent = msg || '';
     $('lockUser').focus();
   }
@@ -1415,8 +1416,8 @@
       if (lockMode === 'login') {
         const key = await deriveKey(user, pass, fromB64(lockEnv.salt));
         try { S = { ...blank(), ...(await open(lockEnv, key)) }; } catch (x) { $('lockMsg').textContent = 'Wrong username or password.'; return; }
-        cryptoKey = key; envSalt = fromB64(lockEnv.salt);
-        try { localStorage.setItem(ENC_KEY, JSON.stringify(lockEnv)); } catch (x) {}
+        await unlockDone();
+        return;
       } else {
         if (pass.length < 8) { $('lockMsg').textContent = 'Use at least 8 characters.'; return; }
         if (pass !== $('lockPass2').value) { $('lockMsg').textContent = 'The passwords do not match.'; return; }
@@ -1434,26 +1435,40 @@
     } finally { $('lockBtn').disabled = false; if ($('lockMsg').textContent === 'Working…') $('lockMsg').textContent = ''; }
   });
 
+  // Decrypted once: keep it as plain data and drop the encrypted copies and the saved key
+  async function unlockDone() {
+    try { localStorage.removeItem(ENC_KEY); localStorage.removeItem(KEY_STORE); sessionStorage.removeItem(KEY_STORE); } catch (x) {}
+    S.updatedAt = S.updatedAt || Date.now();
+    await persistLocal();
+    if (ghToken()) await pushSync();
+    $('lockPass').value = '';
+    toast('Unlocked. No password needed from now on');
+    enterApp();
+  }
+  document.addEventListener('click', e => {
+    if (e.target.id !== 'lockSkip') return;
+    if (!confirm('Start a new empty collection? Your old encrypted data stays in your repo history.')) return;
+    S = blank(); try { localStorage.removeItem(ENC_KEY); localStorage.removeItem(KEY_STORE); } catch (x) {}
+    persistLocal(); enterApp();
+  });
+
   async function boot() {
+    // Plain data (newest of this device and GitHub) opens straight away
+    let plain = null;
+    try { plain = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (x) {}
+    const remotePlain = await fetchLegacyPlain();
+    if (remotePlain && (!plain || (remotePlain.updatedAt || 0) > (plain.updatedAt || 0))) plain = remotePlain;
     const remote = await fetchRemoteEnv(), local = localEnv();
     const env = [remote, local].filter(Boolean).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))[0];
+    if (plain && (!env || (plain.updatedAt || 0) >= (env.updatedAt || 0))) { S = { ...blank(), ...plain }; persistLocal(); enterApp(); return; }
     if (env) {
+      // Older encrypted collection: unlock with the key this device remembers, or ask once
       lockEnv = env;
       const key = await storedKey(env);
-      if (key) {
-        try { S = { ...blank(), ...(await open(env, key)) }; cryptoKey = key; envSalt = fromB64(env.salt);
-          try { localStorage.setItem(ENC_KEY, JSON.stringify(env)); } catch (x) {}
-          enterApp(); return; } catch (x) {}
-      }
+      if (key) { try { S = { ...blank(), ...(await open(env, key)) }; await unlockDone(); return; } catch (x) {} }
       showLock('login'); return;
     }
-    // First run: bring over any older unencrypted data, then ask for a username and password
-    let legacy = null;
-    try { legacy = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (x) {}
-    const remotePlain = await fetchLegacyPlain();
-    if (remotePlain && (!legacy || (remotePlain.updatedAt || 0) > (legacy.updatedAt || 0))) legacy = remotePlain;
-    if (legacy) S = { ...blank(), ...legacy };
-    showLock('setup');
+    S = blank(); enterApp();
   }
   boot();
   loadMeta(); loadPrices();
