@@ -179,19 +179,21 @@
 
   /* Product boxes */
   .box { position: relative; display: flex; flex-direction: column; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
-  .box-pack { position: relative; margin: 10px 10px 0; border-radius: 12px; overflow: hidden; aspect-ratio: 4 / 3.3;
-    background: linear-gradient(160deg, color-mix(in srgb, var(--line) 85%, #000) 0%, #07080c 70%); color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.08); }
-  .box-pack::before { content: ""; position: absolute; inset: 0; background: repeating-radial-gradient(circle at 70% 60%, transparent 0 22px, rgba(255,255,255,.05) 22px 24px); }
-  .box-pack::after { content: ""; position: absolute; left: -10%; top: 0; width: 55%; height: 100%; background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.08) 41%, transparent 60%); }
-  .box-band { position: absolute; left: 0; right: 0; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 8px 10px;
+  .box-pack { position: relative; margin: 10px 10px 0; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--line) 85%, #000) 0%, #07080c 75%); color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.08); }
+  .box-pack::before { content: ""; position: absolute; inset: 0; background: repeating-radial-gradient(circle at 70% 60%, transparent 0 22px, rgba(255,255,255,.05) 22px 24px); pointer-events: none; }
+  .box-band { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 8px 10px;
     background: linear-gradient(90deg, var(--line), color-mix(in srgb, var(--line) 50%, transparent)); font-weight: 900; font-style: italic; letter-spacing: .02em; }
   .box-band .code { font-size: 15px; } .box-band .kind { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; opacity: .9; font-style: normal; font-weight: 800; }
-  .box-art { position: absolute; inset: 36px 8px 30px; z-index: 1; display: grid; place-items: center; }
-  .box-art img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 8px 14px rgba(0,0,0,.5)); }
-  .box-title { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 6px 10px; font-size: 12px; font-weight: 800; background: linear-gradient(0deg, rgba(0,0,0,.75), transparent);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .box-x { position: absolute; right: 8px; bottom: 26px; z-index: 2; font-weight: 900; font-size: 40px; font-style: italic; line-height: 1; color: rgba(255,255,255,.12); }
-  .box-owned { position: absolute; top: 44px; right: 10px; z-index: 3; background: var(--pos); color: #04170f; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: var(--r-pill); }
+  /* Clear window on the front of the box, like a blister pack */
+  .box-art { position: relative; z-index: 1; margin: 8px 10px 0; aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden;
+    background: radial-gradient(circle at 50% 45%, #fff 0%, #eef1f7 70%, #dfe4ee 100%); box-shadow: inset 0 0 0 3px rgba(255,255,255,.25), 0 6px 18px rgba(0,0,0,.35); }
+  .box-art img { position: absolute; inset: 6px; width: calc(100% - 12px); height: calc(100% - 12px); object-fit: contain; }
+  .box-art img.noimg { background: none; }
+  .box-title { position: relative; z-index: 2; padding: 8px 10px 10px; font-size: 13px; font-weight: 800; line-height: 1.25;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: calc(2 * 1.25em + 18px); }
+  .box-x { position: absolute; right: 8px; bottom: 4px; z-index: 1; font-weight: 900; font-size: 40px; font-style: italic; line-height: 1; color: rgba(255,255,255,.1); }
+  .box-owned { position: absolute; top: 46px; right: 16px; z-index: 3; background: var(--pos); color: #04170f; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: var(--r-pill); }
   .box-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
   .box-body .beys { font-size: var(--fs-xs); color: var(--muted); margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
   .bar { height: 6px; border-radius: var(--r-pill); background: var(--surface-2); overflow: hidden; }
@@ -678,7 +680,7 @@
   const lineOf = p => { const c = p.code.slice(0, 2); return ['BX', 'UX', 'CX'].includes(c) ? c : 'other'; };
   const setKind = p => p.random ? 'Random booster' : /deck set/i.test(p.name) ? 'Deck set' : /starter/i.test(p.name) ? 'Starter' : /booster/i.test(p.name) ? 'Booster' : /set|pack/i.test(p.name) ? 'Set' : 'Release';
   // Official Takara Tomy release photo of everything in the box
-  const setImg = p => { const m = p.brand === 'tt' && p.code.match(/^(BX|UX|CX)-(\d{2})$/); return m && m[2] !== '00' ? `https://beyblade.takaratomy.co.jp/beyblade-x/lineup/_image/${m[1]}${m[2]}_list.png` : (p.img || ''); };
+  const setImg = p => { const m = p.brand === 'tt' && p.code.match(/^(BX|UX|CX)-(\d{2})$/); return m && m[2] !== '00' ? `https://beyblade.takaratomy.co.jp/beyblade-x/lineup/_image/${m[1]}${m[2]}@1.png` : (p.img || ''); };
   function renderSets() {
     const q = ui.setsQ.trim().toLowerCase();
     let list = brandProducts();
