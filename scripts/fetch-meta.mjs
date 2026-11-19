@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 const BASE = 'https://beywatch.gg';
 const WINDOWS = ['30d', '90d', '6mo', 'all'];
-const MAX_COMBOS = 200;
+const MAX_COMBOS = 300;
 const PAGES = { tier: '/', parts: '/parts', combos: '/combos' };
 const DUMP = !!process.env.DUMP;
 if (DUMP) fs.mkdirSync('raw', { recursive: true });
@@ -85,7 +85,16 @@ for (const w of WINDOWS) {
     updated: meta?.[1] || null, combosAnalyzed: meta?.[2] || null, tournaments: meta ? num(meta[3]) : null,
     blades: parseTier(tierHtml).filter(b => b.cuts > 0),
   };
-  try { entry.combos = parseCombos(await get(PAGES.combos, w)).filter(c => c.cuts).slice(0, MAX_COMBOS); } catch (e) { console.warn(e.message); entry.combos = []; }
+  // The combos page only lists ~100 rows, so also read each top blade's own page
+  const combos = new Map();
+  const merge = list => { for (const c of list) { if (!c.cuts) continue; const o = combos.get(c.slug); if (!o || (c.cuts > (o.cuts || 0))) combos.set(c.slug, o && !c.name ? { ...c, name: o.name } : c); } };
+  try { merge(parseCombos(await get(PAGES.combos, w))); } catch (e) { console.warn(e.message); }
+  const topBlades = [...entry.blades].sort((a, b) => b.cuts - a.cuts).slice(0, 30);
+  for (const b of topBlades) {
+    try { merge(parseCombos(await get('/blades/' + b.blade, w))); } catch (e) { console.warn(e.message); }
+    await new Promise(r => setTimeout(r, 250));
+  }
+  entry.combos = [...combos.values()].sort((a, b) => b.cuts - a.cuts).slice(0, MAX_COMBOS);
   try { entry.parts = parseParts(await get(PAGES.parts, w)); } catch (e) { console.warn(e.message); entry.parts = {}; }
   console.log(w, 'blades', entry.blades.length, 'combos', entry.combos.length, 'part cats', Object.keys(entry.parts).join(','));
   result.windows[w] = entry;
