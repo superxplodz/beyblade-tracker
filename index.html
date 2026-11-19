@@ -237,6 +237,19 @@
   .stats { display: flex; flex-direction: column; gap: 6px; }
   .stat { display: grid; grid-template-columns: 36px 1fr 28px; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
   .stat b { color: var(--text); text-align: right; }
+  dialog.wide { width: min(880px, calc(100vw - 24px)); }
+  @media (max-width: 640px) { dialog.wide { width: 100vw; } }
+  .ov-head { display: flex; gap: var(--s-4); align-items: center; }
+  .ovimg { width: 112px; height: 112px; border-radius: 50%; object-fit: contain; flex: none; background: radial-gradient(circle, var(--surface-2) 55%, var(--border) 56%, var(--surface-2) 60%); padding: 6px; }
+  @media (max-width: 480px) { .ovimg { width: 84px; height: 84px; } }
+  .typebig { display: inline-flex; align-items: center; gap: 6px; padding: 3px 12px; border-radius: var(--r-pill); font-weight: 800; font-size: var(--fs-sm); background: currentColor; }
+  .typebig.t-Attack { background: color-mix(in srgb, var(--atk) 16%, transparent); } .typebig.t-Defense { background: color-mix(in srgb, var(--def) 16%, transparent); }
+  .typebig.t-Stamina { background: color-mix(in srgb, var(--sta) 16%, transparent); } .typebig.t-Balance { background: color-mix(in srgb, var(--bal) 16%, transparent); }
+  .trend { display: grid; grid-template-columns: 76px 1fr 40px 56px; gap: 10px; align-items: center; font-size: var(--fs-xs); }
+  .trend .num { text-align: right; }
+  .chip.t-Attack[aria-pressed="true"] { background: var(--atk); border-color: var(--atk); } .chip.t-Defense[aria-pressed="true"] { background: var(--def); border-color: var(--def); }
+  .chip.t-Stamina[aria-pressed="true"] { background: var(--sta); border-color: var(--sta); } .chip.t-Balance[aria-pressed="true"] { background: var(--bal); border-color: var(--bal); }
+  .chip[aria-pressed="true"] .tdot { background: #fff; }
   .lock { min-height: 100vh; display: grid; place-items: center; padding: var(--s-4); }
   .lock-card { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-6) var(--s-5);
     box-shadow: var(--shadow); display: flex; flex-direction: column; gap: var(--s-3); }
@@ -350,7 +363,7 @@
   const blank = () => ({ v: 1, updatedAt: 0, owned: {}, wish: {}, want: {}, notes: {}, purchases: [], custom: [], decks: [] });
   let S = blank();
   let brand = 'tt', tab = 'home';
-  const ui = { partsQ: '', partsCat: 'all', partsShow: 'all', partsSort: 'meta', setsQ: '', setsLine: 'all', setsShow: 'all',
+  const ui = { partsQ: '', partsCat: 'all', partsShow: 'all', partsSort: 'meta', partsType: 'any', ovWin: null, setsQ: '', setsLine: 'all', setsShow: 'all',
     metaCat: 'blade', metaView: 'combos', comboFilter: 'all', deck: null, win: '30d' };
   try { brand = localStorage.getItem('beyvault-brand') || 'tt'; ui.win = localStorage.getItem('beyvault-win') || '30d'; } catch (e) {}
 
@@ -363,7 +376,7 @@
   function migrate() {
     S.want = S.want || {};
     for (const x of S.purchases) {
-      if (!x.parts || x.parts.some(id => id.includes('@'))) continue;
+      if (x.lot || !x.parts || x.parts.some(id => id.includes('@'))) continue;
       const p = productById(x.pid); if (!p) continue;
       const vids = [];
       p.beys.forEach((b, i) => { if (x.bey === 'all' || x.bey === i) b.parts.forEach(pid => vids.push(`${pid}@${p.id}#${i}`)); });
@@ -549,25 +562,41 @@
   }
 
   // ---------- Purchases ----------
-  function addPurchase(pid, beyIdx, note) {
+  const today = () => new Date().toISOString().slice(0, 10);
+  const parsePrice = v => { const t = String(v || '').toLowerCase().replace(/rp|\s/g, ''); const mult = /jt|m$/.test(t) ? 1e6 : /k|rb/.test(t) ? 1e3 : 1;
+    const n = parseFloat(mult > 1 ? t.replace(/,/g, '.') : t.replace(/[.,](?=\d{3}\b)/g, '').replace(',', '.')); return isFinite(n) && n > 0 ? Math.round(n * mult) : null; };
+  const rp = n => 'Rp' + Math.round(n).toLocaleString('id-ID');
+  function addPurchase(pid, beyIdx, note, extra = {}) {
     const p = productById(pid);
     let ids = [];
     if (beyIdx === 'all' || beyIdx == null) { p.beys.forEach((b, i) => b.parts.forEach(pid => ids.push(`${pid}@${p.id}#${i}`))); p.extra.forEach(pid => ids.push(`${pid}@${p.id}#x`)); }
     else ids = p.beys[beyIdx].parts.map(pid => `${pid}@${p.id}#${beyIdx}`);
     ids.forEach(id => S.owned[id] = (S.owned[id] || 0) + 1);
-    S.purchases.unshift({ id: 'u' + Date.now().toString(36), pid, bey: beyIdx ?? 'all', parts: ids, date: new Date().toISOString().slice(0, 10), note: note || '' });
+    S.purchases.unshift({ id: 'u' + Date.now().toString(36), pid, bey: beyIdx ?? 'all', parts: ids, date: extra.date || today(), price: extra.price ?? null, note: note || '' });
     delete S.want[pid];
     save(`Added ${p.code} · ${p.beys.length > 1 && beyIdx !== 'all' && beyIdx != null ? p.beys[beyIdx].name : p.name}`);
+  }
+  // A lot / loose parts: plain part ids, repeated once per copy
+  function addLot(lot) {
+    const ids = Object.entries(lot.items).flatMap(([id, n]) => Array(n).fill(id));
+    if (!ids.length) return false;
+    ids.forEach(id => S.owned[id] = (S.owned[id] || 0) + 1);
+    S.purchases.unshift({ id: 'u' + Date.now().toString(36), lot: true, brand, name: lot.name.trim() || 'Loose parts', parts: ids, date: lot.date || today(), price: parsePrice(lot.price), note: lot.note || '' });
+    save(`Added ${ids.length} loose part${ids.length === 1 ? '' : 's'}`);
+    return true;
   }
   function removePurchase(uid, quiet) {
     const i = S.purchases.findIndex(x => x.id === uid); if (i < 0) return;
     S.purchases[i].parts.forEach(id => { if (S.owned[id]) { S.owned[id]--; if (!S.owned[id]) delete S.owned[id]; } });
-    const p = productById(S.purchases[i].pid);
+    const x = S.purchases[i]; const p = productById(x.pid);
     S.purchases.splice(i, 1);
-    save(quiet ? '' : `Removed one ${p?.code || ''} purchase`);
+    save(quiet ? '' : `Removed ${x.lot ? x.name : 'one ' + (p?.code || '') + ' purchase'}`);
   }
+  const purchaseBrand = x => x.lot ? x.brand : productById(x.pid)?.brand;
 
   // ---------- Rendering helpers ----------
+  const partType = p => p.type || pStat(p)?.type || '';
+  const TYPE_ICON = { Attack: '⚔', Defense: '🛡', Stamina: '∞', Balance: '◎' };
   const typeTag = t => t ? `<span class="tag t-${esc(t)}"><span class="tdot"></span>${esc(t)}</span>` : '';
   const img = (src, fb, cls = 'thumb', alt = '') => src ? `<img class="${cls}" src="${esc(src)}" data-fb="${esc(fb || '')}" loading="lazy" referrerpolicy="no-referrer" alt="${esc(alt)}" onerror="imgFail(this)">` : `<span class="${cls} noimg"></span>`;
   const tierBadge = (t, title = '') => t ? `<span class="tier tier-${t === '?' ? 'q' : esc(t.replace('+', 'p'))}" title="${esc(title)}">${esc(t)}</span>` : '';
@@ -584,7 +613,7 @@
   function partRow(p) {
     const q = qty(p.id);
     const nv = (C.partVariants[p.id] || []).filter(v => S.owned[v.id]).length;
-    const sub = [tierTag(p), typeTag(p.type), useLine(p), nv > 1 ? `<span>${nv} colours</span>` : '',
+    const sub = [typeTag(partType(p)), tierTag(p), useLine(p), nv > 1 ? `<span>${nv} colours</span>` : '',
       p.spin === 'L' ? '<span>Left spin</span>' : '', p.weight ? `<span>${p.weight} g</span>` : ''].filter(Boolean).join('');
     return `<div class="item ${q ? 'owned' : ''}">${img(p.img)}
       <div class="main" data-open="${esc(p.id)}"><div class="name">${esc(label(p))}</div><div class="sub">${sub}</div></div>
@@ -604,7 +633,7 @@
     const all = brandParts();
     const owned = sortParts(all.filter(p => qty(p.id)));
     const pieces = owned.reduce((s, p) => s + qty(p.id), 0);
-    const purchases = S.purchases.filter(x => productById(x.pid)?.brand === brand);
+    const purchases = S.purchases.filter(x => purchaseBrand(x) === brand);
     const wish = sortParts(all.filter(p => S.wish[p.id]));
     const wantSets = brandProducts().filter(p => S.want[p.id]);
     const metaOwned = owned.filter(p => { const st = pStat(p); return st && (TIERV[st.tier] || 0) >= 4; }).length;
@@ -640,14 +669,18 @@
       ${img(setImg(p), p.img)}<div class="main" data-gotoset="${esc(p.code)}"><div class="name">${esc(p.code)} ${esc(p.name)}</div><div class="sub">${esc(p.beys.map(b => b.name).join(' · '))}</div></div>
       <button class="btn btn-sm" data-want="${esc(p.id)}">Remove</button></div>`).join('')}</div>`;
     if (wish.length) h += `<div class="section-head"><h2>Wishlist parts</h2></div><div class="list">${wish.map(partRow).join('')}</div>`;
-    if (purchases.length) {
-      h += `<div class="section-head"><h2>Purchase history</h2></div><div class="list">` + purchases.map(x => {
-        const p = productById(x.pid); const bey = x.bey === 'all' ? '' : ' · ' + p.beys[x.bey].name;
-        return `<div class="item">${img(setImg(p), p.img)}<div class="main"><div class="name">${esc(p.code)} ${esc(p.name)}</div>
-          <div class="sub"><span>${esc(x.date)}${esc(bey)}</span><span>${x.parts.length} parts</span>${x.note ? `<span>${esc(x.note)}</span>` : ''}</div></div>
-          <button class="btn btn-sm btn-danger" data-unbuy="${esc(x.id)}">Remove</button></div>`;
-      }).join('') + `</div>`;
-    }
+    const spent = purchases.reduce((t, x) => t + (x.price || 0), 0);
+    h += `<div class="section-head" id="purchases"><h2>Purchases</h2>${spent ? `<span class="muted small">Spent <b style="color:var(--text)">${rp(spent)}</b></span>` : ''}</div>
+      <div class="grid grid-2" style="margin-bottom:12px"><button class="btn btn-primary" id="logSet">+ Log a set</button><button class="btn" id="logLot">+ Loose parts / lot</button></div>`;
+    h += purchases.length ? `<div class="list">` + purchases.map(x => {
+      const p = productById(x.pid);
+      const title = x.lot ? esc(x.name) : `${esc(p.code)} ${esc(x.bey === 'all' ? p.name : p.beys[x.bey].name)}`;
+      const pic = x.lot ? (() => { const f = part(x.parts[0]); return img(f?.img); })() : img(setImg(p), p.img);
+      return `<div class="item">${pic}<div class="main" data-editbuy="${esc(x.id)}"><div class="name">${title}</div>
+        <div class="sub"><span class="tag">${x.lot ? 'Lot' : 'Set'}</span><span>${esc(x.date)}</span><span>${x.parts.length} part${x.parts.length === 1 ? '' : 's'}</span>
+        ${x.price ? `<span>${rp(x.price)}</span>` : ''}${x.note ? `<span>${esc(x.note)}</span>` : ''}</div></div>
+        <button class="btn btn-sm" data-editbuy="${esc(x.id)}">Edit</button></div>`;
+    }).join('') + `</div>` : '<div class="card empty">No purchases logged yet.</div>';
     $('tab-home').innerHTML = h;
   }
 
@@ -660,7 +693,8 @@
     if (ui.partsShow === 'missing') list = list.filter(p => !qty(p.id));
     if (ui.partsShow === 'wish') list = list.filter(p => S.wish[p.id]);
     if (ui.partsShow === 'meta') list = list.filter(p => { const st = pStat(p); return (st && (TIERV[st.tier] || 0) >= 4) || (p.meta && !st); });
-    if (q) list = list.filter(p => [p.name, p.code, p.alt, p.type, KIND[p.kind]].join(' ').toLowerCase().includes(q));
+    if (ui.partsType !== 'any') list = list.filter(p => partType(p) === ui.partsType);
+    if (q) list = list.filter(p => [p.name, p.code, p.alt, partType(p), KIND[p.kind]].join(' ').toLowerCase().includes(q));
     (ui.partsSort === 'meta' ? sortMeta : sortParts)(list);
     const cats = [['all', 'All'], ...CATS.filter(([c]) => brandParts().some(p => catOf(p.kind) === c))];
     $('tab-parts').innerHTML = `<div class="stack">
@@ -668,6 +702,8 @@
       <div class="chips">${cats.map(([k, n]) => `<button class="chip" data-pcat="${k}" aria-pressed="${ui.partsCat === k}">${n}</button>`).join('')}</div>
       <div class="chips">${[['all', 'Everything'], ['owned', 'Owned'], ['missing', 'Missing'], ['meta', 'Meta (A+)'], ['wish', '★ Wishlist']].map(([k, n]) =>
         `<button class="chip" data-pshow="${k}" aria-pressed="${ui.partsShow === k}">${n}</button>`).join('')}</div>
+      <div class="chips">${[['any', 'Any type'], ['Attack', 'Attack'], ['Defense', 'Defense'], ['Stamina', 'Stamina'], ['Balance', 'Balance']].map(([k, n]) =>
+        `<button class="chip t-${k}" data-ptype="${k}" aria-pressed="${ui.partsType === k}">${k === 'any' ? n : `<span class="tdot"></span>${n}`}</button>`).join('')}</div>
       <div class="row between wrap"><span class="muted small">${inCat.filter(p => qty(p.id)).length} of ${inCat.length} owned · sorted by ${ui.partsSort === 'meta' ? 'meta (' + esc(WIN_NAME[ui.win]) + ')' : 'type & name'}</span>
         <div class="row" style="gap:6px"><button class="btn btn-sm" data-psort="${ui.partsSort === 'meta' ? 'name' : 'meta'}">${ui.partsSort === 'meta' ? 'Sort A–Z' : 'Sort by meta'}</button>
         <button class="btn btn-sm" id="addCustom">+ Custom</button></div></div>
@@ -920,27 +956,105 @@
 
   // ---------- Dialogs ----------
   const dlg = $('dlg');
-  function openDlg(html) { $('dlgBody').innerHTML = html; if (!dlg.open) dlg.showModal(); }
+  function openDlg(html, cls = '') { $('dlgBody').innerHTML = html; dlg.className = cls; if (!dlg.open) dlg.showModal(); }
   function statBars(st) {
     if (!st) return '';
     return `<div class="stats">${[['atk', 'ATK', 'var(--atk)'], ['def', 'DEF', 'var(--def)'], ['sta', 'STA', 'var(--sta)']].map(([k, n, c]) =>
       `<div class="stat"><span>${n}</span><div class="bar"><i style="width:${Math.min(100, st[k])}%;background:${c}"></i></div><b>${st[k]}</b></div>`).join('')}</div>`;
   }
+  // Aggregate a list of combos by the parts in one category: pick % and cut-weighted 1st rate
+  function pairStats(combos, cats, excludeId) {
+    const total = combos.reduce((t, c) => t + (c.cuts || 0), 0) || 1;
+    const agg = {};
+    for (const c of combos) for (const sl of c.slots) {
+      const id = owns(sl.ids) || sl.ids[0]; const p = part(id); if (!p || id === excludeId || !cats.includes(catOf(p.kind))) continue;
+      const a = agg[id] = agg[id] || { id, cuts: 0, w: 0, fw: 0 };
+      a.cuts += c.cuts || 0; if (c.first != null) { a.fw += c.first * (c.cuts || 0); a.w += c.cuts || 0; }
+    }
+    return Object.values(agg).map(a => ({ ...a, pick: a.cuts / total * 100, first: a.w ? a.fw / a.w : null })).sort((a, b) => b.cuts - a.cuts).slice(0, 6);
+  }
+  function pairTable(title, rows) {
+    if (!rows.length) return '';
+    return `<div><h3 style="margin-bottom:6px">${title}</h3><div class="list">${rows.map(r => { const p = part(r.id);
+      return `<div class="item" style="min-height:52px">${img(p.img, '', 'thumb-sm')}<div class="main" data-open="${esc(r.id)}"><div class="name">${esc(label(p))}</div>
+        <div class="sub">${typeTag(partType(p))}${qty(r.id) ? '<span class="tag tag-own">Owned</span>' : ''}</div></div>
+        <div class="metric"><b class="num">${r.pick.toFixed(1)}%</b>pick</div>${r.first != null ? `<div class="metric"><b class="num">${r.first.toFixed(1)}%</b>1st</div>` : ''}</div>`; }).join('')}</div></div>`;
+  }
+  function overviewText(p, st, combos, win, trend) {
+    const t = partType(p), cat = (CAT_NAME[catOf(p.kind)] || 'parts').toLowerCase();
+    const out = [];
+    out.push(`${esc(p.name)} is ${t ? `${/^[AEIOU]/.test(t) ? 'an' : 'a'} <b>${esc(t.toLowerCase())}</b>` : 'a'} ${esc(KIND[p.kind].toLowerCase())}${p.weight ? ` weighing ${p.weight} g` : ''}${p.spin === 'L' ? ' that spins left' : ''}.`);
+    if (st) out.push(`Over the last ${esc(WIN_NAME[win].toLowerCase())} it ranks <b>#${st.rank}</b> among ${esc(cat)} with ${(st.cuts || st.comboCuts || 0).toLocaleString()} top cuts${st.first != null ? ` and a ${st.first}% first-place rate` : ''}.`);
+    else out.push(`It has no reported top cuts in the last ${esc(WIN_NAME[win].toLowerCase())}, so it is a casual or niche pick right now.`);
+    if (combos[0]) out.push(`Most played as <b>${esc(combos[0].name)}</b>.`);
+    if (trend) out.push(trend);
+    if (p.stats) { const k = ['atk', 'def', 'sta'].sort((a, b) => p.stats[b] - p.stats[a])[0]; out.push(`Official stats lean towards ${({ atk: 'attack', def: 'defense', sta: 'stamina' })[k]}.`); }
+    return out.join(' ');
+  }
   function partDialog(id) {
     const p = part(id);
+    const win = ui.ovWin || ui.win;
+    const M = metaFor(win), st = M.stat[id];
     const vars = C.partVariants[id] || [];
     const m = p.meta;
-    const wins = META ? WINS.map(([w, n]) => { const st = metaFor(w).stat[id]; return st ? `<div class="row between small"><span>${n}</span><span class="row" style="gap:6px">${tierBadge(st.tier && st.tier !== '?' ? st.tier : '')}<span class="muted">#${st.rank} · ${(st.cuts || st.comboCuts || 0).toLocaleString()} cuts${st.first != null ? ` · ${st.first}% 1st` : ''}</span></span></div>` : `<div class="row between small"><span>${n}</span><span class="muted">no top cuts</span></div>`; }).join('') : '';
-    const combos = META ? metaFor().combos.filter(c => c.slots.some(s => s.ids.includes(id))).slice(0, 4) : [];
-    openDlg(`<div class="dlg-head"><div class="row">${img(p.img, '', 'bigimg')}<div><h2>${esc(label(p))}</h2><div class="row wrap" style="gap:6px;margin-top:4px">${tierTag(p)}<span class="tag">${esc(KIND[p.kind])}</span>${typeTag(p.type)}
-        ${p.weight ? `<span class="tag">${p.weight} g</span>` : ''}${p.alt ? `<span class="tag">${esc(p.alt)}</span>` : ''}</div></div></div><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
-      ${p.stats ? `<h3>Official stats</h3>${statBars(p.stats)}` : ''}
-      ${wins ? `<h3>Tournament meta · BEYWATCH</h3><div class="card stack" style="padding:12px;gap:6px">${wins}</div>` : ''}
-      ${combos.length ? `<h3>Top combos with it</h3><div class="list">${combos.map(c => comboRow(c, null, { add: false })).join('')}</div>` : ''}
-      ${m ? `<div class="note">Consensus tier ${esc(m.tier)}${m.bbx != null ? ` · BBX Weekly ${m.bbx}/100` : ''}${m.notes ? ` · ${esc(m.notes)}` : ''}</div>` : ''}
+    const cat = catOf(p.kind);
+    const isTop = ['blade', 'main', 'metal'].includes(cat);
+    const combos = M.combos.filter(c => c.slots.some(s => s.ids.includes(id))).sort((a, b) => b.cuts - a.cuts);
+    // Recommended builds
+    const maxCuts = combos[0]?.cuts || 0;
+    const most = combos[0];
+    const high = combos.filter(c => c.cuts >= Math.max(5, maxCuts * .15) && c.first != null && c !== most).sort((a, b) => b.first - a.first)[0];
+    const keyOf = (c, k) => c.slots.find(s => s.slug.startsWith(k))?.slug;
+    const diff = most && combos.find(c => c !== most && c !== high && keyOf(c, 'ratchet-') !== keyOf(most, 'ratchet-') && keyOf(c, 'bit-') !== keyOf(most, 'bit-'));
+    const card = (lbl, c, why) => c ? `<div class="tile"><div class="k">${lbl}</div><div style="font-weight:800;margin:2px 0">${esc(c.name)}</div>
+      <div class="small muted">${c.first != null ? `${c.first}% 1st · ` : ''}${c.cuts.toLocaleString()} cuts${why ? ' · ' + why : ''}</div>
+      ${c.known ? `<button class="btn btn-sm" data-usecombo="${esc(c.slug)}" style="margin-top:6px">Use in deck</button>` : ''}</div>` : '';
+    // Trend across windows
+    const trendRows = WINS.map(([w, n]) => [w, n, metaFor(w).stat[id]]);
+    const r30 = trendRows[0][2]?.rank, rAll = trendRows[3][2]?.rank;
+    const trend = r30 && rAll ? (r30 + 2 < rAll ? `It is <b class="pos">rising</b>: #${r30} recently vs #${rAll} all time.` : r30 > rAll + 2 ? `It is <b class="neg">cooling off</b>: #${r30} recently vs #${rAll} all time.` : '') : '';
+    const maxTrendCuts = Math.max(1, ...trendRows.map(([, , s]) => s ? (s.cuts || s.comboCuts || 0) : 0));
+    const pairCats = isTop ? [['Best ratchets', ['ratchet']], ['Best bits', ['bit']]] :
+      cat === 'ratchet' ? [['Best blades on it', ['blade', 'main', 'metal']], ['Best bits with it', ['bit']]] :
+      cat === 'bit' ? [['Best blades on it', ['blade', 'main', 'metal']], ['Best ratchets with it', ['ratchet']]] :
+      [['Best main / metal blades with it', ['main', 'metal']], ['Best bits with it', ['bit']]];
+    const sets = (p.products || []).map(productById).filter(Boolean);
+    const t = partType(p);
+    openDlg(`<div class="dlg-head"><button class="btn btn-sm" data-close>← Back</button><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
+      <div class="ov-head">
+        ${img(p.img, '', 'ovimg', p.name)}
+        <div style="min-width:0">
+          <div class="muted small">${esc(CAT_NAME[cat] || KIND[p.kind])} · ${brandName(p.brand)}</div>
+          <h2 style="font-size:var(--fs-xl)">${esc(label(p))}</h2>
+          ${p.alt ? `<div class="muted small">${p.brand === 'tt' ? 'Hasbro' : 'Takara Tomy'} name: ${esc(p.alt)}</div>` : ''}
+          <div class="row wrap" style="gap:6px;margin-top:8px">${t ? `<span class="typebig t-${esc(t)}">${TYPE_ICON[t] || ''} ${esc(t)}</span>` : '<span class="tag">No battle type</span>'}${tierTag(p)}
+            ${p.weight ? `<span class="tag">${p.weight} g</span>` : ''}${p.spin === 'L' ? '<span class="tag">Left spin</span>' : ''}${st ? `<span class="tag">#${st.rank} ${esc((CAT_NAME[cat] || '').toLowerCase())}</span>` : ''}
+            ${qty(id) ? `<span class="tag tag-own">You own ${qty(id)}</span>` : ''}</div>
+        </div>
+      </div>
+      <div class="row between wrap"><h3>Tournament stats</h3><div class="seg">${WINS.map(([k]) => `<button data-ovwin="${k}:${esc(id)}" aria-pressed="${win === k}">${k === 'all' ? 'All' : k}</button>`).join('')}</div></div>
+      <div class="tiles" style="margin-top:0">
+        <div class="tile"><div class="k">1st place rate</div><div class="v">${st?.first != null ? st.first + '%' : '—'}</div></div>
+        <div class="tile"><div class="k">${isTop ? 'Win share' : 'Rank'}</div><div class="v">${isTop ? (st?.share != null ? st.share + '%' : '—') : (st ? '#' + st.rank : '—')}</div></div>
+        <div class="tile"><div class="k">Top cuts</div><div class="v">${st ? (st.cuts || st.comboCuts || 0).toLocaleString() : '0'}</div></div>
+        <div class="tile"><div class="k">Tier</div><div class="v">${st?.tier && st.tier !== '?' ? tierBadge(st.tier) : '<span class="muted" style="font-size:1rem">not tiered</span>'}</div></div>
+      </div>
+      ${META ? `<div class="card stack" style="padding:12px;gap:6px">${trendRows.map(([w, n, s]) => { const c = s ? (s.cuts || s.comboCuts || 0) : 0;
+        return `<div class="trend"><span>${n}</span><div class="bar"><i style="width:${c / maxTrendCuts * 100}%"></i></div><span class="num">${s ? `#${s.rank}` : '—'}</span><span class="num muted">${c.toLocaleString()}</span></div>`; }).join('')}
+        <div class="note">Bar = top cuts. # = rank among ${esc((CAT_NAME[cat] || 'parts').toLowerCase())}.</div></div>` : ''}
+      ${most ? `<h3>Recommended builds</h3><div class="grid grid-3">${card('Most played', most, '')}${card('Highest 1st rate', high, '')}${card('Different parts', diff, 'if you lack the usual ratchet / bit')}</div>` : ''}
+      ${combos.length ? `<h3>Best combos</h3><div class="list">${combos.slice(0, 8).map(c => comboRow(c)).join('')}</div>` : ''}
+      ${combos.length ? `<div class="grid grid-2">${pairCats.map(([ttl, cs]) => pairTable(ttl, pairStats(combos, cs, id))).join('')}</div>` : ''}
+      <h3>Overview</h3>
+      <div class="card stack" style="padding:14px"><p style="margin:0">${overviewText(p, st, combos, win, trend)}</p>
+        ${p.stats ? statBars(p.stats) : ''}
+        ${m ? `<div class="note">Consensus tier ${esc(m.tier)}${m.bbx != null ? ` · BBX Weekly ${m.bbx}/100` : ''}${m.notes ? ` · ${esc(m.notes)}` : ''}</div>` : ''}</div>
+      ${sets.length ? `<h3>Comes in</h3><div class="list">${sets.map(sp => { const b = S.purchases.filter(x => x.pid === sp.id).length;
+        return `<div class="item">${img(setImg(sp), sp.img)}<div class="main" data-gotoset="${esc(sp.code)}"><div class="name">${esc(sp.code)} ${esc(sp.name)}</div><div class="sub">${esc(setKind(sp))}${b ? ` · <span class="tag tag-own">Bought ×${b}</span>` : ''}</div></div>
+          <button class="star" data-want="${esc(sp.id)}" aria-pressed="${!!S.want[sp.id]}" aria-label="Want to buy">★</button></div>`; }).join('')}</div>` : ''}
       <h3>Your copies</h3>
       <div class="list">
-        <div class="item"><div class="main"><div class="name">Colour not specified</div><div class="sub">Loose or unsure which release</div></div>
+        <div class="item"><div class="main"><div class="name">Colour not specified</div><div class="sub">Loose, from a lot, or unsure which release</div></div>
           <div class="stepper ${vqty(id) ? '' : 'zero'}"><button data-vdec="${esc(id)}">−</button><span>${vqty(id)}</span><button data-vinc="${esc(id)}">+</button></div></div>
         ${vars.map(v => { const prod = productById(v.product); const q = vqty(v.id);
           return `<div class="item ${q ? 'owned' : ''}">${img(v.img, (prod?.img || '') + '|' + (p.img || ''))}
@@ -948,15 +1062,30 @@
             <div class="stepper ${q ? '' : 'zero'}"><button data-vdec="${esc(v.id)}">−</button><span>${q}</span><button data-vinc="${esc(v.id)}">+</button></div></div>`; }).join('')}
       </div>
       <label class="muted small">Notes<textarea class="input" id="partNote" rows="2">${esc(S.notes[id] || '')}</textarea></label>
-      <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" data-savenote="${esc(id)}">Save note</button></div>`);
+      <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" data-savenote="${esc(id)}">Save note</button></div>
+      <div class="note">Stats: BEYWATCH.GG tournament top cuts. Overview written from those numbers.</div>`, 'wide');
+    $('dlgBody').scrollTop = 0; dlg.scrollTop = 0;
   }
-  function buyDialog(pid) {
+  // ---- Purchase logging dialogs
+  function logSetDialog(q = '') {
+    const ql = q.trim().toLowerCase();
+    const list = brandProducts().filter(p => !ql || [p.code, p.name, ...p.beys.map(b => b.name)].join(' ').toLowerCase().includes(ql)).slice(0, 30);
+    openDlg(`<div class="dlg-head"><h2>Log a set</h2><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
+      <div class="search"><input class="input" id="logSetQ" placeholder="Search: CX-11, Hells Nether…" value="${esc(q)}" autocomplete="off"></div>
+      <div class="list" id="logSetList">${list.map(p => `<div class="item">${img(setImg(p), p.img)}<div class="main" data-pickset="${esc(p.id)}"><div class="name">${esc(p.code)} ${esc(p.name)}</div><div class="sub">${esc(setKind(p))}</div></div>
+        <button class="btn btn-sm btn-primary" data-pickset="${esc(p.id)}">Choose</button></div>`).join('') || '<div class="empty">No sets match.</div>'}</div>`);
+    const inp = $('logSetQ'); inp.focus(); inp.setSelectionRange(q.length, q.length); inp.oninput = () => logSetDialog(inp.value);
+  }
+  function buyDialog(pid) { buyDialog2(pid); }
+  function buyDialog2(pid) {
     const p = productById(pid);
     openDlg(`<div class="dlg-head"><h2>${esc(p.code)} ${esc(p.name)}</h2><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
       ${p.random ? `<p class="muted" style="margin:0">Random booster. Which bey did you get?</p>
         <select class="input" id="buyBey">${p.beys.map((b, i) => `<option value="${i}">${esc(b.name)}</option>`).join('')}<option value="all">Full set (all of them)</option></select>`
         : `<p class="muted" style="margin:0">Adds every part in this set to your collection.</p>`}
-      <label class="muted small">Note (price, shop) · optional<input class="input" id="buyNote" placeholder="e.g. Rp450k Tokopedia"></label>
+      <div class="grid grid-2"><label class="muted small">Date<input class="input" id="buyDate" type="date" value="${today()}"></label>
+        <label class="muted small">Price (Rp) · optional<input class="input" id="buyPrice" inputmode="numeric" placeholder="450000"></label></div>
+      <label class="muted small">Note · optional<input class="input" id="buyNote" placeholder="e.g. Tokopedia, birthday gift"></label>
       <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" data-confirmbuy="${esc(pid)}">Add to collection</button></div>`);
   }
   function unbuyDialog(pid) {
@@ -983,6 +1112,50 @@
         return `<div class="item">${img(p.img)}<div class="main" data-open="${esc(id)}"><div class="name">${esc(label(p))}</div><div class="sub">${sets.map(s => `<span>${esc(s.code)}</span>`).join('') || '<span>Not in a listed set</span>'}</div></div></div>`; }).join('')}</div>`
         : '<div class="okbox">You already own every part.</div>'}
       <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" data-close>Got it</button></div>`);
+  }
+  function lotDialog() {
+    const L = ui.lot;
+    openDlg(`<div class="dlg-head"><h2>Loose parts / lot</h2><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
+      <p class="muted" style="margin:0">For a bundle, a trade or single parts. Each part is added as “colour not specified”.</p>
+      <label class="muted small">Name<input class="input" id="lotName" value="${esc(L.name)}" placeholder="e.g. Facebook lot from Andi"></label>
+      <div class="grid grid-2"><label class="muted small">Date<input class="input" id="lotDate" type="date" value="${esc(L.date)}"></label>
+        <label class="muted small">Total price (Rp) · optional<input class="input" id="lotPrice" inputmode="numeric" value="${esc(L.price)}" placeholder="300000"></label></div>
+      <h3>Parts in this lot</h3>
+      <div id="lotItems"></div>
+      <div class="search"><input class="input" id="lotQ" placeholder="Add a part: Shark Scale, 9-60, Ball…" autocomplete="off"></div>
+      <div class="chips" id="lotCats">${[['all', 'All'], ...CATS].map(([k, n]) => `<button class="chip" data-lotcat="${k}" aria-pressed="${L.cat === k}">${n}</button>`).join('')}</div>
+      <div id="lotResults"></div>
+      <label class="muted small">Note · optional<input class="input" id="lotNote" value="${esc(L.note)}"></label>
+      <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" id="lotSave">Add to collection</button></div>`);
+    for (const k of ['Name', 'Date', 'Price', 'Note']) $('lot' + k).oninput = e => L[k.toLowerCase()] = e.target.value;
+    $('lotQ').oninput = e => { L.q = e.target.value; lotRefresh(); };
+    lotRefresh();
+  }
+  function lotRefresh() {
+    const L = ui.lot; const q = L.q.trim().toLowerCase();
+    const items = Object.entries(L.items);
+    $('lotItems').innerHTML = items.length ? `<div class="list">${items.map(([id, n]) => { const p = part(id);
+      return `<div class="item" style="min-height:52px">${img(p.img, '', 'thumb-sm')}<div class="main"><div class="name">${esc(label(p))}</div><div class="sub">${typeTag(partType(p))}<span>${esc(KIND[p.kind])}</span></div></div>
+        <div class="stepper"><button data-lotdec="${esc(id)}">−</button><span>${n}</span><button data-lotinc="${esc(id)}">+</button></div></div>`; }).join('')}</div>
+      <div class="muted small" style="margin-top:6px">${items.reduce((t, [, n]) => t + n, 0)} pieces</div>` : '<div class="infobox">Nothing added yet. Search below and tap +.</div>';
+    const res = brandParts().filter(p => (L.cat === 'all' || catOf(p.kind) === L.cat) && (!q || [p.name, p.code, p.alt].join(' ').toLowerCase().includes(q)));
+    sortMeta(res);
+    $('lotResults').innerHTML = `<div class="list">${res.slice(0, q ? 12 : 8).map(p => `<div class="item" style="min-height:52px">${img(p.img, '', 'thumb-sm')}
+      <div class="main"><div class="name">${esc(label(p))}</div><div class="sub">${typeTag(partType(p))}<span>${esc(KIND[p.kind])}</span>${qty(p.id) ? '<span class="tag tag-own">Owned</span>' : ''}</div></div>
+      <button class="btn btn-sm" data-lotinc="${esc(p.id)}">+ Add</button></div>`).join('') || '<div class="empty">No parts match.</div>'}</div>`;
+  }
+  function editBuyDialog(uid) {
+    const x = S.purchases.find(y => y.id === uid); if (!x) return;
+    const p = productById(x.pid);
+    const counts = {}; x.parts.forEach(id => { const pid = id.split('@')[0]; counts[pid] = (counts[pid] || 0) + 1; });
+    openDlg(`<div class="dlg-head"><h2>${x.lot ? esc(x.name) : esc(p.code) + ' ' + esc(p.name)}</h2><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
+      ${x.lot ? `<label class="muted small">Name<input class="input" id="ebName" value="${esc(x.name)}"></label>` : ''}
+      <div class="grid grid-2"><label class="muted small">Date<input class="input" id="ebDate" type="date" value="${esc(x.date)}"></label>
+        <label class="muted small">Price (Rp)<input class="input" id="ebPrice" inputmode="numeric" value="${x.price ?? ''}"></label></div>
+      <label class="muted small">Note<input class="input" id="ebNote" value="${esc(x.note || '')}"></label>
+      <h3>Parts</h3><div class="list">${Object.entries(counts).map(([id, n]) => { const q = part(id);
+        return `<div class="item" style="min-height:48px">${img(q?.img, '', 'thumb-sm')}<div class="main" data-open="${esc(id)}"><div class="name">${esc(q ? label(q) : id)}</div></div>${n > 1 ? `<span class="tag">×${n}</span>` : ''}</div>`; }).join('')}</div>
+      <div class="row between"><button class="btn btn-danger" data-unbuy="${esc(x.id)}">Delete purchase</button><button class="btn btn-primary" data-savebuy="${esc(x.id)}">Save</button></div>`);
   }
   function settingsDialog() {
     const tok = ghToken();
@@ -1021,7 +1194,7 @@
 
   // ---------- Events ----------
   document.addEventListener('click', async e => {
-    const t = e.target.closest('button, [data-open], [data-loaddeck], [data-gotoset]');
+    const t = e.target.closest('button, [data-open], [data-loaddeck], [data-gotoset], [data-pickset], [data-editbuy]');
     if (!t) return;
     const d = t.dataset;
     if (d.brand) { brand = d.brand; try { localStorage.setItem('beyvault-brand', brand); } catch (x) {} render(); }
@@ -1033,10 +1206,18 @@
     else if (d.vdec) { const n = vqty(d.vdec) - 1; if (n > 0) S.owned[d.vdec] = n; else delete S.owned[d.vdec]; save(); partDialog(C.variants[d.vdec]?.part || d.vdec.split('@')[0]); }
     else if (d.wish) { if (S.wish[d.wish]) delete S.wish[d.wish]; else S.wish[d.wish] = 1; save(); }
     else if (d.want) { if (S.want[d.want]) delete S.want[d.want]; else S.want[d.want] = 1; save(S.want[d.want] ? 'Added to shopping list' : 'Removed from shopping list'); }
-    else if (d.open) partDialog(d.open);
-    else if (d.gotoset) { ui.setsQ = d.gotoset; go('sets'); }
+    else if (d.open) { ui.ovWin = null; partDialog(d.open); }
+    else if (d.ovwin) { const [w, id] = [d.ovwin.slice(0, d.ovwin.indexOf(':')), d.ovwin.slice(d.ovwin.indexOf(':') + 1)]; ui.ovWin = w; partDialog(id); }
+    else if (d.pickset) { const p = productById(d.pickset); buyDialog(p.id); }
+    else if (d.lotcat) { ui.lot.cat = d.lotcat; document.querySelectorAll('[data-lotcat]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lotcat === d.lotcat)); lotRefresh(); }
+    else if (d.lotinc) { ui.lot.items[d.lotinc] = (ui.lot.items[d.lotinc] || 0) + 1; lotRefresh(); }
+    else if (d.lotdec) { const n = (ui.lot.items[d.lotdec] || 0) - 1; if (n > 0) ui.lot.items[d.lotdec] = n; else delete ui.lot.items[d.lotdec]; lotRefresh(); }
+    else if (d.editbuy) editBuyDialog(d.editbuy);
+    else if (d.savebuy) { const x = S.purchases.find(y => y.id === d.savebuy); if (x) { x.date = $('ebDate').value || x.date; x.price = parsePrice($('ebPrice').value); x.note = $('ebNote').value.trim(); if (x.lot) x.name = $('ebName').value.trim() || x.name; } dlg.close(); save('Purchase updated'); }
+    else if (d.gotoset) { if (dlg.open) dlg.close(); ui.setsQ = d.gotoset; go('sets'); }
     else if (d.pcat) { ui.partsCat = d.pcat; renderParts(); }
     else if (d.pshow) { ui.partsShow = d.pshow; renderParts(); }
+    else if (d.ptype) { ui.partsType = d.ptype; renderParts(); }
     else if (d.psort) { ui.partsSort = d.psort; renderParts(); }
     else if (d.sline) { ui.setsLine = d.sline; renderSets(); }
     else if (d.sshow) { ui.setsShow = d.sshow; renderSets(); }
@@ -1045,7 +1226,7 @@
     else if (d.cfilter) { ui.comboFilter = d.cfilter; renderMeta(); }
     else if (d.sinc) { const p = productById(d.sinc); if (p.random) buyDialog(p.id); else addPurchase(p.id, 'all', ''); }
     else if (d.sdec) { const list = S.purchases.filter(x => x.pid === d.sdec); if (list.length === 1) { if (confirm('Remove this purchase and its parts?')) removePurchase(list[0].id); } else if (list.length) unbuyDialog(d.sdec); }
-    else if (d.confirmbuy) { const sel = $('buyBey'); addPurchase(d.confirmbuy, sel ? (sel.value === 'all' ? 'all' : +sel.value) : 'all', $('buyNote').value.trim()); dlg.close(); }
+    else if (d.confirmbuy) { const sel = $('buyBey'); addPurchase(d.confirmbuy, sel ? (sel.value === 'all' ? 'all' : +sel.value) : 'all', $('buyNote').value.trim(), { date: $('buyDate').value || today(), price: parsePrice($('buyPrice').value) }); dlg.close(); }
     else if (d.unbuy) { if (dlg.open) dlg.close(); if (confirm('Remove this purchase and its parts from your collection?')) removePurchase(d.unbuy); }
     else if (d.usecombo) {
       const c = metaFor().combos.find(x => x.slug === d.usecombo) || (C.creatorPicks || []).map(x => comboFromName(x.name)).find(x => x?.slug === d.usecombo);
@@ -1053,7 +1234,7 @@
       if (!ui.deck || ui.deck.brand !== brand) ui.deck = newDeck();
       let i = ui.deck.slots.findIndex(s => !Object.keys(s.p).length); if (i < 0) i = 2;
       ui.deck.slots[i] = comboToSlot(c); ui.deck.onlyOwned = false;
-      toast(`${c.name} → Bey ${i + 1}`); go('decks');
+      if (dlg.open) dlg.close(); toast(`${c.name} → Bey ${i + 1}`); go('decks');
     }
     else if (d.close !== undefined) dlg.close();
     else if (d.savenote) { const v = $('partNote').value.trim(); if (v) S.notes[d.savenote] = v; else delete S.notes[d.savenote]; dlg.close(); save('Note saved'); }
@@ -1064,6 +1245,9 @@
       try { d.theme === 'auto' ? localStorage.removeItem('beyvault-theme') : localStorage.setItem('beyvault-theme', d.theme); } catch (x) {} settingsDialog(); }
     else if (t.id === 'settingsBtn') settingsDialog();
     else if (t.id === 'addCustom') customDialog();
+    else if (t.id === 'logSet') logSetDialog();
+    else if (t.id === 'logLot') { if (!ui.lot || ui.lot.brand !== brand) ui.lot = { brand, name: '', date: today(), price: '', note: '', q: '', cat: 'all', items: {} }; lotDialog(); }
+    else if (t.id === 'lotSave') { if (addLot(ui.lot)) { ui.lot = null; dlg.close(); } else toast('Add at least one part'); }
     else if (t.id === 'cSave') {
       const name = $('cName').value.trim(); if (!name) return;
       const kind = $('cKind').value;

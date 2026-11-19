@@ -200,4 +200,8 @@
     { name: 'Ghost Circle 9-70 Kick', src: 'HaruRen Hobbies' },
     { name: 'Silver Wolf 9-60 Under Needle', src: 'Community pick' },
   ];
+
+  // Battle types for CX main/metal blades and a few blades, from BEYWATCH's type column
+  const TYPE_FILL = {"tt:main:flame":"Stamina","tt:main:reaper":"Balance","tt:blade:horus-shatter":"Stamina","tt:main:fang":"Attack","tt:main:blast":"Attack","tt:main:brave":"Attack","tt:main:brush":"Attack","tt:main:arc":"Stamina","tt:main:dark":"Defense","tt:main:eclipse":"Balance","tt:main:hunt":"Stamina","tt:main:might":"Balance","tt:main:flare":"Defense","tt:metal:blitz":"Attack","tt:metal:fortress":"Defense","tt:metal:rage":"Stamina","tt:metal:delta":"Balance","tt:metal:whip":"Stamina","tt:main:volt":"Attack","hb:main:blast":"Attack","hb:main:fang":"Attack","hb:main:reaper":"Balance","hb:main:flame":"Stamina","hb:blade:stun-medusa":"Stamina","hb:metal:rage":"Stamina","hb:metal:blitz":"Attack","hb:main:might":"Balance","hb:main:courage":"Attack"};
+  for (const [id, t] of Object.entries(TYPE_FILL)) if (C.parts[id] && !C.parts[id].type) C.parts[id].type = t;
 })();
