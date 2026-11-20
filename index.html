@@ -149,6 +149,9 @@
   .item .sub { font-size: var(--fs-xs); color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 2px; }
   .item.owned .thumb { box-shadow: 0 0 0 2px var(--pos); }
   .tag { font-size: 11px; padding: 1px 8px; border-radius: var(--r-pill); background: var(--surface-2); color: var(--muted); font-weight: 700; white-space: nowrap; }
+  .linkbtn { border: 0; background: none; padding: 0; color: var(--accent); font: inherit; font-size: var(--fs-xs); font-weight: 700; cursor: pointer; }
+  .pickrow { cursor: pointer; min-height: 44px; } .pickrow:hover { background: var(--surface-2); }
+  .pickrow[aria-current="true"] { outline: 2px solid var(--accent); outline-offset: -2px; }
   .tag-own { background: var(--pos-soft); color: var(--pos); }
   .tag-up { background: rgba(245,184,61,.16); color: var(--gold); }
   .tag-miss { background: var(--neg-soft); color: var(--neg); }
@@ -363,21 +366,41 @@
   const TABS = ['home', 'parts', 'sets', 'meta', 'decks'];
 
   // ---------- State ----------
-  const blank = () => ({ v: 1, updatedAt: 0, owned: {}, wish: {}, want: {}, notes: {}, purchases: [], custom: [], decks: [], seen: {}, target: {} });
+  const blank = () => ({ v: 1, updatedAt: 0, owned: {}, wish: {}, want: {}, notes: {}, purchases: [], custom: [], decks: [], seen: {}, target: {}, vcolor: {}, cvars: [] });
   let S = blank();
   let brand = 'tt', tab = 'home';
   const ui = { partsQ: '', partsCat: 'all', partsShow: 'all', partsSort: 'meta', partsType: 'any', ovWin: null, setsQ: '', setsLine: 'all', setsShow: 'all',
     metaCat: 'blade', metaView: 'combos', comboFilter: 'all', deck: null, win: '30d' };
   try { brand = localStorage.getItem('beyvault-brand') || 'tt'; ui.win = localStorage.getItem('beyvault-win') || '30d'; } catch (e) {}
 
-  function mergeCustom() { for (const p of S.custom) if (!C.parts[p.id]) C.parts[p.id] = { products: [], weight: null, ...p }; }
+  function mergeCustom() {
+    for (const p of S.custom) if (!C.parts[p.id]) C.parts[p.id] = { products: [], weight: null, ...p };
+    // Your own colour copies (e.g. a red 9-60 from a lot) behave like any other release
+    for (const v of S.cvars || []) if (C.parts[v.part] && !C.variants[v.id]) {
+      C.variants[v.id] = { id: v.id, part: v.part, product: null, bey: 'c', label: v.color, custom: true, img: C.parts[v.part].img };
+      (C.partVariants[v.part] = C.partVariants[v.part] || []).push(C.variants[v.id]);
+    }
+  }
+  // Colour of a copy: your name for it, else the catalogue's, else none
+  const vColor = v => (S.vcolor && S.vcolor[v.id]) || v.color || (v.custom ? v.label : '');
+  function vTitle(v) {
+    if (v.custom) return v.label;
+    const prod = productById(v.product);
+    return `${prod.code} · ${v.bey === 'x' ? 'loose part in set' : prod.beys[v.bey].name}`;
+  }
+  function newColorCopy(pid, color) {
+    color = (color || '').trim(); if (!color) return null;
+    const slug = color.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'c';
+    let id = `${pid}@c#${slug}`, n = 2; while ((S.cvars || []).some(v => v.id === id)) id = `${pid}@c#${slug}-${n++}`;
+    (S.cvars = S.cvars || []).push({ id, part: pid, color }); mergeCustom(); return id;
+  }
   mergeCustom();
 
   const part = id => C.parts[id];
   const vqty = id => S.owned[id] || 0;
   const qty = id => (S.owned[id] || 0) + (C.partVariants[id] || []).reduce((n, v) => n + (S.owned[v.id] || 0), 0);
   function migrate() {
-    S.want = S.want || {}; S.seen = S.seen || {}; S.target = S.target || {};
+    S.want = S.want || {}; S.seen = S.seen || {}; S.target = S.target || {}; S.vcolor = S.vcolor || {}; S.cvars = S.cvars || [];
     for (const x of S.purchases) {
       if (x.lot || !x.parts || x.parts.some(id => id.includes('@'))) continue;
       const p = productById(x.pid); if (!p) continue;
@@ -1139,11 +1162,13 @@
       <div class="list">
         <div class="item"><div class="main"><div class="name">Colour not specified</div><div class="sub">Loose, from a lot, or unsure which release</div></div>
           <div class="stepper ${vqty(id) ? '' : 'zero'}"><button data-vdec="${esc(id)}">−</button><span>${vqty(id)}</span><button data-vinc="${esc(id)}">+</button></div></div>
-        ${vars.map(v => { const prod = productById(v.product); const q = vqty(v.id);
+        ${vars.map(v => { const prod = productById(v.product); const q = vqty(v.id); const col = vColor(v);
           return `<div class="item ${q ? 'owned' : ''}">${img(v.img, (prod?.img || '') + '|' + (p.img || ''))}
-            <div class="main"><div class="name">${esc(prod.code)} ${esc(prod.name)}</div><div class="sub">${esc(v.bey === 'x' ? 'Loose part in set' : prod.beys[v.bey].name)}${prod.random ? ' · random' : ''}</div></div>
+            <div class="main"><div class="name">${v.custom ? esc(v.label) : `${esc(prod.code)} ${esc(prod.name)}`}</div><div class="sub">${v.custom ? 'Your colour' : `${esc(v.bey === 'x' ? 'Loose part in set' : prod.beys[v.bey].name)}${prod.random ? ' · random' : ''}`}
+              ${col && !v.custom ? `<span class="tag">${esc(col)}</span>` : ''}<button class="linkbtn" data-vcolor="${esc(v.id)}">${v.custom ? 'Rename' : col ? 'Edit colour' : 'Name colour'}</button></div></div>
             <div class="stepper ${q ? '' : 'zero'}"><button data-vdec="${esc(v.id)}">−</button><span>${q}</span><button data-vinc="${esc(v.id)}">+</button></div></div>`; }).join('')}
       </div>
+      <button class="btn btn-sm" data-newcolor="${esc(id)}">+ Another colour you own</button>
       <label class="muted small">Notes<textarea class="input" id="partNote" rows="2">${esc(S.notes[id] || '')}</textarea></label>
       <div class="row" style="justify-content:flex-end"><button class="btn btn-primary" data-savenote="${esc(id)}">Save note</button></div>
       <div class="note">Stats: BEYWATCH.GG tournament top cuts. Overview written from those numbers.</div>`, 'wide');
@@ -1205,7 +1230,7 @@
   function lotDialog() {
     const L = ui.lot;
     openDlg(`<div class="dlg-head"><h2>Loose parts / lot</h2><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
-      <p class="muted" style="margin:0">For a bundle, a trade or single parts. Each part is added as “colour not specified”.</p>
+      <p class="muted" style="margin:0">For a bundle, a trade or single parts. Tap “Copy” under a part to pick which release or colour it is.</p>
       <label class="muted small">Name<input class="input" id="lotName" value="${esc(L.name)}" placeholder="e.g. Facebook lot from Andi"></label>
       <div class="grid grid-2"><label class="muted small">Date<input class="input" id="lotDate" type="date" value="${esc(L.date)}"></label>
         <label class="muted small">Total price (Rp) · optional<input class="input" id="lotPrice" inputmode="numeric" value="${esc(L.price)}" placeholder="300000"></label></div>
@@ -1223,15 +1248,28 @@
   function lotRefresh() {
     const L = ui.lot; const q = L.q.trim().toLowerCase();
     const items = Object.entries(L.items);
-    $('lotItems').innerHTML = items.length ? `<div class="list">${items.map(([id, n]) => { const p = part(id);
-      return `<div class="item" style="min-height:52px">${img(p.img, '', 'thumb-sm')}<div class="main"><div class="name">${esc(label(p))}</div><div class="sub">${typeTag(partType(p))}<span>${esc(KIND[p.kind])}</span></div></div>
-        <div class="stepper"><button data-lotdec="${esc(id)}">−</button><span>${n}</span><button data-lotinc="${esc(id)}">+</button></div></div>`; }).join('')}</div>
+    $('lotItems').innerHTML = items.length ? `<div class="list">${items.map(([id, n]) => { const pid = id.split('@')[0]; const p = part(pid); const v = C.variants[id];
+      const vars = C.partVariants[pid] || [];
+      const cur = v ? `${vTitle(v)}${vColor(v) && !v.custom ? ' · ' + vColor(v) : ''}` : 'Colour not specified';
+      return `<div class="item" style="min-height:52px;flex-wrap:wrap">${img(v?.img || p.img, '', 'thumb-sm')}<div class="main"><div class="name">${esc(label(p))}</div>
+          <div class="sub"><button class="linkbtn" data-lotpick="${esc(id)}" aria-expanded="${L.pick === id}">Copy: ${esc(cur)} ▾</button></div></div>
+        <div class="stepper"><button data-lotdec="${esc(id)}">−</button><span>${n}</span><button data-lotinc="${esc(id)}">+</button></div>
+        ${L.pick === id ? `<div class="list" style="flex-basis:100%;margin-top:6px">
+          <div class="item pickrow" data-lotset="${esc(id)}>>${esc(pid)}" aria-current="${id === pid}"><div class="main"><div class="name">Colour not specified</div></div></div>
+          ${vars.map(w => `<div class="item pickrow" data-lotset="${esc(id)}>>${esc(w.id)}" aria-current="${id === w.id}">${img(w.img, '', 'thumb-sm')}<div class="main"><div class="name">${esc(vTitle(w))}</div>
+            <div class="sub">${vColor(w) && !w.custom ? `<span class="tag">${esc(vColor(w))}</span>` : ''}${w.custom ? 'Your colour' : productById(w.product).random ? 'random' : ''}${vqty(w.id) ? ` · own ${vqty(w.id)}` : ''}</div></div></div>`).join('')}
+          <div class="item pickrow" data-lotnew="${esc(id)}"><div class="main"><div class="name">+ Another colour…</div><div class="sub">Name it yourself, e.g. Red or Clear blue</div></div></div></div>` : ''}</div>`; }).join('')}</div>
       <div class="muted small" style="margin-top:6px">${items.reduce((t, [, n]) => t + n, 0)} pieces</div>` : '<div class="infobox">Nothing added yet. Search below and tap +.</div>';
     const res = brandParts().filter(p => (L.cat === 'all' || catOf(p.kind) === L.cat) && (!q || [p.name, p.code, p.alt].join(' ').toLowerCase().includes(q)));
     sortMeta(res);
     $('lotResults').innerHTML = `<div class="list">${res.slice(0, q ? 12 : 8).map(p => `<div class="item" style="min-height:52px">${img(p.img, '', 'thumb-sm')}
       <div class="main"><div class="name">${esc(label(p))}</div><div class="sub">${typeTag(partType(p))}<span>${esc(KIND[p.kind])}</span>${qty(p.id) ? '<span class="tag tag-own">Owned</span>' : ''}</div></div>
       <button class="btn btn-sm" data-lotinc="${esc(p.id)}">+ Add</button></div>`).join('') || '<div class="empty">No parts match.</div>'}</div>`;
+  }
+  // Move one lot entry to another copy (release or colour), merging counts
+  function lotMove(from, to) {
+    const L = ui.lot; if (from !== to) { L.items[to] = (L.items[to] || 0) + (L.items[from] || 0); delete L.items[from]; }
+    L.pick = null; lotRefresh();
   }
   function editBuyDialog(uid) {
     const x = S.purchases.find(y => y.id === uid); if (!x) return;
@@ -1242,8 +1280,8 @@
       <div class="grid grid-2"><label class="muted small">Date<input class="input" id="ebDate" type="date" value="${esc(x.date)}"></label>
         <label class="muted small">Price (Rp)<input class="input" id="ebPrice" inputmode="numeric" value="${x.price ?? ''}"></label></div>
       <label class="muted small">Note<input class="input" id="ebNote" value="${esc(x.note || '')}"></label>
-      <h3>Parts</h3><div class="list">${Object.entries(counts).map(([id, n]) => { const q = part(id);
-        return `<div class="item" style="min-height:48px">${img(q?.img, '', 'thumb-sm')}<div class="main" data-open="${esc(id)}"><div class="name">${esc(q ? label(q) : id)}</div></div>${n > 1 ? `<span class="tag">×${n}</span>` : ''}</div>`; }).join('')}</div>
+      <h3>Parts</h3><div class="list">${Object.entries(counts).map(([id, n]) => { const q = part(id); const cols = [...new Set(x.parts.filter(y => y.split('@')[0] === id && C.variants[y]).map(y => vColor(C.variants[y]) || (C.variants[y].custom ? '' : productById(C.variants[y].product).code)).filter(Boolean))];
+        return `<div class="item" style="min-height:48px">${img(q?.img, '', 'thumb-sm')}<div class="main" data-open="${esc(id)}"><div class="name">${esc(q ? label(q) : id)}</div>${cols.length ? `<div class="sub">${cols.map(c => `<span class="tag">${esc(c)}</span>`).join('')}</div>` : ''}</div>${n > 1 ? `<span class="tag">×${n}</span>` : ''}</div>`; }).join('')}</div>
       <div class="row between"><button class="btn btn-danger" data-unbuy="${esc(x.id)}">Delete purchase</button><button class="btn btn-primary" data-savebuy="${esc(x.id)}">Save</button></div>`);
   }
   function settingsDialog() {
@@ -1281,7 +1319,7 @@
 
   // ---------- Events ----------
   document.addEventListener('click', async e => {
-    const t = e.target.closest('button, [data-open], [data-loaddeck], [data-gotoset], [data-pickset], [data-editbuy], [data-setprice]');
+    const t = e.target.closest('button, [data-open], [data-loaddeck], [data-gotoset], [data-pickset], [data-editbuy], [data-setprice], [data-lotset], [data-lotnew]');
     if (!t) return;
     const d = t.dataset;
     if (d.brand) { brand = d.brand; try { localStorage.setItem('beyvault-brand', brand); } catch (x) {} render(); }
@@ -1289,6 +1327,16 @@
     else if (d.win) { ui.win = d.win; try { localStorage.setItem('beyvault-win', ui.win); } catch (x) {} render(); }
     else if (d.inc) setQty(d.inc, vqty(d.inc) + 1);
     else if (d.dec) { if (vqty(d.dec)) setQty(d.dec, vqty(d.dec) - 1); else if (qty(d.dec)) { partDialog(d.dec); toast('Pick which colour to remove'); } }
+    else if (d.vcolor) { const v = C.variants[d.vcolor]; const cur = vColor(v);
+      const name = prompt(v.custom ? 'Colour name' : `Colour of ${vTitle(v)} (e.g. Red, Clear blue, Gold). Leave empty to clear.`, cur || '');
+      if (name !== null) { if (v.custom) { const c = S.cvars.find(x => x.id === v.id); if (name.trim()) { c.color = v.label = name.trim(); } }
+        else if (name.trim()) S.vcolor[v.id] = name.trim(); else delete S.vcolor[v.id];
+        save(); partDialog(v.part); } }
+    else if (d.newcolor) { const name = prompt('Which colour? e.g. Red, Clear blue, Gold'); const vid = newColorCopy(d.newcolor, name);
+      if (vid) { S.owned[vid] = 1; save(`Added ${name.trim()} copy`); partDialog(d.newcolor); } }
+    else if (d.lotpick) { ui.lot.pick = ui.lot.pick === d.lotpick ? null : d.lotpick; lotRefresh(); }
+    else if (d.lotset) { const [from, to] = d.lotset.split('>>'); lotMove(from, to); }
+    else if (d.lotnew) { const name = prompt('Which colour? e.g. Red, Clear blue, Gold'); const vid = newColorCopy(d.lotnew.split('@')[0], name); if (vid) lotMove(d.lotnew, vid); }
     else if (d.vinc) { S.owned[d.vinc] = vqty(d.vinc) + 1; save(); partDialog(C.variants[d.vinc]?.part || d.vinc.split('@')[0]); }
     else if (d.vdec) { const n = vqty(d.vdec) - 1; if (n > 0) S.owned[d.vdec] = n; else delete S.owned[d.vdec]; save(); partDialog(C.variants[d.vdec]?.part || d.vdec.split('@')[0]); }
     else if (d.wish) { if (S.wish[d.wish]) delete S.wish[d.wish]; else S.wish[d.wish] = 1; save(); }

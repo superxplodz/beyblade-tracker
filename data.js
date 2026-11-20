@@ -149,7 +149,7 @@ window.CATALOG = (() => {
     ['BX-33', 'Booster Weiss Tiger 3-60U', ['Weiss Tiger|3-60|U']],
     ['BX-34', 'Starter Cobalt Dragoon 2-60C', ['Cobalt Dragoon|2-60|C']],
     ['BX-35', 'Random Booster Vol.4', ['Black Shell|4-60|D', 'Black Shell|9-80|B', 'Unicorn Sting|3-70|D', 'Wizard Rod|1-60|R', 'Phoenix Wing|5-80|H', 'Viper Tail|5-70|D'], null, { random: true }],
-    ['BX-36', 'Random Booster Whale Wave Select', ['Whale Wave|5-80|E', 'Whale Wave|4-80|HN', 'Whale Wave|3-80|GB'], null, { random: true }],
+    ['BX-36', 'Random Booster Whale Wave Select', ['Whale Wave|5-80|E', 'Whale Wave|4-70|HN', 'Whale Wave|3-80|GB'], null, { random: true }],
     ['BX-37', 'Double Xtreme Stadium Set', ['Bear Scratch|5-60|F'], ['acc:Double Xtreme Stadium', 'acc:Winder Launcher']],
     ['BX-38', 'Booster Crimson Garuda 4-70TP', ['Crimson Garuda|4-70|TP']],
     ['BX-39', 'Random Booster Shelter Drake Select', ['Shelter Drake|7-80|GP', 'Shelter Drake|5-70|O', 'Shelter Drake|3-60|D'], null, { random: true }],

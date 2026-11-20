@@ -63,6 +63,10 @@
     'CX-15': 'combos/CX15', 'CX-16': 'combos/CX-16', 'CX-17': 'combos/CX17', 'CX-18': 'combos/CX18', 'CX-19': 'combos/CX19',
     'CX-20': 'combos/CX20-phoenixforce',
   };
+  // Known colourways of a pull (brand|code#index). Others can be named in the app.
+  const BEY_COLOR = {
+    'tt|BX-48#0': 'Black', 'tt|BX-48#1': 'Blue', 'tt|BX-48#2': 'Black', 'tt|BX-48#3': 'Gold', 'tt|BX-48#4': 'Red',
+  };
   // Single beys inside multi-bey sets that have their own photo
   const BEY_IMG = { 'UX-15#1': 'combos/UX15-tyrr', 'CX-11#2': 'combos/CX11-sharkgill', 'UX-10#1': 'combos/UX10-pteraswing',
     'BX-53#0': 'blades-color/ArPg-bx53-blue-cyan_7we', 'BX-53#1': 'blades-db/WzAr2', 'BX-53#2': 'blades-db/KnSh2' };
@@ -166,7 +170,7 @@
       bey.img = img || prodImg;
       for (const pid of bey.parts) {
         const vid = `${pid}@${prod.id}#${i}`;
-        C.variants[vid] = { id: vid, part: pid, product: prod.id, bey: i, label: `${prod.code} · ${bey.name}`, img: bey.img || C.parts[pid].img };
+        C.variants[vid] = { id: vid, part: pid, product: prod.id, bey: i, label: `${prod.code} · ${bey.name}`, img: bey.img || C.parts[pid].img, color: BEY_COLOR[`${prod.brand}|${prod.code}#${i}`] || '' };
       }
     });
     prod.extra.forEach(pid => {
