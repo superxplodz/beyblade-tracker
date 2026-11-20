@@ -65,9 +65,30 @@
   };
   // Known colourways of a pull (brand|code#index). Others can be named in the app.
   const BEY_COLOR = {
+    // Random booster pulls (index 0 = 01). Cross-checked across Otakumart, BeysAndBricks, Mall of Toys,
+    // BeyWarehouse and eBay listings, Nov 2026. Pulls no retailer names a colour for are left blank.
+    'tt|BX-14#0': 'Purple', 'tt|BX-14#1': 'Orange', 'tt|BX-14#2': 'Black', 'tt|BX-14#4': 'Blue',
+    'tt|BX-16#1': 'Black / pink', 'tt|BX-16#2': 'Yellow',
+    'tt|BX-24#0': 'Green / black', 'tt|BX-24#1': 'Yellow', 'tt|BX-24#2': 'Black', 'tt|BX-24#3': 'Blue', 'tt|BX-24#4': 'Red', 'tt|BX-24#5': 'Purple',
+    'tt|BX-27#1': 'Black', 'tt|BX-27#2': 'White',
+    'tt|BX-31#1': 'Green', 'tt|BX-31#2': 'Orange', 'tt|BX-31#3': 'Blue', 'tt|BX-31#4': 'Black', 'tt|BX-31#5': 'Purple',
+    'tt|BX-35#0': 'Black', 'tt|BX-35#1': 'Yellow', 'tt|BX-35#2': 'Red', 'tt|BX-35#3': 'Green', 'tt|BX-35#4': 'Blue', 'tt|BX-35#5': 'Purple',
+    'tt|BX-36#1': 'Black', 'tt|BX-36#2': 'White',
+    'tt|BX-39#1': 'Green', 'tt|BX-39#2': 'Yellow',
     'tt|BX-48#0': 'Black', 'tt|BX-48#1': 'Blue', 'tt|BX-48#2': 'Black', 'tt|BX-48#3': 'Gold', 'tt|BX-48#4': 'Red',
-    'tt|CX-18#0': 'Purple (prize)', 'tt|CX-18#1': 'Gold', 'tt|CX-18#2': 'Black',
-    'tt|CX-19#0': 'Gold (prize)', 'tt|CX-19#1': 'Red', 'tt|CX-19#2': 'Silver / grey',
+    'tt|BX-50#1': 'Black', 'tt|BX-50#2': 'White / green', 'tt|BX-50#3': 'Red', 'tt|BX-50#4': 'Yellow', 'tt|BX-50#5': 'Purple',
+    'tt|BX-55#0': 'Silver / clear green',
+    'tt|BX-00#0': 'Upper Form', 'tt|BX-00#1': 'Barrage Form',
+    'tt|UX-05#1': 'Black', 'tt|UX-05#2': 'Yellow',
+    'tt|UX-12#1': 'Green', 'tt|UX-12#2': 'Blue', 'tt|UX-12#3': 'Yellow', 'tt|UX-12#4': 'Black', 'tt|UX-12#5': 'Red',
+    'tt|UX-16#0': 'Cyan', 'tt|UX-16#1': 'Grey / white', 'tt|UX-16#2': 'Pink / yellow',
+    'tt|UX-18#1': 'Lime green', 'tt|UX-18#2': 'Blue', 'tt|UX-18#3': 'White', 'tt|UX-18#4': 'Violet', 'tt|UX-18#5': 'Red',
+    'tt|CX-05#2': 'Blue', 'tt|CX-05#3': 'White', 'tt|CX-05#4': 'Black', 'tt|CX-05#5': 'Yellow',
+    'tt|CX-06#1': 'Black', 'tt|CX-06#2': 'Gold',
+    'tt|CX-08#2': 'Green', 'tt|CX-08#3': 'Purple', 'tt|CX-08#4': 'Magenta', 'tt|CX-08#5': 'Yellow',
+    'tt|CX-17#1': 'White / pink', 'tt|CX-17#2': 'Red', 'tt|CX-17#3': 'Yellow / blue', 'tt|CX-17#4': 'Pink', 'tt|CX-17#5': 'Green',
+    'tt|CX-18#0': 'Purple', 'tt|CX-18#1': 'Gold', 'tt|CX-18#2': 'Black',
+    'tt|CX-19#0': 'Gold', 'tt|CX-19#1': 'Red', 'tt|CX-19#2': 'Silver / grey',
   };
   // Single beys inside multi-bey sets that have their own photo
   const BEY_IMG = { 'UX-15#1': 'combos/UX15-tyrr', 'CX-11#2': 'combos/CX11-sharkgill', 'UX-10#1': 'combos/UX10-pteraswing',

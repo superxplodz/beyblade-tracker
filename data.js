@@ -199,7 +199,7 @@ window.CATALOG = (() => {
     ['UX-13', 'Booster Golem Rock 1-60UN', ['Golem Rock|1-60|UN']],
     ['UX-14', 'Starter Scorpio Spear 0-70Z', ['Scorpio Spear|0-70|Z']],
     ['UX-15', 'Shark Scale Deck Set', ['Shark Scale|4-50|UF', 'Tyranno Roar|1-70|L', '@Hells/Brave/J|3-60|GF']],
-    ['UX-16', 'Random Booster Clock Mirage Select', ['Clock Mirage|9-65|B'], null, { random: true }],
+    ['UX-16', 'Random Booster Clock Mirage Select', ['Clock Mirage|9-65|B', 'Clock Mirage|9-65|B', 'Clock Mirage|9-65|B'], null, { random: true }],
     ['UX-17', 'Starter Meteor Dragoon 3-70J', ['Meteor Dragoon|3-70|J']],
     ['UX-18', 'Random Booster Vol.8', ['Mummy Curse|7-55|W', 'Mummy Curse|4-60|C', '@Pegasus/Brush/M|3-85|W', '@Sol/Brave/C|9-70|TP', 'Dran Dagger|7-55|G', 'Weiss Tiger|4-80|LR'], null, { random: true }],
     ['UX-19', 'Starter Bullet Griffon H', ['Bullet Griffon||H']],
