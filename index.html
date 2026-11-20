@@ -1189,7 +1189,8 @@
     const p = productById(pid);
     openDlg(`<div class="dlg-head"><h2>${esc(p.code)} ${esc(p.name)}</h2><button class="btn icon-btn" data-close aria-label="Close">✕</button></div>
       ${p.random ? `<p class="muted" style="margin:0">Random booster. Which bey did you get?</p>
-        <select class="input" id="buyBey">${p.beys.map((b, i) => `<option value="${i}">${esc(b.name)}</option>`).join('')}<option value="all">Full set (all of them)</option></select>`
+        <select class="input" id="buyBey">${p.beys.map((b, i) => { const c = C.variants[`${b.parts[0]}@${p.id}#${i}`]; const col = c ? vColor(c) : '';
+          return `<option value="${i}">${String(i + 1).padStart(2, '0')} · ${esc(b.name)}${col ? ` · ${esc(col)}` : ''}</option>`; }).join('')}<option value="all">Full set (all of them)</option></select>`
         : `<p class="muted" style="margin:0">Adds every part in this set to your collection.</p>`}
       <div class="grid grid-2"><label class="muted small">Date<input class="input" id="buyDate" type="date" value="${today()}"></label>
         <label class="muted small">Price (Rp) · optional<input class="input" id="buyPrice" inputmode="numeric" placeholder="450000"></label></div>

@@ -66,6 +66,8 @@
   // Known colourways of a pull (brand|code#index). Others can be named in the app.
   const BEY_COLOR = {
     'tt|BX-48#0': 'Black', 'tt|BX-48#1': 'Blue', 'tt|BX-48#2': 'Black', 'tt|BX-48#3': 'Gold', 'tt|BX-48#4': 'Red',
+    'tt|CX-18#0': 'Purple (prize)', 'tt|CX-18#1': 'Gold', 'tt|CX-18#2': 'Black',
+    'tt|CX-19#0': 'Gold (prize)', 'tt|CX-19#1': 'Red', 'tt|CX-19#2': 'Silver / grey',
   };
   // Single beys inside multi-bey sets that have their own photo
   const BEY_IMG = { 'UX-15#1': 'combos/UX15-tyrr', 'CX-11#2': 'combos/CX11-sharkgill', 'UX-10#1': 'combos/UX10-pteraswing',
