@@ -1,0 +1,102 @@
+{
+ "v": 1,
+ "updatedAt": 1795081278442,
+ "owned": {
+  "tt:lock:emperor@tt:p:cx-11-emperor-might-deck-set#0": 1,
+  "tt:main:might@tt:p:cx-11-emperor-might-deck-set#0": 1,
+  "tt:assist:h@tt:p:cx-11-emperor-might-deck-set#0": 1,
+  "tt:rbit:op@tt:p:cx-11-emperor-might-deck-set#0": 1,
+  "tt:blade:golem-rock@tt:p:cx-11-emperor-might-deck-set#1": 1,
+  "tt:ratchet:m-85@tt:p:cx-11-emperor-might-deck-set#1": 1,
+  "tt:bit:hn@tt:p:cx-11-emperor-might-deck-set#1": 1,
+  "tt:blade:shark-gill@tt:p:cx-11-emperor-might-deck-set#2": 1,
+  "tt:ratchet:5-60@tt:p:cx-11-emperor-might-deck-set#2": 1,
+  "tt:bit:fb@tt:p:cx-11-emperor-might-deck-set#2": 1,
+  "tt:rblade:hells-nether@tt:p:ux-21-hells-nether-deck-set#0": 1,
+  "tt:bit:z@tt:p:ux-21-hells-nether-deck-set#0": 1,
+  "tt:blade:silver-wolf@tt:p:ux-21-hells-nether-deck-set#1": 1,
+  "tt:ratchet:9-70@tt:p:ux-21-hells-nether-deck-set#1": 1,
+  "tt:bit:r@tt:p:ux-21-hells-nether-deck-set#1": 1,
+  "tt:blade:wyvern-hover@tt:p:ux-21-hells-nether-deck-set#2": 1,
+  "tt:ratchet:8-80@tt:p:ux-21-hells-nether-deck-set#2": 1,
+  "tt:bit:b@tt:p:ux-21-hells-nether-deck-set#2": 1,
+  "tt:lock:pegasus@tt:p:cx-07-starter-pegasus-blast-atr#0": 1,
+  "tt:main:blast@tt:p:cx-07-starter-pegasus-blast-atr#0": 1,
+  "tt:assist:a@tt:p:cx-07-starter-pegasus-blast-atr#0": 1,
+  "tt:rbit:tr@tt:p:cx-07-starter-pegasus-blast-atr#0": 1,
+  "tt:rblade:bullet-griffon": 1,
+  "tt:blade:impact-drake": 1
+ },
+ "wish": {},
+ "want": {},
+ "notes": {},
+ "purchases": [
+  {
+   "id": "umwnd14rz",
+   "lot": true,
+   "brand": "tt",
+   "name": "Facebook Auction",
+   "parts": [
+    "tt:rblade:bullet-griffon",
+    "tt:blade:impact-drake"
+   ],
+   "date": "2026-11-19",
+   "price": 190000,
+   "note": ""
+  },
+  {
+   "id": "ucx-11",
+   "pid": "tt:p:cx-11-emperor-might-deck-set",
+   "bey": "all",
+   "parts": [
+    "tt:lock:emperor@tt:p:cx-11-emperor-might-deck-set#0",
+    "tt:main:might@tt:p:cx-11-emperor-might-deck-set#0",
+    "tt:assist:h@tt:p:cx-11-emperor-might-deck-set#0",
+    "tt:rbit:op@tt:p:cx-11-emperor-might-deck-set#0",
+    "tt:blade:golem-rock@tt:p:cx-11-emperor-might-deck-set#1",
+    "tt:ratchet:m-85@tt:p:cx-11-emperor-might-deck-set#1",
+    "tt:bit:hn@tt:p:cx-11-emperor-might-deck-set#1",
+    "tt:blade:shark-gill@tt:p:cx-11-emperor-might-deck-set#2",
+    "tt:ratchet:5-60@tt:p:cx-11-emperor-might-deck-set#2",
+    "tt:bit:fb@tt:p:cx-11-emperor-might-deck-set#2"
+   ],
+   "date": "2026-11-18",
+   "note": ""
+  },
+  {
+   "id": "uux-21",
+   "pid": "tt:p:ux-21-hells-nether-deck-set",
+   "bey": "all",
+   "parts": [
+    "tt:rblade:hells-nether@tt:p:ux-21-hells-nether-deck-set#0",
+    "tt:bit:z@tt:p:ux-21-hells-nether-deck-set#0",
+    "tt:blade:silver-wolf@tt:p:ux-21-hells-nether-deck-set#1",
+    "tt:ratchet:9-70@tt:p:ux-21-hells-nether-deck-set#1",
+    "tt:bit:r@tt:p:ux-21-hells-nether-deck-set#1",
+    "tt:blade:wyvern-hover@tt:p:ux-21-hells-nether-deck-set#2",
+    "tt:ratchet:8-80@tt:p:ux-21-hells-nether-deck-set#2",
+    "tt:bit:b@tt:p:ux-21-hells-nether-deck-set#2"
+   ],
+   "date": "2026-11-18",
+   "note": ""
+  },
+  {
+   "id": "ucx-07",
+   "pid": "tt:p:cx-07-starter-pegasus-blast-atr",
+   "bey": "all",
+   "parts": [
+    "tt:lock:pegasus@tt:p:cx-07-starter-pegasus-blast-atr#0",
+    "tt:main:blast@tt:p:cx-07-starter-pegasus-blast-atr#0",
+    "tt:assist:a@tt:p:cx-07-starter-pegasus-blast-atr#0",
+    "tt:rbit:tr@tt:p:cx-07-starter-pegasus-blast-atr#0"
+   ],
+   "date": "2026-11-18",
+   "note": "",
+   "price": 379000
+  }
+ ],
+ "custom": [],
+ "decks": [],
+ "seen": {},
+ "target": {}
+}
