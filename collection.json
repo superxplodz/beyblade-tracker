@@ -1,6 +1,6 @@
 {
  "v": 1,
- "updatedAt": 1795160901530,
+ "updatedAt": 1795162471816,
  "owned": {
   "tt:lock:emperor@tt:p:cx-11-emperor-might-deck-set#0": 1,
   "tt:main:might@tt:p:cx-11-emperor-might-deck-set#0": 1,
@@ -30,12 +30,28 @@
   "tt:lock:brachio@tt:p:cx-18-random-booster-brachio-whip-select#2": 1,
   "tt:over:o@tt:p:cx-18-random-booster-brachio-whip-select#2": 1,
   "tt:metal:whip@tt:p:cx-18-random-booster-brachio-whip-select#2": 1,
-  "tt:assist:w@tt:p:cx-18-random-booster-brachio-whip-select#2": 1
+  "tt:assist:w@tt:p:cx-18-random-booster-brachio-whip-select#2": 1,
+  "tt:blade:wizard-rod@tt:p:ux-03-booster-wizard-rod-5-70db#0": 1,
+  "tt:ratchet:5-70@tt:p:ux-03-booster-wizard-rod-5-70db#0": 1,
+  "tt:bit:db@tt:p:ux-03-booster-wizard-rod-5-70db#0": 1
  },
  "wish": {},
  "want": {},
  "notes": {},
  "purchases": [
+  {
+   "id": "umwopdw94",
+   "pid": "tt:p:ux-03-booster-wizard-rod-5-70db",
+   "bey": "all",
+   "parts": [
+    "tt:blade:wizard-rod@tt:p:ux-03-booster-wizard-rod-5-70db#0",
+    "tt:ratchet:5-70@tt:p:ux-03-booster-wizard-rod-5-70db#0",
+    "tt:bit:db@tt:p:ux-03-booster-wizard-rod-5-70db#0"
+   ],
+   "date": "2026-11-20",
+   "price": null,
+   "note": ""
+  },
   {
    "id": "umwont6i4",
    "lot": true,
