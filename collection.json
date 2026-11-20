@@ -1,6 +1,6 @@
 {
  "v": 1,
- "updatedAt": 1795081278442,
+ "updatedAt": 1795159825708,
  "owned": {
   "tt:lock:emperor@tt:p:cx-11-emperor-might-deck-set#0": 1,
   "tt:main:might@tt:p:cx-11-emperor-might-deck-set#0": 1,
@@ -25,12 +25,33 @@
   "tt:assist:a@tt:p:cx-07-starter-pegasus-blast-atr#0": 1,
   "tt:rbit:tr@tt:p:cx-07-starter-pegasus-blast-atr#0": 1,
   "tt:rblade:bullet-griffon": 1,
-  "tt:blade:impact-drake": 1
+  "tt:blade:impact-drake": 1,
+  "tt:lock:brachio": 1,
+  "tt:over:o": 1,
+  "tt:metal:whip": 1,
+  "tt:assist:w": 1,
+  "tt:ratchet:5-70": 1
  },
  "wish": {},
  "want": {},
  "notes": {},
  "purchases": [
+  {
+   "id": "umwont6i4",
+   "lot": true,
+   "brand": "tt",
+   "name": "Brachio Whip Split",
+   "parts": [
+    "tt:lock:brachio",
+    "tt:over:o",
+    "tt:metal:whip",
+    "tt:assist:w",
+    "tt:ratchet:5-70"
+   ],
+   "date": "2026-11-20",
+   "price": 155000,
+   "note": ""
+  },
   {
    "id": "umwnd14rz",
    "lot": true,
