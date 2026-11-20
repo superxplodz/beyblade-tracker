@@ -1,6 +1,6 @@
 {
  "v": 1,
- "updatedAt": 1795162493356,
+ "updatedAt": 1795162506851,
  "owned": {
   "tt:lock:emperor@tt:p:cx-11-emperor-might-deck-set#0": 1,
   "tt:main:might@tt:p:cx-11-emperor-might-deck-set#0": 1,
@@ -41,12 +41,28 @@
   "tt:bit:db@tt:p:cx-10-booster-wolf-hunt-f0-60db#0": 1,
   "tt:blade:knight-shield@tt:p:bx-06-booster-knight-shield-3-80n#0": 1,
   "tt:ratchet:3-80@tt:p:bx-06-booster-knight-shield-3-80n#0": 1,
-  "tt:bit:n@tt:p:bx-06-booster-knight-shield-3-80n#0": 1
+  "tt:bit:n@tt:p:bx-06-booster-knight-shield-3-80n#0": 1,
+  "tt:blade:wizard-arrow@tt:p:bx-05-booster-wizard-arrow-4-80b#0": 1,
+  "tt:ratchet:4-80@tt:p:bx-05-booster-wizard-arrow-4-80b#0": 1,
+  "tt:bit:b@tt:p:bx-05-booster-wizard-arrow-4-80b#0": 1
  },
  "wish": {},
  "want": {},
  "notes": {},
  "purchases": [
+  {
+   "id": "umwopenab",
+   "pid": "tt:p:bx-05-booster-wizard-arrow-4-80b",
+   "bey": "all",
+   "parts": [
+    "tt:blade:wizard-arrow@tt:p:bx-05-booster-wizard-arrow-4-80b#0",
+    "tt:ratchet:4-80@tt:p:bx-05-booster-wizard-arrow-4-80b#0",
+    "tt:bit:b@tt:p:bx-05-booster-wizard-arrow-4-80b#0"
+   ],
+   "date": "2026-11-20",
+   "price": null,
+   "note": ""
+  },
   {
    "id": "umwopecvg",
    "pid": "tt:p:bx-06-booster-knight-shield-3-80n",
