@@ -1,6 +1,6 @@
 {
  "v": 1,
- "updatedAt": 1795160876422,
+ "updatedAt": 1795160882842,
  "owned": {
   "tt:lock:emperor@tt:p:cx-11-emperor-might-deck-set#0": 1,
   "tt:main:might@tt:p:cx-11-emperor-might-deck-set#0": 1,
@@ -28,9 +28,9 @@
   "tt:blade:impact-drake": 1,
   "tt:assist:w": 1,
   "tt:ratchet:5-70": 1,
-  "tt:metal:whip@tt:p:cx-18-random-booster-brachio-whip-select#0": 1,
   "tt:lock:brachio@tt:p:cx-18-random-booster-brachio-whip-select#2": 1,
-  "tt:over:o@tt:p:cx-18-random-booster-brachio-whip-select#2": 1
+  "tt:over:o@tt:p:cx-18-random-booster-brachio-whip-select#2": 1,
+  "tt:metal:whip@tt:p:cx-18-random-booster-brachio-whip-select#2": 1
  },
  "wish": {},
  "want": {},
