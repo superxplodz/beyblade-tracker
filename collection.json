@@ -1,6 +1,6 @@
 {
  "v": 1,
- "updatedAt": 1795162506851,
+ "updatedAt": 1795252246367,
  "owned": {
   "tt:lock:emperor@tt:p:cx-11-emperor-might-deck-set#0": 1,
   "tt:main:might@tt:p:cx-11-emperor-might-deck-set#0": 1,
@@ -34,7 +34,7 @@
   "tt:blade:wizard-rod@tt:p:ux-03-booster-wizard-rod-5-70db#0": 1,
   "tt:ratchet:5-70@tt:p:ux-03-booster-wizard-rod-5-70db#0": 1,
   "tt:bit:db@tt:p:ux-03-booster-wizard-rod-5-70db#0": 1,
-  "tt:lock:wolf@tt:p:cx-10-booster-wolf-hunt-f0-60db#0": 1,
+  "tt:lock:wolf@tt:p:cx-10-booster-wolf-hunt-f0-60db#0": 2,
   "tt:main:hunt@tt:p:cx-10-booster-wolf-hunt-f0-60db#0": 1,
   "tt:assist:f@tt:p:cx-10-booster-wolf-hunt-f0-60db#0": 1,
   "tt:ratchet:0-60@tt:p:cx-10-booster-wolf-hunt-f0-60db#0": 1,
@@ -44,12 +44,36 @@
   "tt:bit:n@tt:p:bx-06-booster-knight-shield-3-80n#0": 1,
   "tt:blade:wizard-arrow@tt:p:bx-05-booster-wizard-arrow-4-80b#0": 1,
   "tt:ratchet:4-80@tt:p:bx-05-booster-wizard-arrow-4-80b#0": 1,
-  "tt:bit:b@tt:p:bx-05-booster-wizard-arrow-4-80b#0": 1
+  "tt:bit:b@tt:p:bx-05-booster-wizard-arrow-4-80b#0": 1,
+  "tt:main:reaper@c#turquoise": 1,
+  "tt:lock:hells@tt:p:cx-05-random-booster-vol-6#2": 1,
+  "tt:main:arc@tt:p:cx-05-random-booster-vol-6#2": 1,
+  "tt:assist:t@tt:p:cx-05-random-booster-vol-6#2": 1,
+  "tt:ratchet:4-70@tt:p:cx-05-random-booster-vol-6#4": 1,
+  "tt:bit:gn@tt:p:ux-06-booster-leon-crest-7-60gn#0": 1
  },
  "wish": {},
  "want": {},
  "notes": {},
  "purchases": [
+  {
+   "id": "umwq6u2qm",
+   "lot": true,
+   "brand": "tt",
+   "name": "Facebook",
+   "parts": [
+    "tt:main:reaper@c#turquoise",
+    "tt:lock:wolf@tt:p:cx-10-booster-wolf-hunt-f0-60db#0",
+    "tt:lock:hells@tt:p:cx-05-random-booster-vol-6#2",
+    "tt:main:arc@tt:p:cx-05-random-booster-vol-6#2",
+    "tt:assist:t@tt:p:cx-05-random-booster-vol-6#2",
+    "tt:ratchet:4-70@tt:p:cx-05-random-booster-vol-6#4",
+    "tt:bit:gn@tt:p:ux-06-booster-leon-crest-7-60gn#0"
+   ],
+   "date": "2026-11-21",
+   "price": 100000,
+   "note": ""
+  },
   {
    "id": "umwopenab",
    "pid": "tt:p:bx-05-booster-wizard-arrow-4-80b",
@@ -189,5 +213,11 @@
  "seen": {},
  "target": {},
  "vcolor": {},
- "cvars": []
+ "cvars": [
+  {
+   "id": "tt:main:reaper@c#turquoise",
+   "part": "tt:main:reaper",
+   "color": "Turquoise"
+  }
+ ]
 }
