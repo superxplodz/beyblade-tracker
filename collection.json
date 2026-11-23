@@ -1,6 +1,6 @@
 {
  "v": 1,
- "updatedAt": 1795252251524,
+ "updatedAt": 1795442960577,
  "owned": {
   "tt:lock:emperor@tt:p:cx-11-emperor-might-deck-set#0": 1,
   "tt:main:might@tt:p:cx-11-emperor-might-deck-set#0": 1,
@@ -50,12 +50,29 @@
   "tt:main:arc@tt:p:cx-05-random-booster-vol-6#2": 1,
   "tt:assist:t@tt:p:cx-05-random-booster-vol-6#2": 1,
   "tt:ratchet:4-70@tt:p:cx-05-random-booster-vol-6#4": 1,
-  "tt:bit:gn@tt:p:ux-06-booster-leon-crest-7-60gn#0": 1
+  "tt:bit:gn@tt:p:ux-06-booster-leon-crest-7-60gn#0": 1,
+  "tt:ratchet:1-70@tt:p:ux-15-shark-scale-deck-set#1": 1,
+  "tt:ratchet:3-60@tt:p:bx-31-random-booster-vol-3#1": 1,
+  "tt:bit:l@tt:p:ux-15-shark-scale-deck-set#1": 1
  },
  "wish": {},
  "want": {},
  "notes": {},
  "purchases": [
+  {
+   "id": "umwtcdqrj",
+   "lot": true,
+   "brand": "tt",
+   "name": "Loose parts",
+   "parts": [
+    "tt:ratchet:1-70@tt:p:ux-15-shark-scale-deck-set#1",
+    "tt:ratchet:3-60@tt:p:bx-31-random-booster-vol-3#1",
+    "tt:bit:l@tt:p:ux-15-shark-scale-deck-set#1"
+   ],
+   "date": "2026-11-23",
+   "price": 210000,
+   "note": ""
+  },
   {
    "id": "umwq6u2qm",
    "lot": true,
